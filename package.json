@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": ""
+    "dev": "",
+    "setup:env": "cp .env database",
+    "setup:env:win": "copy .env database"
   },
   "keywords": [],
   "author": "",
