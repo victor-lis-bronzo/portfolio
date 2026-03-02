@@ -14,6 +14,15 @@ importers:
 
   core:
     dependencies:
+      '@database':
+        specifier: workspace:*
+        version: link:../database
+      '@packages':
+        specifier: workspace:*
+        version: link:../packages
+      drizzle-orm:
+        specifier: ^0.45.1
+        version: 0.45.1(pg@8.19.0)(postgres@3.4.8)
       zod:
         specifier: ^3.22.4
         version: 3.25.76

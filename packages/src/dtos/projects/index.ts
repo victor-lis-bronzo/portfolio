@@ -2,11 +2,15 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { projects } from "@database";
 import { z } from "zod";
 
-export const createProjectDto = createInsertSchema(projects).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const createProjectDto = createInsertSchema(projects)
+  .omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  })
+  .extend({
+    links: z.array(z.string()),
+  });
 
 export const selectProjectDto = createSelectSchema(projects);
 
@@ -15,6 +19,9 @@ export const updateProjectDto = createInsertSchema(projects)
     id: true,
     createdAt: true,
     updatedAt: true,
+  })
+  .extend({
+    links: z.array(z.string()),
   })
   .partial();
 
