@@ -3,4 +3,4 @@ packages:
   - "api"
   - "core"
   - "database"
-  - "packages/*"
+  - "packages"

@@ -5,4 +5,4 @@ export const insertPostDto = createInsertSchema(posts);
 export const selectPostDto = createSelectSchema(posts);
 
 export const insertProjectDto = createInsertSchema(projects);
-export const selectProjectDto = createSelectSchema(projects);
+// export const selectProjectDto = createSelectSchema(projects);
