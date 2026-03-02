@@ -1,2 +1,2 @@
 export * from "./app.js";
-export * from "./schemas";
+export * from "./models/index.js";

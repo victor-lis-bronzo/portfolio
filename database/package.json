@@ -10,9 +10,9 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./schema": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+    "./models": {
+      "types": "./models/dist/index.d.ts",
+      "import": "./models/dist/index.js"
     }
   },
   "scripts": {

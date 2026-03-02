@@ -1,6 +1,6 @@
 import { db } from "./app";
-import { posts } from "./schemas/posts";
-import { projects } from "./schemas/projects";
+import { posts } from "./models/posts";
+import { projects } from "./models/projects";
 
 async function main() {
   console.log("Seeding database...");
