@@ -53,6 +53,22 @@ importers:
         specifier: ^5.4.0
         version: 5.9.3
 
+  packages/dtos:
+    dependencies:
+      '@database':
+        specifier: workspace:*
+        version: link:../../database
+      drizzle-zod:
+        specifier: ^0.5.1
+        version: 0.5.1(drizzle-orm@0.45.1(pg@8.19.0)(postgres@3.4.8))(zod@3.25.76)
+      zod:
+        specifier: ^3.22.4
+        version: 3.25.76
+    devDependencies:
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
 packages:
 
   '@drizzle-team/brocli@0.10.2':
@@ -634,6 +650,12 @@ packages:
       sqlite3:
         optional: true
 
+  drizzle-zod@0.5.1:
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
+
   esbuild-register@3.6.0:
     resolution: {integrity: sha512-H2/S7Pm8a9CL1uhp9OvjwrBh5Pvx0H8qVOxNu8Wed9Y7qv56MPtq+GGM8RJpq6glYJn9Wspr8uw7l55uyinNeg==}
     peerDependencies:
@@ -1066,6 +1088,11 @@ snapshots:
     optionalDependencies:
       pg: 8.19.0
       postgres: 3.4.8
+
+  drizzle-zod@0.5.1(drizzle-orm@0.45.1(pg@8.19.0)(postgres@3.4.8))(zod@3.25.76):
+    dependencies:
+      drizzle-orm: 0.45.1(pg@8.19.0)(postgres@3.4.8)
+      zod: 3.25.76
 
   esbuild-register@3.6.0(esbuild@0.25.12):
     dependencies:
