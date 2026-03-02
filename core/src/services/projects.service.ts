@@ -3,6 +3,7 @@ import {
   CreateProjectDto,
   UpdateProjectDto,
   DeleteProjectDto,
+  SelectProjectDto,
 } from "@packages";
 import { eq } from "drizzle-orm";
 
@@ -16,7 +17,7 @@ export class ProjectsService {
     return await db.select().from(projects);
   }
 
-  async findById(id: string) {
+  async findById(id: SelectProjectDto["id"]) {
     const [project] = await db
       .select()
       .from(projects)
@@ -24,7 +25,7 @@ export class ProjectsService {
     return project;
   }
 
-  async update(id: string, data: UpdateProjectDto) {
+  async update(id: SelectProjectDto["id"], data: UpdateProjectDto) {
     const [updatedProject] = await db
       .update(projects)
       .set(data)
@@ -33,7 +34,7 @@ export class ProjectsService {
     return updatedProject;
   }
 
-  async delete(id: string) {
+  async delete(id: SelectProjectDto["id"]) {
     const [deletedProject] = await db
       .delete(projects)
       .where(eq(projects.id, id))

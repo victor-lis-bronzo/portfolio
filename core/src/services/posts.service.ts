@@ -1,5 +1,10 @@
 import { db, posts } from "@database";
-import { CreatePostDto, UpdatePostDto, DeletePostDto } from "@packages";
+import {
+  CreatePostDto,
+  UpdatePostDto,
+  DeletePostDto,
+  SelectPostDto,
+} from "@packages";
 import { eq } from "drizzle-orm";
 
 export class PostsService {
@@ -12,12 +17,12 @@ export class PostsService {
     return await db.select().from(posts);
   }
 
-  async findById(id: string) {
+  async findById(id: SelectPostDto["id"]) {
     const [post] = await db.select().from(posts).where(eq(posts.id, id));
     return post;
   }
 
-  async update(id: string, data: UpdatePostDto) {
+  async update(id: SelectPostDto["id"], data: UpdatePostDto) {
     const [updatedPost] = await db
       .update(posts)
       .set(data)
@@ -26,7 +31,7 @@ export class PostsService {
     return updatedPost;
   }
 
-  async delete(id: string) {
+  async delete(id: SelectPostDto["id"]) {
     const [deletedPost] = await db
       .delete(posts)
       .where(eq(posts.id, id))
