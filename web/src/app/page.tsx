@@ -1,8 +1,11 @@
+"use client";
+
 import { Hero } from "@/modules/hero";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { HorizontalScroll } from "@/components/ui/horizontal-scroll";
 
 export default async function Home() {
   const processedSvg = await fetch(
@@ -82,6 +85,38 @@ export default async function Home() {
           </Hero.Card>
         </Hero.Visuals>
       </Hero.Root>
+
+      <HorizontalScroll.Root className="mt-24 md:mt-32">
+        <HorizontalScroll.Header>
+          <HorizontalScroll.Title>
+            Meus Projetos
+          </HorizontalScroll.Title>
+          <HorizontalScroll.Description>
+            Aqui estão alguns dos projetos aos quais me dediquei recentemente.
+            Role a página para explorar um pouco mais sobre cada um.
+          </HorizontalScroll.Description>
+        </HorizontalScroll.Header>
+
+        <HorizontalScroll.Content>
+          {[1, 2, 3, 4, 5].map((i) => (
+            <HorizontalScroll.Card key={i}>
+              <div className="flex flex-col h-full justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-primary mb-3">Projeto {i}</h3>
+                  <p className="text-gray-300/80 leading-relaxed">
+                    Uma breve descrição do projeto, destacando os desafios técnicos resolvidos e o impacto focado na experiência do usuário.
+                  </p>
+                </div>
+                <div className="flex gap-2 flex-wrap mt-6">
+                  <span className="text-xs font-medium px-3 py-1 bg-white/10 text-white rounded-full border border-white/5">React</span>
+                  <span className="text-xs font-medium px-3 py-1 bg-white/10 text-white rounded-full border border-white/5">Next.js</span>
+                  <span className="text-xs font-medium px-3 py-1 bg-white/10 text-white rounded-full border border-white/5">Tailwind</span>
+                </div>
+              </div>
+            </HorizontalScroll.Card>
+          ))}
+        </HorizontalScroll.Content>
+      </HorizontalScroll.Root>
     </main>
   );
 }
