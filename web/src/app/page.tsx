@@ -1,90 +1,87 @@
-"use client";
-import { motion } from "framer-motion";
-import skyImg from '../assets/sky.svg';
-import grassImg from '../assets/grass.svg';
-import dirtImg from '../assets/dirt.svg';
+import { Hero } from "@/modules/hero";
+import { Button } from "@/components/ui/button";
+import { Github, Linkedin } from "lucide-react";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-export default function PortfolioVictor() {
+export default async function Home() {
+  const processedSvg = await fetch(
+    "https://gitassets.victorlisbronzo.me/api/card/cmjhew7bb00032ajvo8q4vzpw",
+  )
+    .then((res) => res.text())
+    .catch((e) => `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 522 220" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" style="margin: auto; display: block;"></svg >`);
+
+  const responsiveSvg = processedSvg
+    .replace(/width="[^"]*"/, 'width="90%"')
+    .replace(/height="[^"]*"/, 'height="90%"')
+    .replace(
+      "<svg",
+      '<svg preserveAspectRatio="xMidYMid meet" style="margin: auto;"',
+    );
+
   return (
-    <div className="bg-[#0f0f1e] text-white font-sans overflow-x-hidden">
-
-      {/* ================================================== */}
-      {/* SESSÃO 1: HERO SECTION                             */}
-      {/* ================================================== */}
-      <section
-        className="min-h-screen relative flex flex-col justify-end overflow-hidden"
-        style={{
-          backgroundImage: `url(${skyImg.src})`,
-          backgroundSize: '256px 256px',
-          backgroundRepeat: 'repeat',
-          imageRendering: 'pixelated'
-        }}
-      >
-        {/* Content Container */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-full max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pointer-events-auto z-10">
-            {/* Lado Esquerdo - Copy Impactante */}
-            <div className="flex flex-col gap-6 text-white drop-shadow-md">
-              <span className="text-[#34df8b] font-mono tracking-widest text-sm border border-[#34df8b]/50 bg-black/40 backdrop-blur-sm py-1 px-3 w-fit rounded-full shadow-lg">
-                Status: Open for Work
-              </span>
-              <h1 className="text-5xl lg:text-7xl font-bold leading-tight" style={{ textShadow: '4px 4px 0px rgba(0,0,0,0.5)' }}>
-                Construindo software <br />
-                <span className="text-[#34df8b]">
-                  de alto impacto.
-                </span>
-              </h1>
-              <p className="text-gray-200 text-lg lg:text-xl max-w-lg font-medium" style={{ textShadow: '2px 2px 0px rgba(0,0,0,0.5)' }}>
-                Engenharia de ponta a ponta. Focado em performance, design de
-                sistemas e código sustentável que resolve problemas reais.
-              </p>
-            </div>
-
-            {/* Lado Direito - O Asset da API */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="flex justify-end"
-            >
-              <div className="relative group">
-                {/* Sombra escura imitando Minecraft atrás do card */}
-                <div className="absolute -inset-2 bg-black/40 blur-xl rounded-xl"></div>
-                <img
-                  src="https://gitassets.victorlisbronzo.me/api/card/cmjhew7bb00032ajvo8q4vzpw?v=uvsl04"
-                  alt="Victor Lis - GitHub Profile Asset"
-                  className="relative w-full max-w-md shadow-2xl rounded-lg border-4 border-black/80"
-                  style={{ imageRendering: 'pixelated' }}
-                />
-              </div>
-            </motion.div>
+    <main>
+      <Hero.Root>
+        <Hero.Content>
+          <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm text-primary w-fit">
+            <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
+            Bem vindo!
           </div>
-        </div>
 
-        {/* Chãozinho de Grama do Minecraft */}
-        <div className="relative w-full h-32 flex flex-col pointer-events-none">
-          {/* Topo da Grama */}
-          <div
-            className="w-full h-16"
-            style={{
-              backgroundImage: `url(${grassImg.src})`,
-              backgroundSize: '64px 64px',
-              backgroundRepeat: 'repeat-x',
-              imageRendering: 'pixelated'
-            }}
-          ></div>
-          {/* Terra embaixo da Grama */}
-          <div
-            className="w-full h-16"
-            style={{
-              backgroundImage: `url(${dirtImg.src})`,
-              backgroundSize: '64px 64px',
-              backgroundRepeat: 'repeat',
-              imageRendering: 'pixelated'
-            }}
-          ></div>
-        </div>
-      </section>
-    </div>
+          <Hero.Title>
+            Prazer, <br />
+            <span className="text-primary">Victor Lis Bronzo.</span>
+          </Hero.Title>
+
+          <Hero.Description>
+            Conheça um pouco sobre mim, minha trajetória, minhas paixões e o que
+            eu gosto de fazer.
+          </Hero.Description>
+
+          <Hero.Actions>
+            <Button className="bg-primary text-black text-lg h-12 px-8">
+              <Link
+                href="https://www.linkedin.com/in/victor-lis-bronzo/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-1 w-fit"
+              >
+                <Linkedin className="h-5 w-5" />
+                <span>Ver no LinkedIn</span>
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              className="border-gray-700 text-gray-300 hover:bg-white/5 hover:text-white text-lg h-12 w-fit"
+            >
+              <Link
+                href="https://github.com/victor-lis/victor-lis"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-1 w-fit"
+              >
+                <Github className="h-5 w-5" />
+                <span>Ver no GitHub</span>
+              </Link>
+            </Button>
+          </Hero.Actions>
+        </Hero.Content>
+
+        <Hero.Visuals className="max-[500px]:hidden">
+          <Hero.Card>
+            <div
+              className={cn(
+                "w-full h-full flex items-center justify-center pt-6",
+              )}
+            >
+              <div
+                className="w-full h-full"
+                dangerouslySetInnerHTML={{ __html: responsiveSvg }}
+              />
+            </div>
+          </Hero.Card>
+        </Hero.Visuals>
+      </Hero.Root>
+    </main>
   );
 }

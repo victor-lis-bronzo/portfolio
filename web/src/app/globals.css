@@ -52,7 +52,7 @@
 
 :root {
   --background: #1a1a2e;
-  --foreground: #2DDC84;
+  --foreground: #2ddc84;
 
   /* Cards levemente mais claros ou com transparência simulada */
   --card: #202033;
@@ -108,7 +108,7 @@
 */
 .dark {
   --background: #1a1a2e;
-  --foreground: #2DDC84;
+  --foreground: #2ddc84;
   --card: #202033;
   --card-foreground: #f0f0f5;
   --popover: #1a1a2e;
