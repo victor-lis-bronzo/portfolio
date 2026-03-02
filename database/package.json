@@ -3,20 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
     },
-    "./schemas": {
-      "import": "./dist/schemas/index.js",
-      "types": "./dist/schemas/index.d.ts"
+    "./schema": {
+      "types": "./dist/src/schemas/index.d.ts",
+      "import": "./dist/src/schemas/index.js"
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "db:push": "drizzle-kit push",
     "db:pull": "drizzle-kit pull",
     "db:generate": "drizzle-kit generate",
@@ -29,7 +29,8 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.45.1",
     "pg": "^8.19.0",
-    "postgres": "^3.4.4"
+    "postgres": "^3.4.4",
+    "tsup": "^8.5.1"
   },
   "devDependencies": {
     "@types/node": "^25.3.3",
