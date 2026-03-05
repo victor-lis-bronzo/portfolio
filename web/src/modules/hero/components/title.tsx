@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { HeroBaseProps } from "../../_types/hero";
+import { HeroBaseProps } from "../_types/hero";
 
 export function Title({ children, className }: HeroBaseProps) {
   return (

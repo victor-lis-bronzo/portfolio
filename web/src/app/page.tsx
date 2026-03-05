@@ -1,11 +1,42 @@
 "use client";
 
 import { Hero } from "@/modules/hero";
-import { HorizontalScroll } from "@/modules/horizontal-scroll";
+import { Events } from "@/modules/events";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+
+const mockEvents = [
+  {
+    id: "1",
+    title: "Rocketseat Next Level Week",
+    date: "Jun 2024",
+    imageUrl:
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
+  },
+  {
+    id: "2",
+    title: "React Conf Brasil",
+    date: "Out 2024",
+    imageUrl:
+      "https://images.unsplash.com/photo-1475721025871-7294062a88bf?q=80&w=2070&auto=format&fit=crop",
+  },
+  {
+    id: "3",
+    title: "DevFest SP",
+    date: "Dez 2024",
+    imageUrl:
+      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop",
+  },
+  {
+    id: "4",
+    title: "Figma Config",
+    date: "Fev 2025",
+    imageUrl:
+      "https://images.unsplash.com/photo-1588196749597-9ff0464ac8cb?q=80&w=1543&auto=format&fit=crop",
+  },
+];
 
 export default async function Home() {
   const processedSvg = await fetch(
@@ -53,7 +84,7 @@ export default async function Home() {
                 className="flex items-center gap-2 px-1 w-fit"
               >
                 <Linkedin className="h-5 w-5" />
-                <span>Ver no LinkedIn</span>
+                <span>Ver LinkedIn</span>
               </Link>
             </Button>
             <Button
@@ -67,7 +98,7 @@ export default async function Home() {
                 className="flex items-center gap-2 px-1 w-fit"
               >
                 <Github className="h-5 w-5" />
-                <span>Ver no GitHub</span>
+                <span>Ver GitHub</span>
               </Link>
             </Button>
           </Hero.Actions>
@@ -89,107 +120,46 @@ export default async function Home() {
         </Hero.Visuals>
       </Hero.Root>
 
-      <HorizontalScroll.Root>
-        <HorizontalScroll.Card>
-          <h3 className="text-lg font-semibold text-white mb-2">Frontend</h3>
-          <p className="text-sm text-gray-400">
-            React, Next.js, TypeScript e todo o ecossistema moderno de
-            desenvolvimento web.
+      <section className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl min-h-screen p-8 lg:p-24 border-t border-white/10">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6">Sobre mim</h2>
+          <p className="text-gray-400">
+            Esta seção desliza sobre o Hero, criando o efeito &quot;Stacking
+            Scroll Parallax&quot;. Continue rolando para ver a magia acontecer!
           </p>
-        </HorizontalScroll.Card>
-
-        <HorizontalScroll.Card>
-          <h3 className="text-lg font-semibold text-white mb-2">Backend</h3>
-          <p className="text-sm text-gray-400">
-            Node.js, APIs REST, bancos de dados e arquitetura de sistemas
-            escaláveis.
-          </p>
-        </HorizontalScroll.Card>
-
-        <HorizontalScroll.Card>
-          <h3 className="text-lg font-semibold text-white mb-2">Mobile</h3>
-          <p className="text-sm text-gray-400">
-            React Native e desenvolvimento cross-platform para iOS e Android.
-          </p>
-        </HorizontalScroll.Card>
-
-        <HorizontalScroll.Card>
-          <h3 className="text-lg font-semibold text-white mb-2">DevOps</h3>
-          <p className="text-sm text-gray-400">
-            Docker, CI/CD, deploy automatizado e infraestrutura como código.
-          </p>
-        </HorizontalScroll.Card>
-
-        <HorizontalScroll.Card>
-          <h3 className="text-lg font-semibold text-white mb-2">UI/UX</h3>
-          <p className="text-sm text-gray-400">
-            Design de interfaces intuitivas, acessíveis e com foco na
-            experiência do usuário.
-          </p>
-        </HorizontalScroll.Card>
-      </HorizontalScroll.Root>
-
-      <Hero.Root>
-        <Hero.Content>
-          <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm text-primary w-fit">
-            <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
-            Bem vindo!
+          <div className="mt-12 space-y-8">
+            <div className="h-64 rounded-2xl bg-white/5 border border-white/10"></div>
+            <div className="h-64 rounded-2xl bg-white/5 border border-white/10"></div>
+            <div className="h-64 rounded-2xl bg-white/5 border border-white/10"></div>
           </div>
+        </div>
+      </section>
 
-          <Hero.Title>
-            Prazer, <br />
-            <span className="text-primary">Victor Lis Bronzo.</span>
-          </Hero.Title>
+      <div className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl overflow-hidden pt-12">
+        <div className="px-8 lg:px-24 w-full max-w-7xl mx-auto mb-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Eventos & Participações
+          </h2>
+          <p className="text-xl text-gray-400 max-w-2xl">
+            Alguns dos principais eventos e conferências que tive o privilégio
+            de participar, aprender e compartilhar conhecimento.
+          </p>
+        </div>
 
-          <Hero.Description>
-            Conheça um pouco sobre mim, minha trajetória, minhas paixões e o que
-            eu gosto de fazer.
-          </Hero.Description>
-
-          <Hero.Actions>
-            <Button className="bg-primary text-black text-lg h-12 px-8">
-              <Link
-                href="https://www.linkedin.com/in/victor-lis-bronzo/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-1 w-fit"
-              >
-                <Linkedin className="h-5 w-5" />
-                <span>Ver no LinkedIn</span>
-              </Link>
-            </Button>
-            <Button
-              variant="outline"
-              className="border-gray-700 text-gray-300 hover:bg-white/5 hover:text-white text-lg h-12 w-fit"
-            >
-              <Link
-                href="https://github.com/victor-lis/victor-lis"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-1 w-fit"
-              >
-                <Github className="h-5 w-5" />
-                <span>Ver no GitHub</span>
-              </Link>
-            </Button>
-          </Hero.Actions>
-        </Hero.Content>
-
-        <Hero.Visuals className="max-[500px]:hidden">
-          <Hero.Card>
-            <div
-              className={cn(
-                "w-full h-full flex items-center justify-center pt-6",
-              )}
-            >
-              <div
-                className="w-full h-full"
-                dangerouslySetInnerHTML={{ __html: responsiveSvg }}
-              />
-            </div>
-          </Hero.Card>
-        </Hero.Visuals>
-      </Hero.Root>
+        <Events.Root direction="rtl">
+          <Events.List>
+            {mockEvents.map((event) => (
+              <Events.Card key={event.id}>
+                <Events.Image src={event.imageUrl} alt={event.title} />
+                <Events.Content>
+                  <Events.Date>{event.date}</Events.Date>
+                  <Events.Title>{event.title}</Events.Title>
+                </Events.Content>
+              </Events.Card>
+            ))}
+          </Events.List>
+        </Events.Root>
+      </div>
     </main>
   );
 }
