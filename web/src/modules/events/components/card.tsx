@@ -1,16 +1,22 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { EventsBaseProps } from "../_types/events";
+import { motion } from "framer-motion";
 
 export function Card({ children, className }: EventsBaseProps) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "group relative h-[60vh] w-[300px] sm:w-[500px] shrink-0 overflow-hidden rounded-3xl bg-neutral-900 shadow-xl transition-all hover:shadow-2xl",
+        "group relative w-full border-b border-white/10 py-10 flex flex-col md:flex-row items-start md:items-center justify-between transition-colors hover:bg-white/5 cursor-pointer",
         className,
       )}
     >
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity group-hover:opacity-90" />
       {children}
-    </div>
+    </motion.div>
   );
 }

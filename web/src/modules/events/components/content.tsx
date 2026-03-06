@@ -5,7 +5,7 @@ export function Content({ children, className }: EventsBaseProps) {
   return (
     <div
       className={cn(
-        "absolute bottom-0 z-20 flex w-full flex-col justify-end p-8",
+        "flex flex-col md:flex-row md:items-center justify-between gap-4 w-full relative z-10",
         className,
       )}
     >

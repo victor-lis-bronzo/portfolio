@@ -1,5 +1,3 @@
-"use client";
-
 import { Hero } from "@/modules/hero";
 import { Events } from "@/modules/events";
 import { Button } from "@/components/ui/button";
@@ -20,7 +18,7 @@ const mockEvents = [
     title: "React Conf Brasil",
     date: "Out 2024",
     imageUrl:
-      "https://images.unsplash.com/photo-1475721025871-7294062a88bf?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop",
   },
   {
     id: "3",
@@ -34,7 +32,7 @@ const mockEvents = [
     title: "Figma Config",
     date: "Fev 2025",
     imageUrl:
-      "https://images.unsplash.com/photo-1588196749597-9ff0464ac8cb?q=80&w=1543&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop",
   },
 ];
 
@@ -47,6 +45,8 @@ export default async function Home() {
       (e) =>
         `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 522 220" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" style="margin: auto; display: block;"></svg >`,
     );
+
+  // const processedSvg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 522 220" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" style="margin: auto; display: block;"></svg >`;
 
   const responsiveSvg = processedSvg
     .replace(/width="[^"]*"/, 'width="90%"')
@@ -65,7 +65,7 @@ export default async function Home() {
             Bem vindo!
           </div>
 
-          <Hero.Title>
+          <Hero.Title className="text-5xl text-white">
             Prazer, <br />
             <span className="text-primary">Victor Lis Bronzo.</span>
           </Hero.Title>
@@ -105,7 +105,7 @@ export default async function Home() {
         </Hero.Content>
 
         <Hero.Visuals className="max-[500px]:hidden">
-          <Hero.Card>
+          <Hero.Card className="w-full h-full">
             <div
               className={cn(
                 "w-full h-full flex items-center justify-center pt-6",
@@ -120,7 +120,7 @@ export default async function Home() {
         </Hero.Visuals>
       </Hero.Root>
 
-      <section className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl min-h-screen p-8 lg:p-24 border-t border-white/10">
+      {/* <section className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl min-h-screen p-8 lg:p-24 border-t border-white/10">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold mb-6">Sobre mim</h2>
           <p className="text-gray-400">
@@ -133,7 +133,7 @@ export default async function Home() {
             <div className="h-64 rounded-2xl bg-white/5 border border-white/10"></div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <div className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl overflow-hidden pt-12">
         <div className="px-8 lg:px-24 w-full max-w-7xl mx-auto mb-8">
@@ -146,7 +146,7 @@ export default async function Home() {
           </p>
         </div>
 
-        <Events.Root direction="rtl">
+        <Events.Root>
           <Events.List>
             {mockEvents.map((event) => (
               <Events.Card key={event.id}>

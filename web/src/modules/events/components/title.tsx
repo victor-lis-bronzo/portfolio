@@ -5,7 +5,7 @@ export function Title({ children, className }: EventsBaseProps) {
   return (
     <h3
       className={cn(
-        "text-2xl font-bold tracking-tight text-white sm:text-3xl",
+        "text-3xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-foreground group-hover:text-primary transition-colors",
         className,
       )}
     >
