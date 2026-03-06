@@ -1,4 +1,5 @@
 import { Hero } from "@/modules/hero";
+import { Techs } from "@/modules/techs";
 import { Events } from "@/modules/events";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin } from "lucide-react";
@@ -108,11 +109,11 @@ export default async function Home() {
           <Hero.Card className="w-full h-full">
             <div
               className={cn(
-                "w-full h-full flex items-center justify-center pt-6",
+                "w-full h-full flex flex-col items-center justify-center pt-2 px-8",
               )}
             >
               <div
-                className="w-full h-full"
+                className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
                 dangerouslySetInnerHTML={{ __html: responsiveSvg }}
               />
             </div>
@@ -120,20 +121,40 @@ export default async function Home() {
         </Hero.Visuals>
       </Hero.Root>
 
-      {/* <section className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl min-h-screen p-8 lg:p-24 border-t border-white/10">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6">Sobre mim</h2>
-          <p className="text-gray-400">
-            Esta seção desliza sobre o Hero, criando o efeito &quot;Stacking
-            Scroll Parallax&quot;. Continue rolando para ver a magia acontecer!
-          </p>
-          <div className="mt-12 space-y-8">
-            <div className="h-64 rounded-2xl bg-white/5 border border-white/10"></div>
-            <div className="h-64 rounded-2xl bg-white/5 border border-white/10"></div>
-            <div className="h-64 rounded-2xl bg-white/5 border border-white/10"></div>
-          </div>
+      <Techs.Root>
+        <Techs.Title>Arsenal de Tecnologia</Techs.Title>
+        <div className="flex flex-col gap-4 lg:gap-8 mt-12 w-full transform -rotate-2">
+          <Techs.Marquee speed={0.15} direction="left">
+            <Techs.Item id="t1" name="React" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t2" name="Next.js" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t3" name="TypeScript" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t4" name="Tailwind CSS" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t5" name="Framer Motion" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t6" name="Node.js" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+          </Techs.Marquee>
+
+          <Techs.Marquee speed={0.15} direction="right">
+            <Techs.Item id="t7" name="PostgreSQL" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t8" name="Drizzle" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t9" name="Docker" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t10" name="Turborepo" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t11" name="VPS Config" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+            <Techs.Item id="t12" name="Git" />
+            <span className="text-4xl md:text-6xl text-white/20">✦</span>
+          </Techs.Marquee>
         </div>
-      </section> */}
+      </Techs.Root>
 
       <div className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl overflow-hidden pt-12">
         <div className="px-8 lg:px-24 w-full max-w-7xl mx-auto mb-8">
@@ -142,7 +163,7 @@ export default async function Home() {
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl">
             Alguns dos principais eventos e conferências que tive o privilégio
-            de participar, aprender e compartilhar conhecimento.
+            de participar, aprender e absorver conhecimento.
           </p>
         </div>
 

@@ -5,7 +5,7 @@ export function Visuals({ children, className }: HeroBaseProps) {
   return (
     <div
       className={cn(
-        "relative flex items-center justify-center lg:justify-end perspective-[1200px]",
+        "relative flex h-full w-full items-center justify-center lg:justify-end perspective-[1200px]",
         className,
       )}
     >

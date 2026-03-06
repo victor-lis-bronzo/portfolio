@@ -6,14 +6,12 @@ export function Card({ children, className }: HeroCardProps) {
   return (
     <div
       className={cn(
-        "relative w-full max-w-2xl aspect-[16/10] bg-gray-900/40 border border-white/10 rounded-xl p-4",
+        "relative w-[90%] lg:w-[45vw] max-w-5xl aspect-video bg-gray-900/40 border border-white/10 rounded-xl p-4 lg:p-6",
         "backdrop-blur-sm shadow-2xl shadow-foreground/20",
 
         "transform transition-all duration-700 ease-out hover:scale-[1.02]",
 
-        "rounded-xl bg-gray-900/40 backdrop-blur-sm border border-white/10",
-
-        "transform rotate-y-[-12deg] rotate-x-[5deg] hover:rotate-y-[-5deg] hover:rotate-x-[2deg] transition-all duration-500",
+        "transform rotate-y-[-12deg] rotate-x-[5deg] hover:rotate-y-[-5deg] hover:rotate-x-[2deg]",
         className,
       )}
       style={{
