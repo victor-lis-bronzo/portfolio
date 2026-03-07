@@ -1,1 +1,1 @@
-export * from './tailwind.cn';
+export * from "./tailwind.cn";
