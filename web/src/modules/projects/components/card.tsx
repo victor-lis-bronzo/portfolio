@@ -93,6 +93,11 @@ export function Card({ project, className }: CardProps) {
               "backdrop-blur-md",
               "transition-all",
               // "hover:border-white",
+              "flex",
+              "items-center",
+              "justify-center",
+              "min-w-fit",
+              "hover:opacity-85",
             )}
           >
             <span className="text-sm font-semibold uppercase tracking-wider">

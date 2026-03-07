@@ -177,7 +177,7 @@ export default async function Home() {
         </Hero.Visuals>
       </Hero.Root>
 
-      <Techs.Root>
+      <Techs.Root className="pb-10 pb:pb-16">
         <Techs.Title className="flex flex-col text-white">
           <span className="text-5xl">Techs e Ferramentas</span>
           <span className="text-sm tracking-wider opacity-80">
@@ -217,19 +217,19 @@ export default async function Home() {
         </div>
       </Techs.Root>
 
-      <Projects.Root>
+      <Projects.Root className="pt-20 md:pt-32 pb-6 md:pb-12">
         <Projects.Header>Projetos</Projects.Header>
         <Projects.Track>
           <Projects.Title>Projetos</Projects.Title>
-          <div className="w-[10vw] shrink-0" />
+          <div className="w-[30vw] shrink-0" />
           {mockProjects.map((project) => (
             <Projects.Card key={project.id} project={project} />
           ))}
-          <div className="w-[10vw] shrink-0" />
+          <div className="w-[30vw] shrink-0" />
         </Projects.Track>
       </Projects.Root>
 
-      <div className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl overflow-hidden pt-24 pb-32">
+      <Events.Root className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl overflow-hidden pt-24 md:pt-32 pb-32 md:pb-40">
         <Events.Header>
           <Events.Title>Eventos & Participações</Events.Title>
           <Events.Description>
@@ -237,23 +237,20 @@ export default async function Home() {
             de participar, aprender e absorver conhecimento.
           </Events.Description>
         </Events.Header>
-
-        <Events.Root className="py-0">
-          <Events.List>
-            {mockEvents.map((event) => (
-              <Events.Card key={event.id}>
-                <Events.Image src={event.imageUrl} alt={event.title} />
-                <Events.Content>
-                  <Events.Date>{event.date}</Events.Date>
-                  <Events.CardTitle className="group-hover:text-white">
-                    {event.title}
-                  </Events.CardTitle>
-                </Events.Content>
-              </Events.Card>
-            ))}
-          </Events.List>
-        </Events.Root>
-      </div>
+        <Events.List>
+          {mockEvents.map((event) => (
+            <Events.Card key={event.id}>
+              <Events.Image src={event.imageUrl} alt={event.title} />
+              <Events.Content>
+                <Events.Date>{event.date}</Events.Date>
+                <Events.CardTitle className="group-hover:text-white">
+                  {event.title}
+                </Events.CardTitle>
+              </Events.Content>
+            </Events.Card>
+          ))}
+        </Events.List>
+      </Events.Root>
     </main>
   );
 }
