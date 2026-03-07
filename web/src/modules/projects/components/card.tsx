@@ -34,7 +34,7 @@ export function Card({ project, className }: CardProps) {
     <div
       ref={containerRef}
       className={cn(
-        "group relative flex flex-col justify-end w-[85vw] md:w-[60vw] max-w-4xl h-[70vh] rounded-3xl overflow-hidden shrink-0 border border-white/10 bg-black/40 backdrop-blur-md p-8 md:p-12 transition-colors hover:border-white/20 z-10",
+        "group relative flex flex-col justify-end w-[85vw] md:w-[60vw] max-w-4xl h-[70vh] rounded-3xl overflow-hidden shrink-0 border border-white/20 bg-white/5 backdrop-blur-xl p-8 md:p-12 transition-colors hover:border-white/30 z-10",
         className,
       )}
     >
@@ -45,11 +45,11 @@ export function Card({ project, className }: CardProps) {
           <img
             src={project.imageUrl}
             alt={project.title}
-            className="w-full h-full object-cover opacity-60 transition-opacity duration-700 group-hover:opacity-80"
+            className="w-full h-full object-cover opacity-70 transition-opacity duration-700 group-hover:opacity-100"
           />
         </div>
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
       </div>
 
       {/* Content */}
@@ -73,18 +73,35 @@ export function Card({ project, className }: CardProps) {
           </p>
         </div>
 
-        {/* Action Button */}
         {project.link && (
-          <MagneticButton>
-            <Link
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center w-16 h-16 rounded-full bg-white text-black hover:bg-white/90 transition-colors"
-            >
-              <ArrowUpRight className="w-6 h-6" />
-            </Link>
-          </MagneticButton>
+          <Link
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              // "group/btn",
+              "relative",
+              "flex",
+              "items-center",
+              "gap-3",
+              "px-6",
+              "py-3",
+              "rounded-full",
+              "bg-secondary/0",
+              "border",
+              "border-white/20",
+              "backdrop-blur-md",
+              "transition-all",
+              // "hover:border-white",
+            )}
+          >
+            <span className="text-sm font-semibold uppercase tracking-wider">
+              Ver Projeto
+            </span>
+            <div className="flex items-center justify-center w-8 h-8 rounded-full border border-current text-current">
+              <ArrowUpRight className="w-4 h-4" />
+            </div>
+          </Link>
         )}
       </div>
     </div>

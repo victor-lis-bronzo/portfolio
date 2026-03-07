@@ -218,23 +218,20 @@ export default async function Home() {
       </Techs.Root>
 
       <Projects.Root>
+        <Projects.Header>Projetos</Projects.Header>
         <Projects.Track>
           <Projects.Title>Projetos</Projects.Title>
-          {/* Add a spacer to push cards slightly when scrolling starts */}
           <div className="w-[10vw] shrink-0" />
           {mockProjects.map((project) => (
             <Projects.Card key={project.id} project={project} />
           ))}
-          {/* Add a spacer at the end to allow the last card extra breathing room */}
           <div className="w-[10vw] shrink-0" />
         </Projects.Track>
       </Projects.Root>
 
       <div className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl overflow-hidden pt-24 pb-32">
         <Events.Header>
-          <Events.Title className="text-primary">
-            Eventos & Participações
-          </Events.Title>
+          <Events.Title>Eventos & Participações</Events.Title>
           <Events.Description>
             Alguns dos principais eventos e conferências que tive o privilégio
             de participar, aprender e absorver conhecimento.
@@ -248,7 +245,7 @@ export default async function Home() {
                 <Events.Image src={event.imageUrl} alt={event.title} />
                 <Events.Content>
                   <Events.Date>{event.date}</Events.Date>
-                  <Events.CardTitle className="text-white group-hover:text-white">
+                  <Events.CardTitle className="group-hover:text-white">
                     {event.title}
                   </Events.CardTitle>
                 </Events.Content>

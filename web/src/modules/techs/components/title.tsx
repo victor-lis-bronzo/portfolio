@@ -6,7 +6,7 @@ import { RevealOnScroll } from "@/components/animations/RevealOnScroll";
 
 export function Title({ children, className }: TechsBaseProps) {
   return (
-    <div className="w-full max-w-7xl mx-auto px-8 lg:px-24">
+    <div className="w-full mx-auto px-8 lg:px-24">
       <RevealOnScroll>
         <h2
           className={cn(

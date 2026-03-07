@@ -19,14 +19,14 @@ export function Track({ children, className }: ProjectsBaseProps) {
   const x = useTransform(
     scrollYProgress,
     [0, 1],
-    ["0%", "calc(-100% + 100vw)"],
+    ["calc(0% + 0vw)", "calc(-100% + 100vw)"],
   );
 
   return (
     <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
       <motion.div
         style={{ x }}
-        className={cn("flex gap-8 px-8 md:px-24", className)}
+        className={cn("flex w-max gap-8 px-8 md:px-24", className)}
       >
         {children}
       </motion.div>
