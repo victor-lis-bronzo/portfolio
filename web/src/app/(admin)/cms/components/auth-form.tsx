@@ -24,16 +24,21 @@ import {
 import { Field } from "@/components/ui/field";
 
 import { validateAdminCode } from "../_actions/validate-admin-code";
+import { ArrowLeftIcon, Check, Repeat } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   code: z.string().length(6, "Code must be exactly 6 characters."),
 });
+
+// const formSchema = z.any();
 
 interface AuthFormProps {
   onSuccess?: () => void;
 }
 
 export function AuthForm({ onSuccess }: AuthFormProps) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,9 +60,9 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
   return (
     <Card className="w-full sm:max-w-md">
       <CardHeader>
-        <CardTitle>Admin Access</CardTitle>
+        <CardTitle>Accesso Admin</CardTitle>
         <CardDescription>
-          Please enter the 6-digit administrative code.
+          Entre com o código administrativo de 6 dígitos.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -91,20 +96,27 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
           />
         </form>
       </CardContent>
-      <CardFooter>
-        <Field orientation="horizontal" className="w-full">
-          <Button
-            type="button"
-            variant="outline"
-            className="flex-1"
-            onClick={() => form.reset()}
-          >
-            Reset
-          </Button>
-          <Button type="submit" form="form-auth" className="flex-1">
-            Verify
-          </Button>
-        </Field>
+      <CardFooter className="flex justify-center gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          className=""
+          onClick={() => router.push("/")}
+        >
+          <ArrowLeftIcon size={32} />
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          className=""
+          onClick={() => form.reset()}
+        >
+          <Repeat size={32} />
+        </Button>
+        <Button type="submit" form="form-auth" className="flex-1">
+          {/* <span> Verificar </span> */}
+          <Check size={32} />
+        </Button>
       </CardFooter>
     </Card>
   );
