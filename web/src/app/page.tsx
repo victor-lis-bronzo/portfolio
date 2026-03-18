@@ -55,43 +55,38 @@ const mockEvents = [
 const mockProjects = [
   {
     id: "p1",
-    title: "FinTech Dashboard",
+    title: "Git Assets",
     description:
-      "Plataforma de gestão financeira com análise de dados em tempo real e interface responsiva.",
-    tags: ["React", "Next.js", "TailwindCSS"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2074&auto=format&fit=crop",
-    link: "https://github.com/victor-lis",
+      "Descubra e compre assets reutilizáveis para turbinar seu perfil do GitHub e documentações. De devs para devs.",
+    tags: [
+      "React",
+      "Next.js",
+      "TailwindCSS",
+      "Node.js",
+      "Fastify",
+      "Prisma ORM",
+      "PostgreSQL",
+    ],
+    imageUrl: "/projects/gitassets/hero.png",
+    link: "https://gitassets.victorlisbronzo.me",
   },
   {
     id: "p2",
-    title: "E-commerce App",
+    title: "VPS Config",
     description:
-      "Aplicativo de e-commerce completo com carrinho otimizado e checkout de alta conversão.",
-    tags: ["TypeScript", "Framer Motion", "Drizzle"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop",
-    link: "https://github.com/victor-lis",
+      "Repositório com templates e configurações para subir serviços úteis em um VPS usando Docker Compose. Ideal para testes, recuperação ou provisionamento rápido de pequenos ambientes.",
+    tags: ["Docker", "NGINX", "MQTT", "N8N", "Portainer"],
+    imageUrl: "/projects/vps-config/readme.png",
+    link: "https://github.com/victor-lis/vps-config",
   },
   {
     id: "p3",
-    title: "AI Video Editor",
+    title: "Portfólio 3D",
     description:
-      "Editor de vídeo no navegador alimentado por IA, exportação rápida e colaborativo.",
-    tags: ["Next.js", "Node.js", "PostgreSQL"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2070&auto=format&fit=crop",
-    link: "https://github.com/victor-lis",
-  },
-  {
-    id: "p4",
-    title: "Motorsport Tracker",
-    description:
-      "Sistema de telemetria em tempo real para equipes de corrida amadoras e profissionais.",
-    tags: ["React", "WebSockets", "GSAP"],
-    imageUrl:
-      "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=2070&auto=format&fit=crop",
-    link: "https://github.com/victor-lis",
+      "Um portfólio 3D construído para imitar a estética do jogo Minecraft e me apresentar de forma leve e divertida!",
+    tags: ["Three-js", "Cannon-ES", "Parcel", "Dat.Gui", "TypeScript"],
+    imageUrl: "/projects/portfolio-3d/banner.png",
+    link: "https://victorlisbronzo.me",
   },
 ];
 
