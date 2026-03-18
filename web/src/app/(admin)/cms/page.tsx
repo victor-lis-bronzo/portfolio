@@ -1,11 +1,10 @@
-import { cookies } from "next/headers";
+import { checkIsAuthenticated } from "@/lib/auth";
 import { AuthForm } from "./components/auth-form";
 
 export default async function CMS() {
-  const cookieStore = await cookies();
-  const isAuthenticated = cookieStore.get("admin_session");
+  const { isAuthenticated } = await checkIsAuthenticated();
 
-  if (isAuthenticated?.value === "true") {
+  if (isAuthenticated) {
     return (
       <div className="flex h-screen items-center justify-center">
         <h1 className="text-4xl font-bold">Hello World! Painel Seguro.</h1>
