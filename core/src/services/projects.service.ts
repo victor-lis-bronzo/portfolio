@@ -1,44 +1,26 @@
-import { db, projects } from "@database";
-import {
-  CreateProjectDto,
-  UpdateProjectDto,
-  DeleteProjectDto,
-  SelectProjectDto,
-} from "@packages";
-import { eq } from "drizzle-orm";
+import { projectsRepository } from "@database";
+import type { IProjectsRepository, InsertProject, Project } from "@database";
 
 export class ProjectsService {
-  async create(data: CreateProjectDto) {
-    const [newProject] = await db.insert(projects).values(data).returning();
-    return newProject;
+  constructor(private readonly repository: IProjectsRepository = projectsRepository) {}
+
+  async create(data: InsertProject): Promise<Project> {
+    return this.repository.create(data);
   }
 
-  async findAll() {
-    return await db.select().from(projects);
+  async findAll(): Promise<Project[]> {
+    return this.repository.findAll();
   }
 
-  async findById(id: SelectProjectDto["id"]) {
-    const [project] = await db
-      .select()
-      .from(projects)
-      .where(eq(projects.id, id));
-    return project;
+  async findById(id: string): Promise<Project | undefined> {
+    return this.repository.findById(id);
   }
 
-  async update(id: SelectProjectDto["id"], data: UpdateProjectDto) {
-    const [updatedProject] = await db
-      .update(projects)
-      .set(data)
-      .where(eq(projects.id, id))
-      .returning();
-    return updatedProject;
+  async update(id: string, data: Partial<InsertProject>): Promise<Project | undefined> {
+    return this.repository.update(id, data);
   }
 
-  async delete(id: SelectProjectDto["id"]) {
-    const [deletedProject] = await db
-      .delete(projects)
-      .where(eq(projects.id, id))
-      .returning();
-    return deletedProject;
+  async delete(id: string): Promise<Project | undefined> {
+    return this.repository.delete(id);
   }
 }
