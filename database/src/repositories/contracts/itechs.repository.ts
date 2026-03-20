@@ -1,4 +1,4 @@
-import type { techs } from "../../models/techs.js";
+import type { techs } from "../../models/techs";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
 export type Tech = InferSelectModel<typeof techs>;

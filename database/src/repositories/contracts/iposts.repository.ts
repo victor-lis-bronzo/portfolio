@@ -1,4 +1,4 @@
-import type { posts } from "../../models/posts.js";
+import type { posts } from "../../models/posts";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
 export type Post = InferSelectModel<typeof posts>;

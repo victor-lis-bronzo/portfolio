@@ -1,4 +1,4 @@
-import type { projects } from "../../models/projects.js";
+import type { projects } from "../../models/projects";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
 export type Project = InferSelectModel<typeof projects>;

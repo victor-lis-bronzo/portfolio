@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { projects } from "../../models/projects.js";
-import type { IProjectsRepository, InsertProject, Project } from "../contracts/iprojects.repository.js";
+import { projects } from "../../models/projects";
+import type { IProjectsRepository, InsertProject, Project } from "../contracts/iprojects.repository";
 
 export class DrizzleProjectsRepository implements IProjectsRepository {
   constructor(private readonly db: PostgresJsDatabase) {}

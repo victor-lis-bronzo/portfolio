@@ -1,8 +1,8 @@
-import { PostsService } from "./posts.service.js";
-import { ProjectsService } from "./projects.service.js";
+import { PostsService } from "./posts.service";
+import { ProjectsService } from "./projects.service";
 
 export const postsService = new PostsService();
 export const projectsService = new ProjectsService();
 
-export * from "./posts.service.js";
-export * from "./projects.service.js";
+export * from "./posts.service";
+export * from "./projects.service";

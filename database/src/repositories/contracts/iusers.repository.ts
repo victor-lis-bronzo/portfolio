@@ -1,4 +1,4 @@
-import type { users } from "../../models/users.js";
+import type { users } from "../../models/users";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
 export type User = InferSelectModel<typeof users>;
