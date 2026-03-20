@@ -11,8 +11,8 @@
       "import": "./dist/index.js"
     },
     "./models": {
-      "types": "./models/dist/index.d.ts",
-      "import": "./models/dist/index.js"
+      "types": "./dist/models/index.d.ts",
+      "import": "./dist/models/index.js"
     }
   },
   "scripts": {
