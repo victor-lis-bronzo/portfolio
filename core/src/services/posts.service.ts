@@ -1,10 +1,12 @@
 import { postsRepository } from "@database";
-import type { IPostsRepository, InsertPost, Post } from "@database";
+import type { IPostsRepository } from "@database";
+import type { Post, CreatePostDTO, UpdatePostDTO } from "@packages";
+
 
 export class PostsService {
   constructor(private readonly repository: IPostsRepository = postsRepository) {}
 
-  async create(data: InsertPost): Promise<Post> {
+  async create(data: CreatePostDTO): Promise<Post> {
     return this.repository.create(data);
   }
 
@@ -16,7 +18,7 @@ export class PostsService {
     return this.repository.findById(id);
   }
 
-  async update(id: string, data: Partial<InsertPost>): Promise<Post | undefined> {
+  async update(id: string, data: UpdatePostDTO): Promise<Post | undefined> {
     return this.repository.update(id, data);
   }
 
