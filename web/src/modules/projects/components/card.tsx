@@ -55,7 +55,7 @@ export function Card({ project, className }: CardProps) {
       {/* Content */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 transform translate-y-4 transition-transform duration-500 group-hover:translate-y-0">
         <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-lg:hidden">
             {project.tags.map((tag) => (
               <span
                 key={tag}

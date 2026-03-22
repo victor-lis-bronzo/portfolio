@@ -28,7 +28,7 @@ export function Root({ children, className }: HeroBaseProps) {
     >
       <motion.div
         style={{ scale, opacity }}
-        className="w-full h-full origin-top flex items-center justify-center py-6 lg:py-14 px-2"
+        className="w-full origin-top flex items-center justify-center py-6 lg:py-10 px-2"
       >
         <div className="px-6 lg:px-12 w-full max-w-screen-2xl mx-auto flex flex-col lg:flex-row gap-12 items-center justify-between">
           {children}

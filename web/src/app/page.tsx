@@ -110,7 +110,7 @@ export default async function Home() {
 
   return (
     <main>
-      <Hero.Root>
+      <Hero.Root className="my-8 lg:my-4">
         <Hero.Content>
           <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm text-primary w-fit">
             <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
