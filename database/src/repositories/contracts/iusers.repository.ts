@@ -1,14 +1,10 @@
-import type { users } from "../../models/users";
-import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-
-export type User = InferSelectModel<typeof users>;
-export type InsertUser = InferInsertModel<typeof users>;
+import type { User, CreateUserDTO, UpdateUserDTO } from "@packages";
 
 export interface IUsersRepository {
   findAll(): Promise<User[]>;
   findById(id: string): Promise<User | undefined>;
   findByEmail(email: string): Promise<User | undefined>;
-  create(data: InsertUser): Promise<User>;
-  update(id: string, data: Partial<InsertUser>): Promise<User | undefined>;
+  create(data: CreateUserDTO): Promise<User>;
+  update(id: string, data: UpdateUserDTO): Promise<User | undefined>;
   delete(id: string): Promise<User | undefined>;
 }

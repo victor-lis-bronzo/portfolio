@@ -1,17 +1,24 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { posts } from "@database/models";
 import { z } from "zod";
 
-export const postSelectSchema = createSelectSchema(posts);
+export const postSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(1),
+  content: z.string(),
+  links: z.array(z.string().url()),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
 
-export const postInsertSchema = createInsertSchema(posts)
-  .omit({ id: true, createdAt: true, updatedAt: true })
-  .extend({ links: z.array(z.string().url()) });
+export const createPostSchema = postSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
 
-export const postUpdateSchema = postInsertSchema.partial();
+export const updatePostSchema = createPostSchema.partial();
 
-export const postIdSchema = postSelectSchema.pick({ id: true });
+export const postIdSchema = postSchema.pick({ id: true });
 
-export type Post = z.infer<typeof postSelectSchema>;
-export type CreatePost = z.infer<typeof postInsertSchema>;
-export type UpdatePost = z.infer<typeof postUpdateSchema>;
+export type Post = z.infer<typeof postSchema>;
+export type CreatePostDTO = z.infer<typeof createPostSchema>;
+export type UpdatePostDTO = z.infer<typeof updatePostSchema>;

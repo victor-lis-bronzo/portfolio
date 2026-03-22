@@ -1,17 +1,24 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { projects } from "@database/models";
 import { z } from "zod";
 
-export const projectSelectSchema = createSelectSchema(projects);
+export const projectSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(1),
+  description: z.string(),
+  links: z.array(z.string().url()),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
 
-export const projectInsertSchema = createInsertSchema(projects)
-  .omit({ id: true, createdAt: true, updatedAt: true })
-  .extend({ links: z.array(z.string().url()) });
+export const createProjectSchema = projectSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
 
-export const projectUpdateSchema = projectInsertSchema.partial();
+export const updateProjectSchema = createProjectSchema.partial();
 
-export const projectIdSchema = projectSelectSchema.pick({ id: true });
+export const projectIdSchema = projectSchema.pick({ id: true });
 
-export type Project = z.infer<typeof projectSelectSchema>;
-export type CreateProject = z.infer<typeof projectInsertSchema>;
-export type UpdateProject = z.infer<typeof projectUpdateSchema>;
+export type Project = z.infer<typeof projectSchema>;
+export type CreateProjectDTO = z.infer<typeof createProjectSchema>;
+export type UpdateProjectDTO = z.infer<typeof updateProjectSchema>;

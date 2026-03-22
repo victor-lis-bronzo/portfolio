@@ -25,6 +25,7 @@
     "db:seed": "tsx src/seed.ts"
   },
   "dependencies": {
+    "@packages": "workspace:*",
     "@prisma/adapter-pg": "^7.4.2",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.45.1",
