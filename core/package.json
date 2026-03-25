@@ -1,30 +1,35 @@
 {
   "name": "@core",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "default": "./dist/index.js"
     },
     "./services": {
+      "types": "./dist/services/index.d.ts",
       "import": "./dist/services/index.js",
-      "types": "./dist/services/index.d.ts"
+      "default": "./dist/services/index.js"
     }
   },
-  "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "tsup"
   },
   "dependencies": {
     "@database": "workspace:*",
     "@packages": "workspace:*",
+    "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.1",
+    "tsup": "^8.5.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
     "typescript": "^5.4.0"
   }
 }
