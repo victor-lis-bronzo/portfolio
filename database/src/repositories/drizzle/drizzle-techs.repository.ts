@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { techs } from "../../models/techs.js";
 import type { ITechsRepository } from "../contracts/itechs.repository.js";
-import type { Tech, CreateTechDTO } from "@packages";
+import type { Tech, CreateTechDTO } from "@portfolio/packages";
 
 export class DrizzleTechsRepository implements ITechsRepository {
   constructor(private readonly db: PostgresJsDatabase) {}
