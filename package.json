@@ -5,14 +5,14 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "setup:env": "cp .env database",
-    "setup:env:win": "copy .env database"
+    "setup:env": "shx cp .env web/.env && shx cp .env core/.env && shx cp .env database/.env && shx cp .env packages/.env"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.26.0",
   "dependencies": {
+    "shx": "^0.4.0",
     "turbo": "^2.8.12"
   }
 }

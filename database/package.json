@@ -1,5 +1,5 @@
 {
-  "name": "@database",
+  "name": "@portfolio/database",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -22,10 +22,10 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx src/seed.ts"
+    "db:seed": "tsx ../core/src/seed.ts"
   },
   "dependencies": {
-    "@packages": "workspace:*",
+    "@portfolio/packages": "workspace:*",
     "@prisma/adapter-pg": "^7.4.2",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.45.1",

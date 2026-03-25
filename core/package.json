@@ -1,5 +1,5 @@
 {
-  "name": "@core",
+  "name": "@portfolio/core",
   "version": "1.0.0",
   "type": "module",
   "private": true,
@@ -18,11 +18,12 @@
     }
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "db:seed": "tsx --tsconfig tsconfig.json ./src/seed.ts"
   },
   "dependencies": {
-    "@database": "workspace:*",
-    "@packages": "workspace:*",
+    "@portfolio/database": "workspace:*",
+    "@portfolio/packages": "workspace:*",
     "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.1",
     "tsup": "^8.5.1",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.4.0"
   }
 }
