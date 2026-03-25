@@ -11,6 +11,7 @@ export const userSchema = z.object({
   githubId: z.string().nullable(),
   role: UserRole.default("USER"),
   isVerified: z.boolean().default(false),
+  receivesUpdates: z.boolean().default(false),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

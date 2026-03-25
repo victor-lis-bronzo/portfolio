@@ -10,6 +10,7 @@ export const users = pgTable("users", {
   githubId: text("github_id").unique(),
   role: userRoleEnum("role").notNull().default("USER"),
   isVerified: boolean("is_verified").notNull().default(false),
+  receivesUpdates: boolean("receives_updates").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
