@@ -8,10 +8,10 @@ export const postsToTechs = pgTable(
   {
     postId: uuid("post_id")
       .notNull()
-      .references(() => posts.id),
+      .references(() => posts.id, { onDelete: "cascade" }),
     techId: uuid("tech_id")
       .notNull()
-      .references(() => techs.id),
+      .references(() => techs.id, { onDelete: "cascade" }),
   },
   (t) => [
     primaryKey({ columns: [t.postId, t.techId] }),
