@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  /* config options here */
+  transpilePackages: ["@core", "@packages", "@database"],
   reactCompiler: true,
 };
 
