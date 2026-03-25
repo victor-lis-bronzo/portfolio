@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { authService } from "@core";
+import { authService } from "@portfolio/core";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [

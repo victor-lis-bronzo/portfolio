@@ -1,6 +1,6 @@
-import { techsRepository } from "@database";
-import type { ITechsRepository } from "@database";
-import type { Tech, CreateTechDTO } from "@packages";
+import { techsRepository } from "@portfolio/database";
+import type { ITechsRepository } from "@portfolio/database";
+import type { Tech, CreateTechDTO } from "@portfolio/packages";
 
 
 export class TechsService {

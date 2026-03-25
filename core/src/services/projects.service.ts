@@ -1,6 +1,6 @@
-import { projectsRepository } from "@database";
-import type { IProjectsRepository } from "@database";
-import type { Project, CreateProjectDTO, UpdateProjectDTO } from "@packages";
+import { projectsRepository } from "@portfolio/database";
+import type { IProjectsRepository } from "@portfolio/database";
+import type { Project, CreateProjectDTO, UpdateProjectDTO } from "@portfolio/packages";
 
 
 export class ProjectsService {

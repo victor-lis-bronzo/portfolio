@@ -1,6 +1,6 @@
-import { usersRepository } from "@database";
-import type { IUsersRepository } from "@database";
-import type { User, CreateUserDTO, UpdateUserDTO } from "@packages";
+import { usersRepository } from "@portfolio/database";
+import type { IUsersRepository } from "@portfolio/database";
+import type { User, CreateUserDTO, UpdateUserDTO } from "@portfolio/packages";
 
 
 export class UsersService {

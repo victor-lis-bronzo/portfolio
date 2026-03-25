@@ -1,6 +1,6 @@
-import { postsRepository } from "@database";
-import type { IPostsRepository } from "@database";
-import type { Post, CreatePostDTO, UpdatePostDTO } from "@packages";
+import { postsRepository } from "@portfolio/database";
+import type { IPostsRepository } from "@portfolio/database";
+import type { Post, CreatePostDTO, UpdatePostDTO } from "@portfolio/packages";
 
 
 export class PostsService {
