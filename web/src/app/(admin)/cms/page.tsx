@@ -1,5 +1,5 @@
 import { checkIsAuthenticated } from "@/lib/auth";
-import { AuthForm } from "./components/auth-form";
+import { redirect } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -43,16 +43,6 @@ const MODERATION_ACTIONS = [
 ];
 
 export default async function CMS() {
-  const { isAuthenticated } = await checkIsAuthenticated();
-
-  if (!isAuthenticated) {
-    return (
-      <div className="flex h-screen items-center justify-center p-4">
-        <AuthForm />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-transparent p-6 lg:p-12">
       <div className="mx-auto max-w-7xl space-y-8">
