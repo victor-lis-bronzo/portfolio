@@ -33,13 +33,11 @@ export class AuthService {
     name?: string | null;
     email?: string | null;
   }): Promise<User> {
-    // Try to find user already linked to this GitHub account
     const existingByGithubId = await this.repository.findByGithubId(profile.id);
     if (existingByGithubId) {
       return existingByGithubId;
     }
 
-    // If user with same email exists, link GitHub account to it
     if (profile.email) {
       const existingByEmail = await this.repository.findByEmail(profile.email);
       if (existingByEmail) {
@@ -51,14 +49,14 @@ export class AuthService {
       }
     }
 
-    // Create new user
     const newUser = await this.repository.create({
-      email: profile.email ?? `github-${profile.id}@github.local`,
-      name: profile.name ?? null,
+      email: profile.email!,
+      name: profile.name!,
       githubId: profile.id,
       password: null,
       role: "USER",
       isVerified: true,
+      receivesUpdates: false,
     });
 
     return newUser;
