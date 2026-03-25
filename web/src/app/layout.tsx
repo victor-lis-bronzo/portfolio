@@ -65,6 +65,8 @@ export default function RootLayout({
                 </a>
               </Button>
             </div>
+
+            <Header.Account />
             {/* 
             <MagneticButton className="text-sm px-4 py-2 cursor-pointer">
               Entrar em contato

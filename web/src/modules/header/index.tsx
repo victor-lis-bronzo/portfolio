@@ -3,6 +3,7 @@ import { Logo } from "./components/logo";
 import { Nav } from "./components/nav";
 import { Item } from "./components/item";
 import { Actions } from "./components/actions";
+import { Account } from "./components/account";
 
 export const Header = {
   Root,
@@ -10,4 +11,5 @@ export const Header = {
   Nav,
   Item,
   Actions,
+  Account,
 };
