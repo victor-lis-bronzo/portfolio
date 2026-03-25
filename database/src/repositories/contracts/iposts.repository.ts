@@ -1,4 +1,4 @@
-import type { Post, CreatePostDTO, UpdatePostDTO } from "@packages";
+import type { Post, CreatePostDTO, UpdatePostDTO } from "@portfolio/packages";
 
 export interface IPostsRepository {
   findAll(): Promise<Post[]>;

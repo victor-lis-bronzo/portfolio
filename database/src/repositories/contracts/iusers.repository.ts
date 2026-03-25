@@ -1,4 +1,4 @@
-import type { User, CreateUserDTO, UpdateUserDTO } from "@packages";
+import type { User, CreateUserDTO, UpdateUserDTO } from "@portfolio/packages";
 
 export interface IUsersRepository {
   findAll(): Promise<User[]>;

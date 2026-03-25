@@ -1,4 +1,4 @@
-import type { Project, CreateProjectDTO, UpdateProjectDTO } from "@packages";
+import type { Project, CreateProjectDTO, UpdateProjectDTO } from "@portfolio/packages";
 
 export interface IProjectsRepository {
   findAll(): Promise<Project[]>;

@@ -1,4 +1,4 @@
-import type { Tech, CreateTechDTO } from "@packages";
+import type { Tech, CreateTechDTO } from "@portfolio/packages";
 
 export interface ITechsRepository {
   findAll(): Promise<Tech[]>;
