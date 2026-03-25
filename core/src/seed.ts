@@ -39,7 +39,7 @@ export async function seed() {
     name: "admin",
     email: "admin@example.com",
     password: "admin",
-    role: "admin",
+    role: "ADMIN",
     isVerified: true,
   });
 
@@ -47,7 +47,7 @@ export async function seed() {
     name: "user",
     email: "user@example.com",
     password: "user",
-    role: "user",
+    role: "USER",
     isVerified: false,
   });
 
