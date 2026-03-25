@@ -1,6 +1,11 @@
 packages:
-  - "web"
-  - "api"
-  - "core"
-  - "database"
-  - "packages"
+  - web
+  - api
+  - core
+  - database
+  - packages
+
+onlyBuiltDependencies:
+  - esbuild
+  - msw
+  - sharp

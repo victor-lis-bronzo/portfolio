@@ -2,122 +2,112 @@
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { Field } from "@/components/ui/field";
-
-import { validateAdminCode } from "../_actions/validate-admin-code";
-import { ArrowLeftIcon, Check, Repeat } from "lucide-react";
-import { useRouter } from "next/navigation";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  code: z.string().length(6, "Code must be exactly 6 characters."),
+  email: z.string().email("Digite um email válido"),
+  password: z.string().min(1, "A senha é obrigatória"),
 });
 
-// const formSchema = z.any();
-
-interface AuthFormProps {
-  onSuccess?: () => void;
-}
-
-export function AuthForm({ onSuccess }: AuthFormProps) {
+export function AuthForm() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      code: "",
+      email: "",
+      password: "",
     },
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const result = await validateAdminCode(data.code);
+    setIsLoading(true);
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
 
-    if (result.success) {
-      toast.success("Authenticated successfully!");
-      onSuccess?.();
-    } else {
-      toast.error(result.error || "Invalid code.");
+      if (result?.error) {
+        toast.error("Credenciais inválidas.");
+      } else {
+        toast.success("Login realizado com sucesso!");
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error("Ocorreu um erro ao fazer login.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
-    <Card className="w-full sm:max-w-md">
+    <Card className="w-full sm:max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>Accesso Admin</CardTitle>
+        <CardTitle>Acesso Admin</CardTitle>
         <CardDescription>
-          Entre com o código administrativo de 6 dígitos.
+          Entre com suas credenciais para acessar o painel administrativo.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form
-          id="form-auth"
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-4"
-        >
-          <Controller
-            control={form.control}
-            name="code"
-            render={({ field }) => (
-              <InputOTP
-                maxLength={6}
-                value={field.value}
-                onChange={field.onChange}
-              >
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                </InputOTPGroup>
-                <InputOTPSeparator />
-                <InputOTPGroup>
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
-                </InputOTPGroup>
-              </InputOTP>
-            )}
-          />
-        </form>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="admin@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Senha</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="Sua senha secreta" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Entrando..." : "Entrar"}
+            </Button>
+          </form>
+        </Form>
       </CardContent>
-      <CardFooter className="flex justify-center gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          className=""
-          onClick={() => router.push("/")}
-        >
-          <ArrowLeftIcon size={32} />
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          className=""
-          onClick={() => form.reset()}
-        >
-          <Repeat size={32} />
-        </Button>
-        <Button type="submit" form="form-auth" className="flex-1">
-          {/* <span> Verificar </span> */}
-          <Check size={32} />
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
