@@ -21,6 +21,11 @@ export class DrizzleUsersRepository implements IUsersRepository {
     return user as User | undefined;
   }
 
+  async findByGithubId(githubId: string): Promise<User | undefined> {
+    const [user] = await this.db.select().from(users).where(eq(users.githubId, githubId));
+    return user as User | undefined;
+  }
+
   async create(data: CreateUserDTO): Promise<User> {
     const [newUser] = await this.db.insert(users).values(data).returning();
     return newUser as User;
