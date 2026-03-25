@@ -8,16 +8,13 @@ export class AuthService {
     private readonly repository: IUsersRepository = usersRepository,
   ) {}
 
-  async authenticateAdmin({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }): Promise<User | null> {
+  async authenticateAdmin(
+    email: string,
+    password: string,
+  ): Promise<User | null> {
     const user = await this.repository.findByEmail(email);
 
-    if (!user || user.role !== "admin") {
+    if (!user || user.role !== "ADMIN") {
       return null;
     }
 

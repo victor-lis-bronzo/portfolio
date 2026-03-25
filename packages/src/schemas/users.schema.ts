@@ -1,11 +1,14 @@
 import { z } from "zod";
 
+export const UserRole = z.enum(["ADMIN", "USER"]);
+export type UserRole = z.infer<typeof UserRole>;
+
 export const userSchema = z.object({
   id: z.string().uuid(),
   name: z.string().nullable(),
   email: z.string().email(),
   password: z.string().min(8),
-  role: z.enum(["ADMIN", "USER"]).default("USER"),
+  role: UserRole.default("USER"),
   isVerified: z.boolean().default(false),
   createdAt: z.date(),
   updatedAt: z.date(),

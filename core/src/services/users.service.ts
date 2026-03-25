@@ -1,13 +1,19 @@
 import { usersRepository } from "@portfolio/database";
 import type { IUsersRepository } from "@portfolio/database";
 import type { User, CreateUserDTO, UpdateUserDTO } from "@portfolio/packages";
-
+import bcrypt from "bcryptjs";
 
 export class UsersService {
-  constructor(private readonly repository: IUsersRepository = usersRepository) {}
+  constructor(
+    private readonly repository: IUsersRepository = usersRepository,
+  ) {}
 
   async create(data: CreateUserDTO): Promise<User> {
-    return this.repository.create(data);
+    const user = await this.repository.create({
+      ...data,
+      password: bcrypt.hashSync(data.password, 10),
+    });
+    return user;
   }
 
   async findAll(): Promise<User[]> {
