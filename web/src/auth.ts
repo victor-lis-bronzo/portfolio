@@ -35,6 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
+      // console.log({ user, account, profile });
       if (account?.provider === "github" && profile) {
         const dbUser = await authService.authenticateWithGithub({
           id: String(profile.id ?? profile.sub),
