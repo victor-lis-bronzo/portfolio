@@ -3,6 +3,17 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "DATABASE_URL",
+        "DATABASE_AUTH_TOKEN",
+        "POSTGRES_DB",
+        "POSTGRES_USER",
+        "POSTGRES_PASSWORD",
+        "ADMIN_CODE",
+        "SESSION_SECRET",
+        "AUTH_GITHUB_ID",
+        "AUTH_GITHUB_SECRET"
+      ],
       "outputs": ["dist/**", ".next/**", "public/build/**"]
     },
     "dev": {
