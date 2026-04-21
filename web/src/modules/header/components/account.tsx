@@ -1,11 +1,10 @@
-import { auth } from "@/auth";
-import Link from "next/link";
-import { User, LayoutDashboard } from "lucide-react";
+import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export async function Account() {
   return null;
 
+  /*
   const session = await auth();
 
   if (!session) {
@@ -27,4 +26,5 @@ export async function Account() {
       </Link>
     </Button>
   );
+  */
 }
