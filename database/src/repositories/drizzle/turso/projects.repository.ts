@@ -1,27 +1,41 @@
 import { eq } from "drizzle-orm";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { projects } from "../../models/projects.js";
-import type { IProjectsRepository } from "../contracts/iprojects.repository.js";
-import type { Project, CreateProjectDTO, UpdateProjectDTO } from "@portfolio/packages";
+import { projects } from "../../../models/projects";
+import type { IProjectsRepository } from "../../contracts/iprojects.repository";
+import type {
+  Project,
+  CreateProjectDTO,
+  UpdateProjectDTO,
+} from "@portfolio/packages";
+import { LibSQLDatabase } from "drizzle-orm/libsql";
 
 export class DrizzleProjectsRepository implements IProjectsRepository {
-  constructor(private readonly db: PostgresJsDatabase) {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private readonly db: LibSQLDatabase<any>) {}
 
   async findAll(): Promise<Project[]> {
     return this.db.select().from(projects) as Promise<Project[]>;
   }
 
   async findById(id: string): Promise<Project | undefined> {
-    const [project] = await this.db.select().from(projects).where(eq(projects.id, id));
+    const [project] = await this.db
+      .select()
+      .from(projects)
+      .where(eq(projects.id, id));
     return project as Project | undefined;
   }
 
   async create(data: CreateProjectDTO): Promise<Project> {
-    const [newProject] = await this.db.insert(projects).values(data).returning();
+    const [newProject] = await this.db
+      .insert(projects)
+      .values(data)
+      .returning();
     return newProject as Project;
   }
 
-  async update(id: string, data: UpdateProjectDTO): Promise<Project | undefined> {
+  async update(
+    id: string,
+    data: UpdateProjectDTO,
+  ): Promise<Project | undefined> {
     const [updated] = await this.db
       .update(projects)
       .set(data)

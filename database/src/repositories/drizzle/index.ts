@@ -1,8 +1,8 @@
 import { db } from "../../app";
-import { DrizzleUsersRepository } from "./drizzle-users.repository";
-import { DrizzleProjectsRepository } from "./drizzle-projects.repository";
-import { DrizzlePostsRepository } from "./drizzle-posts.repository";
-import { DrizzleTechsRepository } from "./drizzle-techs.repository";
+import { DrizzleUsersRepository } from "./turso/users.repository";
+import { DrizzleProjectsRepository } from "./turso/projects.repository";
+import { DrizzlePostsRepository } from "./turso/posts.repository";
+import { DrizzleTechsRepository } from "./turso/techs.repository";
 
 export const usersRepository = new DrizzleUsersRepository(db);
 export const projectsRepository = new DrizzleProjectsRepository(db);

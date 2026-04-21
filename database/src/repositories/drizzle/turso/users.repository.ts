@@ -1,11 +1,12 @@
 import { eq } from "drizzle-orm";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { users } from "../../models/users.js";
-import type { IUsersRepository } from "../contracts/iusers.repository.js";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
+import { users } from "../../../models/users";
+import type { IUsersRepository } from "../../contracts/iusers.repository";
 import type { User, CreateUserDTO, UpdateUserDTO } from "@portfolio/packages";
 
 export class DrizzleUsersRepository implements IUsersRepository {
-  constructor(private readonly db: PostgresJsDatabase) {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private readonly db: LibSQLDatabase<any>) {}
 
   async findAll(): Promise<User[]> {
     return this.db.select().from(users) as Promise<User[]>;
@@ -17,12 +18,18 @@ export class DrizzleUsersRepository implements IUsersRepository {
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
-    const [user] = await this.db.select().from(users).where(eq(users.email, email));
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.email, email));
     return user as User | undefined;
   }
 
   async findByGithubId(githubId: string): Promise<User | undefined> {
-    const [user] = await this.db.select().from(users).where(eq(users.githubId, githubId));
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.githubId, githubId));
     return user as User | undefined;
   }
 

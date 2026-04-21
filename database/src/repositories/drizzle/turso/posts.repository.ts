@@ -1,11 +1,12 @@
 import { eq } from "drizzle-orm";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { posts } from "../../models/posts.js";
-import type { IPostsRepository } from "../contracts/iposts.repository.js";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
+import { posts } from "../../../models";
+import type { IPostsRepository } from "../../contracts/iposts.repository";
 import type { Post, CreatePostDTO, UpdatePostDTO } from "@portfolio/packages";
 
 export class DrizzlePostsRepository implements IPostsRepository {
-  constructor(private readonly db: PostgresJsDatabase) {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private readonly db: LibSQLDatabase<any>) {}
 
   async findAll(): Promise<Post[]> {
     return this.db.select().from(posts) as Promise<Post[]>;

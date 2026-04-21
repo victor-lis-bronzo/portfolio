@@ -1,11 +1,12 @@
 import { eq } from "drizzle-orm";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { techs } from "../../models/techs.js";
-import type { ITechsRepository } from "../contracts/itechs.repository.js";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
+import { techs } from "../../../models/techs";
+import type { ITechsRepository } from "../../contracts/itechs.repository";
 import type { Tech, CreateTechDTO } from "@portfolio/packages";
 
 export class DrizzleTechsRepository implements ITechsRepository {
-  constructor(private readonly db: PostgresJsDatabase) {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private readonly db: LibSQLDatabase<any>) {}
 
   async findAll(): Promise<Tech[]> {
     return this.db.select().from(techs) as Promise<Tech[]>;
@@ -17,7 +18,10 @@ export class DrizzleTechsRepository implements ITechsRepository {
   }
 
   async findByName(name: string): Promise<Tech | undefined> {
-    const [tech] = await this.db.select().from(techs).where(eq(techs.name, name));
+    const [tech] = await this.db
+      .select()
+      .from(techs)
+      .where(eq(techs.name, name));
     return tech as Tech | undefined;
   }
 
