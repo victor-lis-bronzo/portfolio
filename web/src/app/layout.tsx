@@ -36,12 +36,12 @@ export default function RootLayout({
           <Header.Logo />
 
           <Header.Nav>
-            <Header.Item href="#hero" active>
+            {/* <Header.Item href="#hero" active>
               Início
-            </Header.Item>
-            <Header.Item href="#techs">Tecnologias</Header.Item>
+            </Header.Item> */}
+            {/* <Header.Item href="#techs">Tecnologias</Header.Item>
             <Header.Item href="#projects">Projetos</Header.Item>
-            <Header.Item href="#events">Eventos</Header.Item>
+            <Header.Item href="#events">Eventos</Header.Item> */}
           </Header.Nav>
 
           <Header.Actions>

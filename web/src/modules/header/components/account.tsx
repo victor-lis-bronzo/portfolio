@@ -4,6 +4,8 @@ import { User, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export async function Account() {
+  return null;
+
   const session = await auth();
 
   if (!session) {
