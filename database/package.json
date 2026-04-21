@@ -25,17 +25,15 @@
     "db:seed": "tsx ../core/src/seed.ts"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.2",
     "@portfolio/packages": "workspace:*",
-    "@prisma/adapter-pg": "^7.4.2",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.45.1",
-    "pg": "^8.19.0",
-    "postgres": "^3.4.4",
     "tsup": "^8.5.1"
   },
   "devDependencies": {
     "@types/node": "^25.3.3",
-    "drizzle-kit": "^0.31.9",
+    "drizzle-kit": "^0.31.10",
     "tsx": "^4.7.1",
     "typescript": "^5.4.0"
   }

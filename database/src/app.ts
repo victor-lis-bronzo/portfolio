@@ -1,10 +1,13 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
+import * as schema from "./models/index";
 
-const connectionString = process.env.DATABASE_URL!;
+const client = createClient({
+  url: process.env.DATABASE_URL!,
+  authToken: process.env.DATABASE_AUTH_TOKEN,
+});
 
-const client = postgres(connectionString, { prepare: false });
-export const db = drizzle(client);
+export const db = drizzle(client, { schema });
