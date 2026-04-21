@@ -1,33 +1,12 @@
 {
   "version": "7",
-  "dialect": "postgresql",
+  "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "7",
-      "when": 1772408978560,
-      "tag": "0000_dear_madame_masque",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1774453940827,
-      "tag": "0001_mighty_rockslide",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1774462115401,
-      "tag": "0002_brief_khan",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1774464192071,
-      "tag": "0003_married_vindicator",
+      "version": "6",
+      "when": 1776780736945,
+      "tag": "0000_long_boom_boom",
       "breakpoints": true
     }
   ]
