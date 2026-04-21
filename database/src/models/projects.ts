@@ -1,16 +1,12 @@
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
-import { projectsToTechs } from "./projects-to-techs";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm";
+import crypto from "node:crypto";
 
-export const projects = pgTable("projects", {
-  id: uuid("id").defaultRandom().primaryKey(),
+export const projects = sqliteTable("projects", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  links: text("links").array().notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  links: text("links", { mode: "json" }).notNull().$type<string[]>(),
+  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now'))`).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now'))`).notNull(),
 });
-
-export const projectsRelations = relations(projects, ({ many }) => ({
-  techs: many(projectsToTechs),
-}));
