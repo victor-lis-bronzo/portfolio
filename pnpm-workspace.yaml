@@ -1,9 +1,5 @@
 packages:
   - web
-  - api
-  - core
-  - database
-  - packages
 
 onlyBuiltDependencies:
   - esbuild
