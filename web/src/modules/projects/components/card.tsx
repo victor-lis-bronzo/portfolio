@@ -24,7 +24,7 @@ export function Card({ project, index = 0, className }: CardProps) {
         delay: index * 0.1,
       }}
       className={cn(
-        "group relative overflow-hidden rounded-2xl aspect-[4/3] w-full cursor-pointer",
+        "group relative overflow-hidden rounded-2xl aspect-[4/3] min-h-full cursor-pointer",
         "border border-white/10 bg-white/5",
         isWide && "lg:col-span-2 aspect-[4/3] lg:aspect-[8/3]",
         className,
@@ -34,28 +34,33 @@ export function Card({ project, index = 0, className }: CardProps) {
       <img
         src={project.imageUrl}
         alt={project.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:blur-[2px] group-hover:brightness-[80%] group-hover:scale-105"
       />
 
       {/* Gradient Overlay for better contrast */}
       {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-500 group-hover:from-black/90 group-hover:via-black/50" /> */}
 
-      {/* Project Title - slides up slightly on hover */}
-      <h3 className="absolute bottom-6 left-6 right-6 text-xl md:text-2xl font-bold text-white tracking-tight transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-14 z-10">
-        {project.title}
-      </h3>
+      {/* Content wrapper anchored to bottom */}
+      <div className="absolute inset-x-0 bottom-0 flex flex-col z-10">
+        {/* Project Title */}
+        <h3 className="px-6 pb-5 text-xl md:text-2xl font-bold text-white tracking-tight">
+          {project.title}
+        </h3>
 
-      {/* Tech Pills Overlay - slides up from bottom */}
-      <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] px-6 py-4 z-20">
-        <div className="flex flex-wrap gap-2 w-1/2">
-          {project.techs.map((tech) => (
-            <span
-              key={tech}
-              className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20"
-            >
-              {tech}
-            </span>
-          ))}
+        {/* Tech Pills Overlay - expands from 0 height on hover */}
+        <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]">
+          <div className="overflow-hidden">
+            <div className="flex flex-wrap gap-2 px-6 pb-6 w-[90%] md:w-3/4">
+              {project.techs.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>
