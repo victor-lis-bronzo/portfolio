@@ -56,9 +56,7 @@ const mockProjects = [
   {
     id: "p1",
     title: "Git Assets",
-    description:
-      "Descubra e compre assets reutilizáveis para turbinar seu perfil do GitHub e documentações. De devs para devs.",
-    tags: [
+    techs: [
       "React",
       "Next.js",
       "TailwindCSS",
@@ -73,18 +71,14 @@ const mockProjects = [
   {
     id: "p2",
     title: "VPS Config",
-    description:
-      "Repositório com templates e configurações para subir serviços úteis em um VPS usando Docker Compose. Ideal para testes, recuperação ou provisionamento rápido de pequenos ambientes.",
-    tags: ["Docker", "NGINX", "MQTT", "N8N", "Portainer"],
+    techs: ["Docker", "NGINX", "MQTT", "N8N", "Portainer"],
     imageUrl: "/projects/vps-config/readme.png",
     link: "https://github.com/victor-lis/vps-config",
   },
   {
     id: "p3",
     title: "Portfólio 3D",
-    description:
-      "Um portfólio 3D construído para imitar a estética do jogo Minecraft e me apresentar de forma leve e divertida!",
-    tags: ["Three-js", "Cannon-ES", "Parcel", "Dat.Gui", "TypeScript"],
+    techs: ["Three-js", "Cannon-ES", "Parcel", "Dat.Gui", "TypeScript"],
     imageUrl: "/projects/portfolio-3d/banner.png",
     link: "https://victorlisbronzo.me",
   },
@@ -214,14 +208,11 @@ export default async function Home() {
 
       <Projects.Root className="pt-20 md:pt-32 pb-6 md:pb-12">
         <Projects.Header>Projetos</Projects.Header>
-        <Projects.Track>
-          <Projects.Title>Projetos</Projects.Title>
-          <div className="w-[30vw] shrink-0" />
-          {mockProjects.map((project) => (
-            <Projects.Card key={project.id} project={project} />
+        <Projects.Grid>
+          {mockProjects.map((project, index) => (
+            <Projects.Card key={project.id} project={project} index={index} />
           ))}
-          <div className="w-[30vw] shrink-0" />
-        </Projects.Track>
+        </Projects.Grid>
       </Projects.Root>
 
       <Events.Root className="relative z-10 bg-background rounded-t-[3rem] shadow-2xl overflow-hidden pt-24 md:pt-32 pb-32 md:pb-40">

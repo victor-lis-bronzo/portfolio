@@ -8,8 +8,7 @@ export type ProjectsBaseProps = {
 export type ProjectData = {
   id: string;
   title: string;
-  description: string;
-  tags: string[];
+  techs: string[];
   imageUrl: string;
   link?: string;
 };

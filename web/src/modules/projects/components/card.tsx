@@ -1,114 +1,78 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { MagneticButton } from "@/components/animations/MagneticButton";
 import { ProjectData } from "../_types/projects";
 
 type CardProps = {
   project: ProjectData;
+  index?: number;
   className?: string;
 };
 
-export function Card({ project, className }: CardProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function Card({ project, index = 0, className }: CardProps) {
+  const isWide = index % 3 === 0;
 
-  // For the individual card, we track its position within the viewport
-  // to create the internal parallax effect for the image.
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    // When the card is horizontal scrolling, useScroll on the whole page won't directly map to the card's horizontal movement if it's based on a sticky track.
-    // Actually, since the scroll is vertical and the track is sticky, the card's bounding box moves horizontally.
-    // A simple trick for parallax inside a sticky horizontal scroll is just to use the global scrollYProgress from the context,
-    // or we just bind it to the card's hover to keep it simple and performant, OR mapping from the main context.
-  });
-
-  // Let's create a subtle hover-based parallax instead or rely on the general scroll
-  // Given we're in a compound component, tracking the main context might be easier for a forced parallax.
-
-  return (
-    <div
-      ref={containerRef}
+  const content = (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
+        delay: index * 0.1,
+      }}
       className={cn(
-        "group relative flex flex-col justify-end w-[85vw] md:w-[60vw] max-w-4xl h-[70vh] rounded-3xl overflow-hidden shrink-0 border border-white/20 bg-white/5 backdrop-blur-xl p-8 md:p-12 transition-colors hover:border-white/30 z-10",
+        "group relative overflow-hidden rounded-2xl aspect-[4/3] w-full cursor-pointer",
+        "border border-white/10 bg-white/5",
+        isWide && "lg:col-span-2 aspect-[4/3] lg:aspect-[8/3]",
         className,
       )}
     >
-      {/* Background Image with Parallax / Zoom effect */}
-      <div className="absolute inset-0 w-full h-full -z-10 overflow-hidden">
-        <div className="w-full h-full transform transition-transform duration-1000 group-hover:scale-110">
-          {/* We use an img tag for simplicity or Next Image if domains are configured. Using img for generic urls from mock. */}
-          <img
-            src={project.imageUrl}
-            alt={project.title}
-            className="w-full h-full object-cover opacity-70 transition-opacity duration-700 group-hover:opacity-100"
-          />
-        </div>
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-      </div>
+      {/* Background Image with Zoom effect */}
+      <img
+        src={project.imageUrl}
+        alt={project.title}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      />
 
-      {/* Content */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 transform translate-y-4 transition-transform duration-500 group-hover:translate-y-0">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap gap-2 max-lg:hidden">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white backdrop-blur-md border border-white/5"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-          <h3 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-            {project.title}
-          </h3>
-          <p className="text-gray-300 md:text-lg max-w-xl line-clamp-2">
-            {project.description}
-          </p>
-        </div>
+      {/* Gradient Overlay for better contrast */}
+      {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-500 group-hover:from-black/90 group-hover:via-black/50" /> */}
 
-        {project.link && (
-          <Link
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              // "group/btn",
-              "relative",
-              "flex",
-              "items-center",
-              "gap-3",
-              "px-6",
-              "py-3",
-              "rounded-full",
-              "bg-secondary/0",
-              "border",
-              "border-white/20",
-              "backdrop-blur-md",
-              "transition-all",
-              // "hover:border-white",
-              "flex",
-              "items-center",
-              "justify-center",
-              "min-w-fit",
-              "hover:opacity-85",
-            )}
-          >
-            <span className="text-sm font-semibold uppercase tracking-wider">
-              Ver Projeto
+      {/* Project Title - slides up slightly on hover */}
+      <h3 className="absolute bottom-6 left-6 right-6 text-xl md:text-2xl font-bold text-white tracking-tight transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-14 z-10">
+        {project.title}
+      </h3>
+
+      {/* Tech Pills Overlay - slides up from bottom */}
+      <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] px-6 py-4 z-20">
+        <div className="flex flex-wrap gap-2 w-1/2">
+          {project.techs.map((tech) => (
+            <span
+              key={tech}
+              className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20"
+            >
+              {tech}
             </span>
-            <div className="flex items-center justify-center w-8 h-8 rounded-full border border-current text-current">
-              <ArrowUpRight className="w-4 h-4" />
-            </div>
-          </Link>
-        )}
+          ))}
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
+
+  if (project.link) {
+    return (
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn("block w-full", isWide && "lg:col-span-2")}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return content;
 }
