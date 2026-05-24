@@ -10,7 +10,6 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@portfolio/core": "workspace:*",
     "@hookform/resolvers": "^5.2.2",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
