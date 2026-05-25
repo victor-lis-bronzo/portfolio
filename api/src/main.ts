@@ -11,6 +11,13 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
+  // Inicializa o Firebase
+  const { initFirebase } = await import('../infra/firebase/admin');
+  initFirebase(
+    process.env.FIREBASE_SERVICE_ACCOUNT_PATH ?? './infra/firebase/service-account.json',
+    process.env.FIREBASE_STORAGE_BUCKET ?? 'portfolio-project.appspot.com',
+  );
+
   const NODE_ENV = process.env.NODE_ENV;
   const PORT = process.env.PORT ?? 3333;
 

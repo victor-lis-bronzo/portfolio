@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: portfolio-postgres
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: portfolio
+      POSTGRES_PASSWORD: portfolio123
+      POSTGRES_DB: portfolio_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  firebase:
+    image: spine3/firebase-emulator
+    container_name: portfolio-firebase
+    restart: unless-stopped
+    ports:
+      - "4000:4000" # Emulator Suite UI
+      - "9099:9099" # Auth Emulator
+      - "8080:8080" # Firestore Emulator
+      - "9000:9000" # Database Emulator
+      - "9199:9199" # Storage Emulator
+      - "5001:5001" # Functions Emulator
+      - "8085:8085" # PubSub Emulator
+    environment:
+      GCP_PROJECT: portfolio-project
+      ENABLE_UI: "true"
+
+
+volumes:
+  postgres_data:

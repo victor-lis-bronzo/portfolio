@@ -7,7 +7,7 @@ import {
 } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { HelloResponseDto } from './dto/hello.dto';
-xx
+
 @ApiTags('Hello')
 @Controller()
 export class AppController {
