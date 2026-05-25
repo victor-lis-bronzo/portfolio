@@ -1,6 +1,5 @@
-export * from './users';
 export * from './projects';
-export * from './technologies';
 export * from './techs';
+export * from './techs_projects';
 export * from './events';
 export * from './files';

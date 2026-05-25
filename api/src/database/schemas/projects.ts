@@ -1,8 +1,7 @@
 import { pgTable, uuid, varchar, text, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { techs } from './techs';
-import { events } from './events';
 import { files } from './files';
+import { techs_projects } from './techs_projects';
 
 export const projects = pgTable('projects', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -16,8 +15,8 @@ export const projects = pgTable('projects', {
 });
 
 export const projectsRelations = relations(projects, ({ many }) => ({
-  techs: many(techs),
-  events: many(events),
+  techs_projects: many(techs_projects),
+  // events: many(events),
   files: many(files),
 }));
 

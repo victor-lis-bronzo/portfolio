@@ -1,33 +1,19 @@
-import { pgTable, uuid, primaryKey } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, pgEnum, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { projects } from './projects';
-import { technologies } from './technologies';
+import { techs_projects } from './techs_projects';
 
-export const techs_projects = pgTable(
-  'techs_projects',
-  {
-    projectId: uuid('project_id')
-      .references(() => projects.id, { onDelete: 'cascade' })
-      .notNull(),
-    technologyId: uuid('technology_id')
-      .references(() => technologies.id, { onDelete: 'cascade' })
-      .notNull(),
-  },
-  (t) => ({
-    pk: primaryKey({ columns: [t.projectId, t.technologyId] }),
-  })
-);
+export const stackEnum = pgEnum('stack_type', ['front-end', 'back-end', 'devOps']);
 
-export const techsProjectsRelations = relations(techs_projects, ({ one }) => ({
-  project: one(projects, {
-    fields: [techs_projects.projectId],
-    references: [projects.id],
-  }),
-  technology: one(technologies, {
-    fields: [techs_projects.technologyId],
-    references: [technologies.id],
-  }),
+export const techs = pgTable('techs', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  title: varchar('title', { length: 255 }).notNull().unique(),
+  stack: stackEnum('stack').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const techsRelations = relations(techs, ({ many }) => ({
+  techs_projects: many(techs_projects),
 }));
 
-export type TechSelect = typeof techs_projects.$inferSelect;
-export type TechInsert = typeof techs_projects.$inferInsert;
+export type TechnologySelect = typeof techs.$inferSelect;
+export type TechnologyInsert = typeof techs.$inferInsert;
