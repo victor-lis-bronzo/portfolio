@@ -1,7 +1,11 @@
 packages:
   - web
+  - api
 
 onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@scarf/scarf'
   - esbuild
   - msw
   - sharp
+  - unrs-resolver
