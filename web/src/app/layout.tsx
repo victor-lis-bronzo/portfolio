@@ -48,7 +48,7 @@ export default function RootLayout({
             <div className="hidden sm:flex gap-2">
               <Button variant="ghost" size="icon" asChild>
                 <a
-                  href="https://github.com/victor-lis"
+                  href="https://github.com/victor-lis-bronzo"
                   target="_blank"
                   rel="noreferrer"
                 >

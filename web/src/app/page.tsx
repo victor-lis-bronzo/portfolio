@@ -73,7 +73,7 @@ const mockProjects = [
     title: "VPS Config",
     techs: ["Docker", "NGINX", "MQTT", "N8N", "Portainer"],
     imageUrl: "/projects/vps-config/readme.png",
-    link: "https://github.com/victor-lis/vps-config",
+    link: "https://github.com/victor-lis-bronzo/vps-config",
   },
   {
     id: "p3",
@@ -138,7 +138,7 @@ export default async function Home() {
               className="border-gray-700 text-gray-300 hover:bg-white/5 hover:text-white text-lg h-12 w-fit"
             >
               <Link
-                href="https://github.com/victor-lis/victor-lis"
+                href="https://github.com/victor-lis-bronzo/victor-lis-bronzo"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-1 w-fit"
