@@ -8,8 +8,9 @@ import { ToolType } from "./_types";
 import { useCanvas } from "./_hooks/use-canvas";
 import { useGeminiChat } from "./_hooks/use-gemini-chat";
 import { useDraft } from "./_hooks/use-draft";
+import dynamic from "next/dynamic";
 
-export default function App() {
+function App() {
   const [activeTool, setActiveTool] = useState<ToolType>("text");
 
   // Load state and operations from separated hooks
@@ -161,3 +162,7 @@ export default function App() {
     </div>
   );
 }
+
+export default dynamic(() => Promise.resolve(App), {
+  ssr: false,
+});

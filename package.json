@@ -13,6 +13,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.26.0",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "shx": "^0.4.0",
     "turbo": "^2.8.12"
   }
