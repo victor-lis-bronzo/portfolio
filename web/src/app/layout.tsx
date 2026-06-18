@@ -22,6 +22,8 @@ export const metadata: Metadata = {
     "Explore o portfolio de Victor Lis Bronzo, um desenvolvedor Full-Stack especializado em desenvolvimento moderno, criando aplicações de alto desempenho e soluções digitais elegantes.",
 };
 
+const pagesWithoutHeader = ['drawmylife']
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,47 +34,50 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header.Root>
-          <Header.Logo />
+        <Header.Wrapper pagesWithoutHeader={pagesWithoutHeader}>
+          <Header.Root>
+            <Header.Logo />
 
-          <Header.Nav>
-            {/* <Header.Item href="#hero" active>
-              Início
-            </Header.Item> */}
-            {/* <Header.Item href="#techs">Tecnologias</Header.Item>
-            <Header.Item href="#projects">Projetos</Header.Item>
-            <Header.Item href="#events">Eventos</Header.Item> */}
-          </Header.Nav>
+            <Header.Nav>
+              {/* <Header.Item href="#hero" active>
+                Início
+              </Header.Item> */}
+              {/* <Header.Item href="#techs">Tecnologias</Header.Item>
+              <Header.Item href="#projects">Projetos</Header.Item>
+              <Header.Item href="#events">Eventos</Header.Item> */}
+            </Header.Nav>
 
-          <Header.Actions>
-            <div className="hidden sm:flex gap-2">
-              <Button variant="ghost" size="icon" asChild>
-                <a
-                  href="https://github.com/victor-lis-bronzo"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <GithubIcon className="w-4 h-4" />
-                </a>
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <a
-                  href="https://linkedin.com/in/victor-lis-bronzo"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <LinkedinIcon className="w-4 h-4" />
-                </a>
-              </Button>
-            </div>
+            <Header.Actions>
+              <div className="hidden sm:flex gap-2">
+                <Button variant="ghost" size="icon" asChild>
+                  <a
+                    href="https://github.com/victor-lis-bronzo"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <GithubIcon className="w-4 h-4" />
+                  </a>
+                </Button>
+                <Button variant="ghost" size="icon" asChild>
+                  <a
+                    href="https://linkedin.com/in/victor-lis-bronzo"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <LinkedinIcon className="w-4 h-4" />
+                  </a>
+                </Button>
+              </div>
 
-            <Header.Account />
-            {/* 
-            <MagneticButton className="text-sm px-4 py-2 cursor-pointer">
-              Entrar em contato
-            </MagneticButton> */}
-          </Header.Actions>
-        </Header.Root>
+              <Header.Account />
+              {/* 
+              <MagneticButton className="text-sm px-4 py-2 cursor-pointer">
+                Entrar em contato
+              </MagneticButton> */}
+            </Header.Actions>
+          </Header.Root>
+        </Header.Wrapper>
+
 
         {children}
       </body>

@@ -4,6 +4,7 @@ import { Nav } from "./components/nav";
 import { Item } from "./components/item";
 import { Actions } from "./components/actions";
 import { Account } from "./components/account";
+import Wrapper from "./components/header-wrapper";
 
 export const Header = {
   Root,
@@ -12,4 +13,5 @@ export const Header = {
   Item,
   Actions,
   Account,
+  Wrapper,
 };
