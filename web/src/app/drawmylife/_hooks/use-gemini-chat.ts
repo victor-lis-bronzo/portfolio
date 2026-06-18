@@ -81,6 +81,10 @@ export function useGeminiChat() {
     return newNode;
   };
 
+  const stopGeneration = () => {
+    setLoading(false);
+  };
+
   const resetChat = () => {
     setNodes(INITIAL_NODES);
   };
@@ -91,5 +95,6 @@ export function useGeminiChat() {
     askGemini,
     addUserNode,
     resetChat,
+    stopGeneration,
   };
 }

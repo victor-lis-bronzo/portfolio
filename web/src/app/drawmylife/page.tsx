@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Loader2, RotateCcw } from "lucide-react";
+import { Loader2, RotateCcw, X } from "lucide-react";
 import { BoardNode } from "./_components/board-node";
 import { Toolbar } from "./_components/toolbar";
 import { ToolType } from "./_types";
@@ -14,7 +14,8 @@ function App() {
   const [activeTool, setActiveTool] = useState<ToolType>("text");
 
   // Load state and operations from separated hooks
-  const { nodes, loading, addUserNode, askGemini, resetChat } = useGeminiChat();
+  const { nodes, loading, addUserNode, askGemini, resetChat, stopGeneration } =
+    useGeminiChat();
 
   const {
     draft,
@@ -119,6 +120,13 @@ function App() {
           >
             O mascote está escrevendo...
           </span>
+          <button
+            className="cursor-pointer text-gray-700 hover:text-gray-900"
+            title="Cancelar"
+            onClick={stopGeneration}
+          >
+            <X size={18} />
+          </button>
         </div>
       )}
 
