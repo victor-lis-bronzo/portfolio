@@ -10,12 +10,24 @@ import { useGeminiChat } from "./_hooks/use-gemini-chat";
 import { useDraft } from "./_hooks/use-draft";
 import dynamic from "next/dynamic";
 
+import { DRAFT_HEIGHT, DRAFT_WIDTH } from "./_constants";
+
 function App() {
   const [activeTool, setActiveTool] = useState<ToolType>("text");
 
   // Load state and operations from separated hooks
   const { nodes, loading, addUserNode, askGemini, resetChat, stopGeneration } =
     useGeminiChat();
+
+  const {
+    camera,
+    boardRef,
+    handlePointerDown,
+    handlePointerMove,
+    handlePointerUp,
+    resetCamera,
+    moveCameraTo,
+  } = useCanvas(activeTool);
 
   const {
     draft,
@@ -31,15 +43,6 @@ function App() {
       askGemini({ userText: newNode.text, x: newNode.x, y: newNode.y });
     },
   });
-
-  const {
-    camera,
-    boardRef,
-    handlePointerDown,
-    handlePointerMove,
-    handlePointerUp,
-    resetCamera,
-  } = useCanvas(activeTool);
 
   // Injetar fonte caligráfica
   useEffect(() => {
@@ -74,7 +77,10 @@ function App() {
         handlePointerUp({
           e,
           onCanvasClick: ({ virtualX, virtualY }) => {
-            if (!loading) startDraft({ x: virtualX, y: virtualY });
+            if (!loading) {
+              startDraft({ x: virtualX, y: virtualY });
+              moveCameraTo({ x: virtualX, y: virtualY });
+            }
           },
         })
       }
@@ -156,8 +162,8 @@ function App() {
                 style={{
                   fontFamily: "'Patrick Hand', cursive",
                   fontSize: "1.75rem",
-                  minWidth: "350px",
-                  minHeight: "60px",
+                  minWidth: `${DRAFT_WIDTH}px`,
+                  minHeight: `${DRAFT_HEIGHT}px`,
                   resize: "both", // Permite esticar manualmente se necessário
                   whiteSpace: "pre-wrap",
                 }}

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import { CameraData, PointerStateData, ToolType } from "../_types";
+import { DRAFT_HEIGHT, DRAFT_WIDTH } from "../_constants";
 
 export function useCanvas(activeTool: ToolType) {
   const [camera, setCamera] = useState<CameraData>(() => ({
@@ -33,26 +34,29 @@ export function useCanvas(activeTool: ToolType) {
     };
   };
 
-  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    const state = pointerState.current;
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      const state = pointerState.current;
 
-    if (state.isPanning) {
-      const dx = e.clientX - state.lastX;
-      const dy = e.clientY - state.lastY;
+      if (state.isPanning) {
+        const dx = e.clientX - state.lastX;
+        const dy = e.clientY - state.lastY;
 
-      setCamera((prev) => ({ x: prev.x + dx, y: prev.y + dy }));
+        setCamera((prev) => ({ x: prev.x + dx, y: prev.y + dy }));
 
-      state.lastX = e.clientX;
-      state.lastY = e.clientY;
-      state.isDragging = true;
-    } else {
-      const dx = e.clientX - state.startX;
-      const dy = e.clientY - state.startY;
-      if (Math.abs(dx) + Math.abs(dy) > 5) {
+        state.lastX = e.clientX;
+        state.lastY = e.clientY;
         state.isDragging = true;
+      } else {
+        const dx = e.clientX - state.startX;
+        const dy = e.clientY - state.startY;
+        if (Math.abs(dx) + Math.abs(dy) > 5) {
+          state.isDragging = true;
+        }
       }
-    }
-  }, []);
+    },
+    [],
+  );
 
   const handlePointerUp = ({
     e,
@@ -66,7 +70,11 @@ export function useCanvas(activeTool: ToolType) {
 
     state.isPanning = false;
 
-    if (!wasDragging && e.target === boardRef.current && activeTool === "text") {
+    if (
+      !wasDragging &&
+      e.target === boardRef.current &&
+      activeTool === "text"
+    ) {
       if (onCanvasClick) {
         const rect = boardRef.current.getBoundingClientRect();
         const screenX = e.clientX - rect.left;
@@ -80,6 +88,18 @@ export function useCanvas(activeTool: ToolType) {
     }
   };
 
+  const moveCameraTo = ({ x, y }: { x: number; y: number }) => {
+    const CAMERA_X_OFFSET = DRAFT_WIDTH / 2.9;
+    const CAMERA_Y_OFFSET = DRAFT_HEIGHT / 2;
+
+    const halfX = window.innerWidth / 2;
+    const halfY = window.innerHeight / 2;
+    setCamera({
+      x: halfX - x - CAMERA_X_OFFSET,
+      y: halfY - y - CAMERA_Y_OFFSET,
+    });
+  };
+
   const resetCamera = () => {
     setCamera({
       x: typeof window !== "undefined" ? window.innerWidth / 2 : 500,
@@ -89,7 +109,7 @@ export function useCanvas(activeTool: ToolType) {
 
   return {
     camera,
-    setCamera,
+    moveCameraTo,
     boardRef,
     handlePointerDown,
     handlePointerMove,
