@@ -16,7 +16,7 @@ function App() {
   const [activeTool, setActiveTool] = useState<ToolType>("text");
 
   // Load state and operations from separated hooks
-  const { nodes, loading, addUserNode, askGemini, resetChat, stopGeneration } =
+  const { nodes, loading, addNode, askGemini, resetChat, stopGeneration } =
     useGeminiChat();
 
   const {
@@ -39,7 +39,7 @@ function App() {
     handleKeyDown,
   } = useDraft({
     onSubmit: ({ text, x, y }) => {
-      const newNode = addUserNode({ text, x, y });
+      const newNode = addNode({ text, x, y, type: "user" });
       askGemini({ userText: newNode.text, x: newNode.x, y: newNode.y });
     },
   });

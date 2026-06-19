@@ -6,6 +6,25 @@ export function useGeminiChat() {
   const [nodes, setNodes] = useState<BoardNodeData[]>(INITIAL_NODES);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const addNode = ({
+    text,
+    x,
+    y,
+    type = "user",
+    svg,
+  }: Omit<BoardNodeData, "id">): BoardNodeData => {
+    const newNode: BoardNodeData = {
+      id: Date.now().toString(),
+      x,
+      y,
+      type,
+      text,
+      svg,
+    };
+    setNodes((prev) => [...prev, newNode]);
+    return newNode;
+  };
+
   const askGemini = async ({
     userText,
     x,
@@ -31,17 +50,13 @@ export function useGeminiChat() {
 
       if (rawText) {
         const parsed = JSON.parse(rawText) as { texto: string; svg: string };
-        setNodes((prev) => [
-          ...prev,
-          {
-            id: Date.now().toString(),
-            x: x + 40,
-            y: y + 80, // Coloca a resposta perto da pergunta
-            type: "bot",
-            text: parsed.texto,
-            svg: parsed.svg,
-          },
-        ]);
+        addNode({
+          x: x + 40,
+          y: y + 80, // Coloca a resposta perto da pergunta
+          type: "bot",
+          text: parsed.texto,
+          svg: parsed.svg,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -61,26 +76,6 @@ export function useGeminiChat() {
     }
   };
 
-  const addUserNode = ({
-    text,
-    x,
-    y,
-  }: {
-    text: string;
-    x: number;
-    y: number;
-  }): BoardNodeData => {
-    const newNode: BoardNodeData = {
-      id: Date.now().toString(),
-      x,
-      y,
-      type: "user",
-      text,
-    };
-    setNodes((prev) => [...prev, newNode]);
-    return newNode;
-  };
-
   const stopGeneration = () => {
     setLoading(false);
   };
@@ -93,7 +88,7 @@ export function useGeminiChat() {
     nodes,
     loading,
     askGemini,
-    addUserNode,
+    addNode,
     resetChat,
     stopGeneration,
   };

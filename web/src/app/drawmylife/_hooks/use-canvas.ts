@@ -89,8 +89,8 @@ export function useCanvas(activeTool: ToolType) {
   };
 
   const moveCameraTo = ({ x, y }: { x: number; y: number }) => {
-    const CAMERA_X_OFFSET = DRAFT_WIDTH / 2.9;
-    const CAMERA_Y_OFFSET = DRAFT_HEIGHT / 2;
+    const CAMERA_X_OFFSET = DRAFT_WIDTH / 2; // Esquerda: -; Direita +
+    const CAMERA_Y_OFFSET = DRAFT_HEIGHT / 1.05; // Cima: -; Baixo +
 
     const halfX = window.innerWidth / 2;
     const halfY = window.innerHeight / 2;
