@@ -27,8 +27,10 @@ export async function POST(req: Request) {
           properties: {
             texto: { type: SchemaType.STRING },
             svg: { type: SchemaType.STRING },
+            color: { type: SchemaType.STRING },
+            layout: { type: SchemaType.STRING },
           },
-          required: ["texto", "svg"],
+          required: ["texto", "svg", "color", "layout"],
         },
       },
     };

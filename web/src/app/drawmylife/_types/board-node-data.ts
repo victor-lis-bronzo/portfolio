@@ -5,4 +5,6 @@ export interface BoardNodeData {
   type: 'bot' | 'user';
   text: string;
   svg?: string;
+  layout?: 'col' | 'col-reverse' | 'row' | 'row-reverse';
+  color?: string;
 }
