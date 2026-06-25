@@ -12,6 +12,8 @@ export function BoardNode({ node }: BoardNodeProps) {
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(node.type === "bot");
 
+  const fontSize = "1.25rem";
+
   useEffect(() => {
     if (node.type === "bot" && isTyping) {
       let i = 0;
@@ -37,7 +39,7 @@ export function BoardNode({ node }: BoardNodeProps) {
       {node.type === "user" ? (
         <div
           className="text-blue-800 whitespace-pre-wrap leading-tight drop-shadow-sm select-text pointer-events-auto"
-          style={{ fontFamily: "'Patrick Hand', cursive", fontSize: "1.75rem" }}
+          style={{ fontFamily: "'Patrick Hand', cursive", fontSize }}
         >
           {node.text}
         </div>
@@ -58,7 +60,7 @@ export function BoardNode({ node }: BoardNodeProps) {
               className="text-gray-900 whitespace-pre-wrap leading-snug drop-shadow-sm select-text"
               style={{
                 fontFamily: "'Patrick Hand', cursive",
-                fontSize: "1.75rem",
+                fontSize,
               }}
             >
               {displayedText}
