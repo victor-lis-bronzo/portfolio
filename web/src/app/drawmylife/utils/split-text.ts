@@ -1,4 +1,4 @@
-export function splitText(text: string, wordsCount: number = 9): string {
+export function splitText(text: string, wordsCount: number = 12): string {
   if (!text) return "";
 
   const response = text

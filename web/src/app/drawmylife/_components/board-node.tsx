@@ -38,13 +38,13 @@ export function BoardNode({ node }: BoardNodeProps) {
     >
       {node.type === "user" ? (
         <div
-          className="text-blue-800 whitespace-pre-wrap leading-tight drop-shadow-sm select-text pointer-events-auto"
+          className="text-blue-800 whitespace-pre-wrap leading-tight drop-shadow-sm"
           style={{ fontFamily: "'Patrick Hand', cursive", fontSize }}
         >
           {node.text}
         </div>
       ) : (
-        <div className="flex gap-4 items-start pointer-events-auto">
+        <div className="flex gap-4 items-start pointer-events-none">
           <div className="flex-shrink-0 bg-indigo-50 border-2 border-indigo-200 text-indigo-600 w-12 h-12 rounded-full flex items-center justify-center shadow-sm relative">
             <Bot size={28} />
             {isTyping && (
@@ -55,7 +55,17 @@ export function BoardNode({ node }: BoardNodeProps) {
             )}
           </div>
 
-          <div className="flex flex-col gap-3">
+          <div
+            className={`flex gap-3 pointer-events-none ${
+              node.layout === "col-reverse"
+                ? "flex-col-reverse items-start"
+                : node.layout === "row"
+                  ? "flex-row items-center"
+                  : node.layout === "row-reverse"
+                    ? "flex-row-reverse items-center"
+                    : "flex-col items-start"
+            }`}
+          >
             <div
               className="text-gray-900 whitespace-pre-wrap leading-snug drop-shadow-sm select-text"
               style={{
@@ -68,7 +78,7 @@ export function BoardNode({ node }: BoardNodeProps) {
 
             {node.svg && !isTyping && (
               <div
-                className="w-32 h-32 text-indigo-600 animate-draw-svg"
+                className={`w-32 h-32 animate-draw-svg pointer-events-none flex-shrink-0 ${node.color || "text-indigo-600"}`}
                 dangerouslySetInnerHTML={{ __html: node.svg }}
               />
             )}
