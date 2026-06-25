@@ -3,7 +3,7 @@ import { Techs } from "@/modules/techs";
 import { Projects } from "@/modules/projects";
 import { Events } from "@/modules/events";
 import { Button } from "@/components/ui/button";
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, PenTool } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -130,15 +130,21 @@ export default async function Home() {
                 <span>Ver GitHub</span>
               </Link>
             </Button>
+            <Button className="bg-[#f8f9fa] text-gray-800 hover:bg-gray-200 text-lg h-12 px-8">
+              <Link
+                href="/drawmylife"
+                className="flex items-center gap-2 px-1 w-fit"
+              >
+                <PenTool className="h-5 w-5" />
+                <span>Perguntar para IA</span>
+              </Link>
+            </Button>
           </Hero.Actions>
         </Hero.Content>
 
         <Hero.Visuals className="max-[500px]:hidden">
           <Hero.Card className="w-full h-full max-w-2xl">
-            <iframe
-              src="/drawmylife"
-              className="min-w-full min-h-full"
-            />
+            <iframe src="/drawmylife" className="min-w-full min-h-full" />
           </Hero.Card>
         </Hero.Visuals>
       </Hero.Root>
