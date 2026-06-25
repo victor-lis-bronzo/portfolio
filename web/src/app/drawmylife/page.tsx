@@ -45,17 +45,6 @@ function App() {
     onSubmit,
   });
 
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.href =
-      "https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
-
   const resetBoard = () => {
     resetChat();
     resetCamera();
@@ -67,13 +56,29 @@ function App() {
     return "cursor-crosshair";
   };
 
-  // useEffect(() => {
-  //   onSubmit({
-  //     text: "Quem é você? Como você pode me ajudar?",
-  //     x: window.innerWidth / 2,
-  //     y: window.innerHeight / 2,
-  //   });
-  // }, []);
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href =
+      "https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    const CONTENT_POSITION_X = window.innerWidth / 2;
+    const CONTENT_POSITION_Y = window.innerHeight / 2;
+
+    onSubmit({
+      text: "Quem é você? Como você pode me ajudar?",
+      x: CONTENT_POSITION_X,
+      y: CONTENT_POSITION_Y,
+    });
+
+    moveCameraTo({ x: CONTENT_POSITION_X, y: CONTENT_POSITION_Y });
+
+    return () => {
+      document.head.removeChild(link);
+      resetBoard();
+    };
+  }, []);
 
   return (
     <div
@@ -126,7 +131,7 @@ function App() {
           {/* Textarea onde o usuário digita (Rascunho) */}
           {draft && (
             <div
-              className="absolute z-20 pointer-events-auto"
+              className="absolute z-20  pointer-events-none"
               style={{ left: draft.x, top: draft.y }}
             >
               <textarea
