@@ -85,23 +85,6 @@ const mockProjects = [
 ];
 
 export default async function Home() {
-  const processedSvg = await fetch(
-    "https://gitassets.victorlisbronzo.me/api/card/cmjhew7bb00032ajvo8q4vzpw",
-  )
-    .then((res) => res.text())
-    .catch(
-      (e) =>
-        `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 522 220" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" style="margin: auto; display: block;"></svg >`,
-    );
-
-  const responsiveSvg = processedSvg
-    .replace(/width="[^"]*"/, 'width="90%"')
-    .replace(/height="[^"]*"/, 'height="90%"')
-    .replace(
-      "<svg",
-      '<svg preserveAspectRatio="xMidYMid meet" style="margin: auto;"',
-    );
-
   return (
     <main>
       <Hero.Root className="my-8 lg:my-4">
@@ -152,16 +135,10 @@ export default async function Home() {
 
         <Hero.Visuals className="max-[500px]:hidden">
           <Hero.Card className="w-full h-full max-w-2xl">
-            <div
-              className={cn(
-                "w-full h-full flex flex-col items-center justify-center pt-2 px-8",
-              )}
-            >
-              <div
-                className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
-                dangerouslySetInnerHTML={{ __html: responsiveSvg }}
-              />
-            </div>
+            <iframe
+              src="/drawmylife"
+              className="min-w-full min-h-full"
+            />
           </Hero.Card>
         </Hero.Visuals>
       </Hero.Root>
