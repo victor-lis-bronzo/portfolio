@@ -33,7 +33,9 @@ export async function POST(req: Request) {
       },
     };
 
-    const model = genAI.getGenerativeModel({ model: "gemma-4-26b-a4b-it" });
+    const model = genAI.getGenerativeModel({
+      model: process.env.GEMINI_AI_MODEL! || "gemma-4-26b-a4b-it",
+    });
     const result = await model.generateContent(payload);
     const responseText = result.response.text();
 
