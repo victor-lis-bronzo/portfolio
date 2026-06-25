@@ -22,7 +22,7 @@ export function Root({ children, className }: HeroBaseProps) {
   return (
     <section
       className={cn(
-        "sticky top-0 h-screen w-full bg-background overflow-hidden",
+        "relative lg:sticky top-0 min-h-screen lg:h-screen w-full bg-background overflow-hidden",
         className,
       )}
     >

@@ -2,6 +2,8 @@ packages:
   - web
 
 onlyBuiltDependencies:
+  - '@firebase/util'
   - esbuild
   - msw
+  - protobufjs
   - sharp

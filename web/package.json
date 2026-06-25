@@ -10,11 +10,13 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.2.2",
     "@next/env": "^16.2.9",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "firebase": "^12.15.0",
     "framer-motion": "^12.34.3",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.576.0",
