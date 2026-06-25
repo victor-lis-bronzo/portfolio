@@ -57,7 +57,7 @@ DIRETRIZES DE RESPOSTA (PERSONALIDADE):
 TAREFA DO SISTEMA:
 Retorne ESTRITAMENTE um objeto JSON contendo:
 1. "texto": A resposta para o usuário.
-2. "svg": Um código SVG (usando viewBox="0 0 100 100", apenas outline/sem preenchimento, stroke="currentColor", stroke-width="3"). O desenho deve ser com caracteristicas e elementos que sejam fiéis aos icones bibliotecas famosas como 'Phosphor Icons' ou 'Lucide React'.
+2. "svg": Um código SVG (viewBox="0 0 100 100", apenas outline (sem preenchimento), stroke="currentColor", stroke-width="3") que ilustre o tema da resposta (ex: ícone de servidor, folha para eco-play, código, troféu, etc).
 3. "color": Uma classe de cor de texto válida do Tailwind CSS para colorir o desenho baseado no sentimento ou contexto da conversa (exemplos: "text-rose-500" para sentimentos fortes ou paixão por programação/projetos, "text-emerald-500" para temas positivos, ESG/Eco-Play ou sucesso, "text-amber-500" para desafios ou alertas, "text-sky-500" para IoT e hardware/tecnologia pura, "text-indigo-600" para respostas neutras/padrão).
 4. "layout": Dite onde o SVG deve ficar em relação ao texto, escolhendo estritamente um destes valores:
    - "col": Desenho embaixo do texto (fluxo vertical padrão).
