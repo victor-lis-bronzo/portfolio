@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { BoardNodeData } from "../_types";
-import { SYSTEM_PROMPT, INITIAL_NODES } from "../_constants";
+import { splitText } from "../utils/split-text";
 
 export function useGeminiChat() {
-  const [nodes, setNodes] = useState<BoardNodeData[]>(INITIAL_NODES);
+  const [nodes, setNodes] = useState<BoardNodeData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const addNode = ({
@@ -18,7 +18,7 @@ export function useGeminiChat() {
       x,
       y,
       type,
-      text,
+      text: splitText(text),
       svg,
     };
     setNodes((prev) => [...prev, newNode]);
@@ -81,7 +81,7 @@ export function useGeminiChat() {
   };
 
   const resetChat = () => {
-    setNodes(INITIAL_NODES);
+    setNodes([]);
   };
 
   return {

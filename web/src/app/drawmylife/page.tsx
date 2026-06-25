@@ -15,7 +15,6 @@ import { DRAFT_HEIGHT, DRAFT_WIDTH } from "./_constants";
 function App() {
   const [activeTool, setActiveTool] = useState<ToolType>("text");
 
-  // Load state and operations from separated hooks
   const { nodes, loading, addNode, askGemini, resetChat, stopGeneration } =
     useGeminiChat();
 
@@ -29,6 +28,11 @@ function App() {
     moveCameraTo,
   } = useCanvas(activeTool);
 
+  const onSubmit = ({ text, x, y }: { text: string; x: number; y: number }) => {
+    const newNode = addNode({ text, x, y, type: "user" });
+    askGemini({ userText: newNode.text, x: newNode.x, y: newNode.y });
+  };
+
   const {
     draft,
     inputRef,
@@ -38,13 +42,9 @@ function App() {
     submitDraft,
     handleKeyDown,
   } = useDraft({
-    onSubmit: ({ text, x, y }) => {
-      const newNode = addNode({ text, x, y, type: "user" });
-      askGemini({ userText: newNode.text, x: newNode.x, y: newNode.y });
-    },
+    onSubmit,
   });
 
-  // Injetar fonte caligráfica
   useEffect(() => {
     const link = document.createElement("link");
     link.href =
@@ -62,11 +62,18 @@ function App() {
     clearDraft();
   };
 
-  // Cursor Dinâmico baseado na ferramenta
   const getCursorStyle = () => {
     if (activeTool === "pan") return "cursor-grab active:cursor-grabbing";
-    return "cursor-crosshair"; // O crosshair (mirinha) deixa muito com cara de lousa
+    return "cursor-crosshair";
   };
+
+  // useEffect(() => {
+  //   onSubmit({
+  //     text: "Quem é você? Como você pode me ajudar?",
+  //     x: window.innerWidth / 2,
+  //     y: window.innerHeight / 2,
+  //   });
+  // }, []);
 
   return (
     <div
@@ -101,40 +108,10 @@ function App() {
         activeTool={activeTool}
         setActiveTool={setActiveTool}
         onClearDraft={clearDraft}
+        resetBoard={resetBoard}
+        loading={loading}
+        stopGeneration={stopGeneration}
       />
-
-      {/* Botão de Reset */}
-      <button
-        onClick={resetBoard}
-        className="absolute bottom-6 left-6 z-30 flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 px-4 py-3 rounded-2xl shadow-sm border border-gray-200 transition-colors font-medium text-sm cursor-pointer"
-        title="Voltar ao início"
-      >
-        <RotateCcw size={18} />
-        Recomeçar
-      </button>
-
-      {/* Loading Indicator */}
-      {loading && (
-        <div className="absolute bottom-6 right-6 z-30 flex items-center gap-3 bg-white px-5 py-3 rounded-2xl shadow-lg border border-indigo-100 animate-pulse">
-          <Loader2 size={24} className="text-indigo-500 animate-spin" />
-          <span
-            className="font-medium text-indigo-900"
-            style={{
-              fontFamily: "'Patrick Hand', cursive",
-              fontSize: "1.2rem",
-            }}
-          >
-            O mascote está escrevendo...
-          </span>
-          <button
-            className="cursor-pointer text-gray-700 hover:text-gray-900"
-            title="Cancelar"
-            onClick={stopGeneration}
-          >
-            <X size={18} />
-          </button>
-        </div>
-      )}
 
       {/* Camada do Quadro Virtual onde os itens habitam */}
       <div ref={boardRef} className="absolute inset-0 z-10 outline-none">
@@ -161,7 +138,7 @@ function App() {
                 className="bg-transparent outline-none overflow-hidden text-blue-800 placeholder-blue-300"
                 style={{
                   fontFamily: "'Patrick Hand', cursive",
-                  fontSize: "1.75rem",
+                  fontSize: "1.25rem",
                   minWidth: `${DRAFT_WIDTH}px`,
                   minHeight: `${DRAFT_HEIGHT}px`,
                   resize: "both", // Permite esticar manualmente se necessário
