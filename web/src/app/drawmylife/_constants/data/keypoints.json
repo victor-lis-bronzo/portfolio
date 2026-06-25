@@ -1,0 +1,175 @@
+{
+  "identidade": {
+    "nome_completo": "Victor Lis Bronzo",
+    "idade": 19,
+    "localizacao": "Atibaia, São Paulo - Brasil",
+    "idiomas": [
+      {
+        "idioma": "Português",
+        "nivel": "Nativo"
+      },
+      {
+        "idioma": "Inglês",
+        "nivel": "A2 / Intermediário"
+      }
+    ],
+    "contatos_e_links": {
+      "email": "victorlisbronzo1@gmail.com",
+      "portfolio_principal": "https://victorlisbronzo.me",
+      "github": "https://github.com/victor-lis-bronzo",
+      "outros_links": [
+        "https://gitassets.victorlisbronzo.me",
+        "https://pitch.victorlisbronzo.me",
+        "https://portfolio.victorlisbronzo.me"
+      ]
+    },
+    "resumo_executivo": "Desenvolvedor Full Stack com forte inclinação para arquitetura, produtos SaaS e integração entre software e hardware (IoT). Combina experiência prática profissional, produção técnica pública e participação acadêmica em pesquisa aplicada."
+  },
+  "experiencia_profissional": [
+    {
+      "cargo": "Desenvolvedor Full Stack Júnior",
+      "empresa": "Global Segurança e Monitoramento LTDA (StarSeg)",
+      "periodo": "Março de 2025 - Presente",
+      "detalhes": "Recusou propostas de pleno em outras empresas para focar em arquitetura e inovação na StarSeg."
+    },
+    {
+      "cargo": "Fundador e Desenvolvedor Freelancer",
+      "empresa": "VICTOR LIS BRONZO - ME (CNPJ: 62.416.012/0001-59)",
+      "periodo": "Agosto de 2025 - Presente",
+      "detalhes": "Atuação como freelancer focado em soluções B2B."
+    }
+  ],
+  "formacao_academica": [
+    {
+      "instituicao": "IFSP - Campus Bragança Paulista",
+      "curso": "Superior em Análise e Desenvolvimento de Sistemas (ADS)",
+      "periodo": "2025 - 2027",
+      "status": "Em andamento"
+    },
+    {
+      "instituicao": "Etec Prof. Carmine Biagio Tundisi",
+      "curso": "Técnico em Desenvolvimento de Sistemas",
+      "periodo": "2022 - 2024",
+      "status": "Concluído"
+    }
+  ],
+  "competencias_tecnicas": {
+    "linguagens": ["TypeScript", "JavaScript", "Java", "C++", "Python"],
+    "frontend": ["React", "Next.js", "Tailwind CSS", "Shadcn UI", "Radix UI", "HTML", "CSS"],
+    "backend_e_banco_de_dados": ["Node.js", "PostgreSQL", "MySQL", "SQL"],
+    "orm_e_baas": ["Prisma ORM", "Drizzle ORM", "Firebase", "Supabase"],
+    "devops_e_ferramentas": ["Docker", "Git", "GitHub", "NGINX"],
+    "iot_e_hardware": ["ESP32", "Sensores (RFID, Ultrassônico, etc)", "MQTT", "WebSockets"],
+    "design_e_outros": ["CorelDraw", "Illustrator", "InDesign", "Photoshop", "Integração com IA (ChatGPT, Bard/Gemini)"]
+  },
+  "projetos_e_produtos": [
+    {
+      "nome": "Git Assets",
+      "ano": "2026",
+      "url": "https://gitassets.victorlisbronzo.me",
+      "descricao": "Micro-SaaS para descobrir e comprar assets reutilizáveis para turbinar perfis do GitHub e documentações.",
+      "repositorio": "https://github.com/victor-lis/gitassets-showcase"
+    },
+    {
+      "nome": "CodeUp",
+      "ano": "2025",
+      "descricao": "Plataforma projetada para elevar o nível de lógica de programação e proficiência em Python dos usuários."
+    },
+    {
+      "nome": "Eco-Play (TCC)",
+      "ano": "2024",
+      "descricao": "Lixeira inteligente com IoT (ESP32) que identifica os materiais descartados e fornece recompensas. Visa combater o descarte incorreto. Artigo científico publicado sobre o projeto."
+    },
+    {
+      "nome": "Festival da Primavera",
+      "ano": "2024",
+      "descricao": "Plataforma desenvolvida para divulgação e inscrição dos alunos durante o Festival de Primavera na Etec."
+    },
+    {
+      "nome": "Etec Chamados",
+      "ano": "2024",
+      "descricao": "Sistema de chamados criado para auxiliar a secretaria da Etec na inscrição de alunos no começo do ano.",
+      "repositorio": "https://github.com/Victor-Lis/Etec-Chamados"
+    },
+    {
+      "nome": "In.Orbit Web",
+      "ano": "2024",
+      "descricao": "Projeto full-stack desenvolvido seguindo a NLW (Next Level Week) da Rocketseat.",
+      "repositorio": "https://github.com/Victor-Lis/In.Orbit-Web"
+    },
+    {
+      "nome": "Resistor Calculator App",
+      "ano": "N/D",
+      "descricao": "Aplicativo criado para ajudar colegas com dificuldades na matéria de Sistemas Embarcados (S.E.)."
+    },
+    {
+      "nome": "Collision-with-ThreeJS",
+      "ano": "N/D",
+      "descricao": "Experimento gráfico de detecção de colisão utilizando a biblioteca 3D Three.js.",
+      "repositorio": "https://github.com/victor-lis/Collision-with-ThreeJS"
+    }
+  ],
+  "pesquisa_e_producao_de_conteudo": {
+    "publicacoes_academicas": [
+      {
+        "titulo": "Artigo científico sobre o projeto Eco-Play",
+        "evento": "V Congresso de Pesquisa e Iniciação Científica da UNIFAAT",
+        "ano": "2024 (Apresentação) / 2025 (Publicação)",
+        "revista": "Revista Momentum, v. 1 n. 23, 2025",
+        "detalhes": "Apresentação de TCC que ajudou a aperfeiçoar habilidades comunicativas."
+      }
+    ],
+    "artigos_linkedin": [
+      "Backup automatizado PostgreSQL -> Google Drive",
+      "Webhooks no localhost usando Ngrok",
+      "NGINX Dinâmico com Docker"
+    ],
+    "workshops_participados": [
+      "Workshop de RAG (Retrieval-Augmented Generation) com GCP do Google Developer Groups"
+    ],
+    "metricas_github_2026": {
+      "repositorios_publicos": 98,
+      "estrelas_acumuladas": 221,
+      "seguidores": 81
+    }
+  },
+  "certificacoes_e_cursos_complementares": [
+    {
+      "nome": "Web Designer / Dev Front-End e Robótica",
+      "ano": "2025",
+      "detalhes": "Design (CorelDraw, Illustrator, InDesign, Photoshop), Web (HTML, CSS, JS) e IAs gen."
+    },
+    {
+      "nome": "NextJS do Zero ao Avançado",
+      "instituicao": "Sujeito Programador / Cod3r Cursos Online",
+      "ano": "2024/2023",
+      "detalhes": "Aprofundamento prático no ecossistema Next.js."
+    },
+    {
+      "nome": "Curso Web Completo com Javascript + Projetos",
+      "ano": "2024",
+      "detalhes": "Visão completa sobre programação web e tecnologias fundamentais."
+    },
+    {
+      "nome": "Diversas Certificações DIO",
+      "instituicao": "Digital Innovation One (DIO)",
+      "detalhes": "Git/GitHub, SQL, BI, Open Source e Portfólio Profissional."
+    },
+    {
+      "nome": "Cursos Senai",
+      "instituicao": "Senai Bragança Paulista (parceria com a Etec)",
+      "ano": "2023"
+    }
+  ],
+  "desambiguacao_de_perfil": {
+    "aviso_para_ia": "ATENÇÃO: O usuário NÃO é nenhuma das seguintes pessoas/entidades:",
+    "nao_confundir_com": [
+      "victor-li (Focado em Segurança/Clojure/Go)",
+      "lxwvictor (Focado em Machine Learning)",
+      "Victor-wind (Programação competitiva USACO)",
+      "B-Boy Victor (Olimpíadas)",
+      "Victor Liz (Jogador de basquete)",
+      "Victorious Youth (Estátua do museu Getty)"
+    ]
+  }
+}
