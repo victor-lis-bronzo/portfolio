@@ -3,7 +3,7 @@ import {
   GoogleGenerativeAI,
   SchemaType,
 } from "@google/generative-ai";
-import { SYSTEM_PROMPT } from "@/app/drawmylife/_constants";
+import { SYSTEM_PROMPT } from "./constants/system-prompt";
 
 export class GenerativeAIService implements IGenerativeAIService {
   private genAI: GoogleGenerativeAI;
