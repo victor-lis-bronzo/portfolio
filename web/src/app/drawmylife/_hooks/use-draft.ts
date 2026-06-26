@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { DraftData } from "../_types";
 
 interface UseDraftOptions {
@@ -15,16 +15,16 @@ export function useDraft({ onSubmit }: UseDraftOptions) {
     }
   }, [draft]);
 
-  const submitDraft = () => {
+  const submitDraft = useCallback(() => {
     if (!draft) return;
     const textTrimmed = draft.text.trim();
     setDraft(null);
     if (textTrimmed !== "") {
       onSubmit({ text: textTrimmed, x: draft.x, y: draft.y });
     }
-  };
+  }, [draft, onSubmit]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       submitDraft();
@@ -32,21 +32,21 @@ export function useDraft({ onSubmit }: UseDraftOptions) {
     if (e.key === "Escape") {
       setDraft(null);
     }
-  };
+  }, [submitDraft]);
 
-  const startDraft = ({ x, y }: { x: number; y: number }) => {
+  const startDraft = useCallback(({ x, y }: { x: number; y: number }) => {
     setDraft({ x, y, text: "" });
-  };
+  }, []);
 
-  const clearDraft = () => {
+  const clearDraft = useCallback(() => {
     setDraft(null);
-  };
+  }, []);
 
-  const updateDraftText = (text: string) => {
+  const updateDraftText = useCallback((text: string) => {
     if (draft) {
       setDraft({ ...draft, text });
     }
-  };
+  }, [draft]);
 
   return {
     draft,

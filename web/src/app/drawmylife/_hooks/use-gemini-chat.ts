@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { BoardNodeData } from "../_types";
 
 export function useGeminiChat() {
@@ -6,7 +6,7 @@ export function useGeminiChat() {
   const [loading, setLoading] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const addNode = ({
+  const addNode = useCallback(({
     text,
     x,
     y,
@@ -27,9 +27,9 @@ export function useGeminiChat() {
     };
     setNodes((prev) => [...prev, newNode]);
     return newNode;
-  };
+  }, []);
 
-  const askGemini = async ({
+  const askGemini = useCallback(async ({
     userText,
     x,
     y,
@@ -100,21 +100,21 @@ export function useGeminiChat() {
         setLoading(false);
       }
     }
-  };
+  }, [addNode]);
 
-  const stopGeneration = () => {
+  const stopGeneration = useCallback(() => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
     setLoading(false);
-  };
+  }, []);
 
-  const resetChat = () => {
+  const resetChat = useCallback(() => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
     setNodes([]);
-  };
+  }, []);
 
   useEffect(() => {
     return () => {

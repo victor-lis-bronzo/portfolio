@@ -20,7 +20,7 @@ export function useCanvas(activeTool: ToolType) {
 
   const boardRef = useRef<HTMLDivElement>(null);
 
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (e.target !== boardRef.current) return;
 
     const shouldPan = activeTool === "pan" || e.button === 1;
@@ -33,7 +33,7 @@ export function useCanvas(activeTool: ToolType) {
       lastX: e.clientX,
       lastY: e.clientY,
     };
-  };
+  }, [activeTool]);
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
@@ -59,7 +59,7 @@ export function useCanvas(activeTool: ToolType) {
     [],
   );
 
-  const handlePointerUp = ({
+  const handlePointerUp = useCallback(({
     e,
     onCanvasClick,
   }: {
@@ -87,9 +87,9 @@ export function useCanvas(activeTool: ToolType) {
         onCanvasClick({ virtualX, virtualY });
       }
     }
-  };
+  }, [activeTool, camera.x, camera.y]);
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     if (e.target !== boardRef.current) return;
 
     const touch = e.touches[0];
@@ -105,7 +105,7 @@ export function useCanvas(activeTool: ToolType) {
       lastX: touch.clientX,
       lastY: touch.clientY,
     };
-  };
+  }, [activeTool]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     const state = pointerState.current;
@@ -130,7 +130,7 @@ export function useCanvas(activeTool: ToolType) {
     }
   }, []);
 
-  const handleTouchEnd = ({
+  const handleTouchEnd = useCallback(({
     e,
     onCanvasClick,
   }: {
@@ -161,9 +161,9 @@ export function useCanvas(activeTool: ToolType) {
         }
       }
     }
-  };
+  }, [activeTool, camera.x, camera.y]);
 
-  const moveCameraTo = ({ x, y }: { x: number; y: number }) => {
+  const moveCameraTo = useCallback(({ x, y }: { x: number; y: number }) => {
     const CAMERA_X_OFFSET = DRAFT_WIDTH / 2; // Esquerda: -; Direita +
     const CAMERA_Y_OFFSET = DRAFT_HEIGHT / 1.05; // Cima: -; Baixo +
 
@@ -173,14 +173,14 @@ export function useCanvas(activeTool: ToolType) {
       x: halfX - x - CAMERA_X_OFFSET,
       y: halfY - y - CAMERA_Y_OFFSET,
     });
-  };
+  }, []);
 
-  const resetCamera = () => {
+  const resetCamera = useCallback(() => {
     setCamera({
       x: typeof window !== "undefined" ? window.innerWidth / 2 : 500,
       y: typeof window !== "undefined" ? window.innerHeight / 2 : 500,
     });
-  };
+  }, []);
 
   return {
     camera,
