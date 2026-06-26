@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
-import { GenerativeAIService } from "../services/generative-ai.service";
-import { FirebaseService } from "../services/firebase.service";
+import { GenerativeAIService } from "../services/generative-ai/generative-ai.service";
+import { FirebaseService } from "../services/firebase/firebase.service";
 import { firebaseConfig } from "../config/firebase-config";
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";

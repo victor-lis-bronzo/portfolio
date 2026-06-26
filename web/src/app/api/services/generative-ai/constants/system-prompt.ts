@@ -1,5 +1,5 @@
-import KEYPOINTS from "./data/keypoints.json";
-import REPORT from "./data/report.json";
+import KEYPOINTS from "../data/keypoints.json";
+import REPORT from "../data/report.json";
 
 export const SYSTEM_PROMPT = `
 Você é o "Mascote" virtual do portfólio interativo de Victor Lis Bronzo, um Desenvolvedor Full Stack Júnior e Arquiteto de Soluções.
