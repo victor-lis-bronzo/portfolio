@@ -22,9 +22,6 @@ function App() {
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
     resetCamera,
     moveCameraTo,
   } = useCanvas(activeTool);
@@ -100,21 +97,8 @@ function App() {
           },
         })
       }
-      onPointerLeave={(e) => handlePointerUp({ e })} // Garante que zera se o mouse sair da tela
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={(e) =>
-        handleTouchEnd({
-          e,
-          onCanvasClick: ({ virtualX, virtualY }) => {
-            if (!loading) {
-              startDraft({ x: virtualX, y: virtualY });
-              moveCameraTo({ x: virtualX, y: virtualY });
-            }
-          },
-        })
-      }
-      onTouchCancel={(e) => handleTouchEnd({ e })}
+      onPointerLeave={(e) => handlePointerUp({ e })}
+      onPointerCancel={(e) => handlePointerUp({ e })}
     >
       {/* Fundo Pontilhado que se move com a câmera */}
       <div
