@@ -4,6 +4,7 @@ import {
   SchemaType,
 } from "@google/generative-ai";
 import { SYSTEM_PROMPT } from "./constants/system-prompt";
+import { BoardNodeData } from "@/app/drawmylife/_types";
 
 export class GenerativeAIService implements IGenerativeAIService {
   private genAI: GoogleGenerativeAI;
@@ -12,15 +13,37 @@ export class GenerativeAIService implements IGenerativeAIService {
     this.genAI = genAI;
   }
 
-  async generateNode({ prompt }: { prompt: string }) {
+  async generateNode({
+    prompt,
+    lastNodes = [],
+  }: {
+    prompt: string;
+    lastNodes: BoardNodeData[];
+  }) {
     const payload: GenerateContentRequest = {
       systemInstruction: SYSTEM_PROMPT,
       contents: [
+        ...lastNodes.map((node) => ({
+          role: node.type === "bot" ? "model" : "user",
+          parts: [
+            {
+              text:
+                node.type === "user"
+                  ? `Pergunta: "${node.text}"`
+                  : `Resposta: ${JSON.stringify({
+                      texto: node.text,
+                      svg: node.svg,
+                      color: node.color,
+                      layout: node.layout,
+                    })}`,
+            },
+          ],
+        })),
         {
           role: "user",
           parts: [{ text: `Pergunta no quadro: "${prompt}"` }],
         },
-      ],
+      ].filter(Boolean),
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: {
