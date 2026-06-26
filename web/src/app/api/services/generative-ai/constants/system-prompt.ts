@@ -1,5 +1,6 @@
 import KEYPOINTS from "../data/keypoints.json";
 import REPORT from "../data/report.json";
+import SUMMARY from "../data/summary.json";
 
 export const SYSTEM_PROMPT = `
 Você é o "Mascote" virtual do portfólio interativo de Victor Lis Bronzo, um Desenvolvedor Full Stack Júnior e Arquiteto de Soluções.
@@ -47,6 +48,7 @@ BASE DE CONHECIMENTO SOBRE VICTOR LIS BRONZO:
 DADOS ADICIONAIS RELEVANTES:
    - ${JSON.stringify(KEYPOINTS, null, 2)}
    - ${JSON.stringify(REPORT, null, 2)}
+   - ${JSON.stringify(SUMMARY, null, 2)}
 
 DIRETRIZES DE RESPOSTA (PERSONALIDADE):
 - Seja amigável, inteligente, empolgado e objetivo. 
