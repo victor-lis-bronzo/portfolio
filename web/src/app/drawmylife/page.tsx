@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Loader2, RotateCcw, X } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useState } from "react";
 import { BoardNode } from "./_components/board-node";
 import { Toolbar } from "./_components/toolbar";
-import { ToolType } from "./_types";
-import { useCanvas } from "./_hooks/use-canvas";
-import { useGeminiChat } from "./_hooks/use-gemini-chat";
-import { useDraft } from "./_hooks/use-draft";
-import dynamic from "next/dynamic";
-
 import { DRAFT_HEIGHT, DRAFT_WIDTH } from "./_constants";
+import { useCanvas } from "./_hooks/use-canvas";
+import { useDraft } from "./_hooks/use-draft";
+import { useGeminiChat } from "./_hooks/use-gemini-chat";
+import type { ToolType } from "./_types";
 
 function App() {
   const [activeTool, setActiveTool] = useState<ToolType>("text");
@@ -24,14 +22,20 @@ function App() {
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
     resetCamera,
     moveCameraTo,
   } = useCanvas(activeTool);
 
-  const onSubmit = ({ text, x, y }: { text: string; x: number; y: number }) => {
-    const newNode = addNode({ text, x, y, type: "user" });
-    askGemini({ userText: newNode.text, x: newNode.x, y: newNode.y });
-  };
+  const onSubmit = useCallback(
+    ({ text, x, y }: { text: string; x: number; y: number }) => {
+      const newNode = addNode({ text, x, y, type: "user" });
+      askGemini({ userText: newNode.text, x: newNode.x, y: newNode.y });
+    },
+    [addNode, askGemini],
+  );
 
   const {
     draft,
@@ -45,11 +49,11 @@ function App() {
     onSubmit,
   });
 
-  const resetBoard = () => {
+  const resetBoard = useCallback(() => {
     resetChat();
     resetCamera();
     clearDraft();
-  };
+  }, [resetChat, resetCamera, clearDraft]);
 
   const getCursorStyle = () => {
     if (activeTool === "pan") return "cursor-grab active:cursor-grabbing";
@@ -78,11 +82,11 @@ function App() {
       document.head.removeChild(link);
       resetBoard();
     };
-  }, []);
+  }, [moveCameraTo, onSubmit, resetBoard]);
 
   return (
     <div
-      className={`relative w-full h-screen overflow-hidden bg-[#f8f9fa] text-gray-800 font-sans select-none ${getCursorStyle()}`}
+      className={`relative w-full h-screen overflow-hidden bg-[#f8f9fa] text-gray-800 font-sans select-none touch-none ${getCursorStyle()}`}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={(e) =>
@@ -97,6 +101,20 @@ function App() {
         })
       }
       onPointerLeave={(e) => handlePointerUp({ e })} // Garante que zera se o mouse sair da tela
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={(e) =>
+        handleTouchEnd({
+          e,
+          onCanvasClick: ({ virtualX, virtualY }) => {
+            if (!loading) {
+              startDraft({ x: virtualX, y: virtualY });
+              moveCameraTo({ x: virtualX, y: virtualY });
+            }
+          },
+        })
+      }
+      onTouchCancel={(e) => handleTouchEnd({ e })}
     >
       {/* Fundo Pontilhado que se move com a câmera */}
       <div

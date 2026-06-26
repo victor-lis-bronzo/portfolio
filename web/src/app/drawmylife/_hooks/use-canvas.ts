@@ -1,6 +1,7 @@
-import React, { useState, useRef, useCallback } from "react";
-import { CameraData, PointerStateData, ToolType } from "../_types";
+import type React from "react";
+import { useCallback, useRef, useState } from "react";
 import { DRAFT_HEIGHT, DRAFT_WIDTH } from "../_constants";
+import type { CameraData, PointerStateData, ToolType } from "../_types";
 
 export function useCanvas(activeTool: ToolType) {
   const [camera, setCamera] = useState<CameraData>(() => ({
@@ -88,6 +89,80 @@ export function useCanvas(activeTool: ToolType) {
     }
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.target !== boardRef.current) return;
+
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const shouldPan = activeTool === "pan";
+
+    pointerState.current = {
+      isPanning: shouldPan,
+      isDragging: false,
+      startX: touch.clientX,
+      startY: touch.clientY,
+      lastX: touch.clientX,
+      lastY: touch.clientY,
+    };
+  };
+
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const state = pointerState.current;
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    if (state.isPanning) {
+      const dx = touch.clientX - state.lastX;
+      const dy = touch.clientY - state.lastY;
+
+      setCamera((prev) => ({ x: prev.x + dx, y: prev.y + dy }));
+
+      state.lastX = touch.clientX;
+      state.lastY = touch.clientY;
+      state.isDragging = true;
+    } else {
+      const dx = touch.clientX - state.startX;
+      const dy = touch.clientY - state.startY;
+      if (Math.abs(dx) + Math.abs(dy) > 5) {
+        state.isDragging = true;
+      }
+    }
+  }, []);
+
+  const handleTouchEnd = ({
+    e,
+    onCanvasClick,
+  }: {
+    e: React.TouchEvent<HTMLDivElement>;
+    onCanvasClick?: (params: { virtualX: number; virtualY: number }) => void;
+  }) => {
+    const state = pointerState.current;
+    const wasDragging = state.isDragging;
+
+    state.isPanning = false;
+
+    if (
+      !wasDragging &&
+      e.target === boardRef.current &&
+      activeTool === "text"
+    ) {
+      if (onCanvasClick) {
+        const touch = e.changedTouches[0];
+        if (touch) {
+          const rect = boardRef.current.getBoundingClientRect();
+          const screenX = touch.clientX - rect.left;
+          const screenY = touch.clientY - rect.top;
+
+          const virtualX = screenX - camera.x;
+          const virtualY = screenY - camera.y;
+
+          onCanvasClick({ virtualX, virtualY });
+        }
+      }
+    }
+  };
+
   const moveCameraTo = ({ x, y }: { x: number; y: number }) => {
     const CAMERA_X_OFFSET = DRAFT_WIDTH / 2; // Esquerda: -; Direita +
     const CAMERA_Y_OFFSET = DRAFT_HEIGHT / 1.05; // Cima: -; Baixo +
@@ -114,6 +189,9 @@ export function useCanvas(activeTool: ToolType) {
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
     resetCamera,
   };
 }
