@@ -20,10 +20,12 @@ export async function POST(req: Request) {
 
     const { response } = await aIService.generateNode({ prompt: userText });
 
-    await firebaseService.savePromptAndReponse({
-      prompt: userText,
-      response,
-    });
+    if (process.env.NODE_ENV === "production") {
+      await firebaseService.savePromptAndReponse({
+        prompt: userText,
+        response,
+      });
+    }
 
     return NextResponse.json({ text: response });
   } catch (error) {
