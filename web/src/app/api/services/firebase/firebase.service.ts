@@ -12,13 +12,13 @@ export class FirebaseService implements IFirebaseService {
     response,
   }: {
     prompt: string;
-    response: any;
+    response: string;
   }) {
     let parsedResponse = response;
     try {
       parsedResponse = JSON.parse(response);
     } catch (error) {
-      parsedResponse = "";
+      parsedResponse = response;
     }
 
     await addDoc(collection(this.db, "query"), {
