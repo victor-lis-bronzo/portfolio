@@ -131,30 +131,33 @@ function App() {
           ))}
 
           {/* Textarea onde o usuário digita (Rascunho) */}
-          {draft && (
-            <div
-              className="absolute z-20  pointer-events-none"
-              style={{ left: draft.x, top: draft.y }}
-            >
-              <textarea
-                ref={inputRef}
-                value={draft.text}
-                onChange={(e) => updateDraftText(e.target.value)}
-                onKeyDown={handleKeyDown}
-                onBlur={submitDraft} // Salva se clicar fora
-                className="bg-transparent outline-none overflow-hidden text-blue-800 placeholder-blue-300"
-                style={{
-                  fontFamily: "'Patrick Hand', cursive",
-                  fontSize: "1.25rem",
-                  minWidth: `${DRAFT_WIDTH}px`,
-                  minHeight: `${DRAFT_HEIGHT}px`,
-                  resize: "both", // Permite esticar manualmente se necessário
-                  whiteSpace: "pre-wrap",
-                }}
-                placeholder="Escreva algo e aperte Enter..."
-              />
-            </div>
-          )}
+          <div
+            className="absolute z-20"
+            style={{
+              left: draft?.x ?? 0,
+              top: draft?.y ?? 0,
+              opacity: draft ? 1 : 0,
+              pointerEvents: draft ? "auto" : "none",
+            }}
+          >
+            <textarea
+              ref={inputRef}
+              value={draft?.text ?? ""}
+              onChange={(e) => updateDraftText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onBlur={submitDraft} // Salva se clicar fora
+              className="bg-transparent outline-none overflow-hidden text-blue-800 placeholder-blue-300"
+              style={{
+                fontFamily: "'Patrick Hand', cursive",
+                fontSize: "1.25rem",
+                minWidth: `${DRAFT_WIDTH}px`,
+                minHeight: `${DRAFT_HEIGHT}px`,
+                resize: "both", // Permite esticar manualmente se necessário
+                whiteSpace: "pre-wrap",
+              }}
+              placeholder="Escreva algo e aperte Enter..."
+            />
+          </div>
         </div>
       </div>
     </div>

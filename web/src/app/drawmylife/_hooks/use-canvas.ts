@@ -51,7 +51,7 @@ export function useCanvas(activeTool: ToolType) {
       } else {
         const dx = e.clientX - state.startX;
         const dy = e.clientY - state.startY;
-        if (Math.abs(dx) + Math.abs(dy) > 5) {
+        if (dx * dx + dy * dy > 225) { // 15px threshold (15 * 15)
           state.isDragging = true;
         }
       }
