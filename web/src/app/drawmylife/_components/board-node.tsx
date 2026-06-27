@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Bot } from "lucide-react";
 import { BoardNodeData } from "../_types";
+import Image from "next/image";
 
 interface BoardNodeProps {
   node: BoardNodeData;
@@ -46,7 +47,13 @@ export function BoardNode({ node }: BoardNodeProps) {
       ) : (
         <div className="flex gap-4 items-start pointer-events-none">
           <div className="flex-shrink-0 bg-indigo-50 border-2 border-indigo-200 text-indigo-600 w-12 h-12 rounded-full flex items-center justify-center shadow-sm relative">
-            <Bot size={28} />
+            {/* <Bot size={28} /> */}
+            <Image
+              src={"/pet/pet-original.png"}
+              alt="Logo"
+              width={28}
+              height={28}
+            />
             {isTyping && (
               <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
