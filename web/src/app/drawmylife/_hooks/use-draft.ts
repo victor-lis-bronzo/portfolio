@@ -9,11 +9,13 @@ export function useDraft({ onSubmit }: UseDraftOptions) {
   const [draft, setDraft] = useState<DraftData | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    if (draft && inputRef.current) {
+  const startDraft = useCallback(({ x, y }: { x: number; y: number }) => {
+    setDraft({ x, y, text: "" });
+    // Foca de forma síncrona para garantir a abertura do teclado no mobile
+    if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [draft]);
+  }, []);
 
   const submitDraft = useCallback(() => {
     if (!draft) return;
@@ -33,10 +35,6 @@ export function useDraft({ onSubmit }: UseDraftOptions) {
       setDraft(null);
     }
   }, [submitDraft]);
-
-  const startDraft = useCallback(({ x, y }: { x: number; y: number }) => {
-    setDraft({ x, y, text: "" });
-  }, []);
 
   const clearDraft = useCallback(() => {
     setDraft(null);

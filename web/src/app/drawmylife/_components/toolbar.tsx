@@ -24,27 +24,17 @@ export function Toolbar({
   if (loading) {
     return (
       <div className="absolute top-1/2 right-6 -translate-y-1/2 z-30 flex flex-col items-center gap-3 bg-white/95 backdrop-blur-md px-3 py-4 rounded-2xl shadow-lg border border-gray-200/50 select-none">
-        {/* <Sparkles className="text-indigo-500 animate-pulse" size={20} /> */}
-        <div className="flex justify-center items-center gap-2.5 py-1 my-2 rotate-90">
-          <div
-            className="w-3 h-3 rounded-full shadow-[0_0_6px_rgba(59,130,246,0.6)] animate-bounce bg-gray-400/60"
-            style={{ animationDelay: "0ms", animationDuration: "1s" }}
-          />
-          <div
-            className="w-3 h-3 rounded-full shadow-[0_0_6px_rgba(168,85,247,0.6)] animate-bounce bg-gray-400/60"
-            style={{ animationDelay: "150ms", animationDuration: "1s" }}
-          />
-          <div
-            className="w-3 h-3 rounded-full shadow-[0_0_6px_rgba(236,72,153,0.6)] animate-bounce bg-gray-400/60"
-            style={{ animationDelay: "300ms", animationDuration: "1s" }}
-          />
+        <div className="p-2.5 rounded-xl bg-indigo-50 flex items-center justify-center gap-1.5 w-10 h-10 shadow-inner">
+          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: "0ms", animationDuration: "1s" }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: "150ms", animationDuration: "1s" }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: "300ms", animationDuration: "1s" }} />
         </div>
         <button
-          className="p-2 rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 text-gray-600"
+          className="p-2.5 rounded-xl transition-all duration-200 cursor-pointer hover:bg-red-50 hover:text-red-600 text-gray-500 hover:scale-105"
           onClick={stopGeneration}
           title="Cancelar"
         >
-          <X size={18} />
+          <X size={20} />
         </button>
       </div>
     );
