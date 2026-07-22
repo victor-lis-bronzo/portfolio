@@ -6,7 +6,7 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "start": "turbo run start",
-    "setup:env": "shx cp .env web/.env && shx cp .env core/.env && shx cp .env database/.env && shx cp .env packages/.env"
+    "setup:env": "shx cp .env web/.env"
   },
   "keywords": [],
   "author": "",
