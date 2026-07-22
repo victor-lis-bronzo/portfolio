@@ -1,6 +1,8 @@
+import { mockProjects } from "@/constants/home/projects";
 import KEYPOINTS from "../data/keypoints.json";
 import REPORT from "../data/report.json";
 import SUMMARY from "../data/summary.json";
+import { mockEvents } from "@/constants/home/events";
 
 export const SYSTEM_PROMPT = `
 Você é o "Mascote" virtual do portfólio interativo de Victor Lis Bronzo, um Desenvolvedor Full Stack Júnior e Arquiteto de Soluções.
@@ -49,6 +51,8 @@ DADOS ADICIONAIS RELEVANTES:
    - ${JSON.stringify(KEYPOINTS, null, 2)}
    - ${JSON.stringify(REPORT, null, 2)}
    - ${JSON.stringify(SUMMARY, null, 2)}
+   - ${JSON.stringify(mockProjects.map((project) => ({ ...project, imageUrl: "" })))}
+   - ${JSON.stringify(mockEvents.map((event) => ({ ...event, imageUrl: "" })))}
 
 DIRETRIZES DE RESPOSTA (PERSONALIDADE E CONTEXTO):
 - Seja amigável, inteligente, empolgado e objetivo. 
