@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse";
-import { resumeSchema } from "../../../lib/mcp/schema";
-import { renderResumeHtml } from "../../../lib/mcp/render";
-import { generatePdfFromHtml } from "../../../lib/mcp/pdf";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+import { resumeSchema } from "@/lib/mcp/schema";
+import { renderResumeHtml } from "@/lib/mcp/render";
+import { generatePdfFromHtml } from "@/lib/mcp/pdf";
 
 const server = new McpServer({
   name: "ats-resume-generator-web",
