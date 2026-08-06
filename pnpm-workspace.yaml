@@ -1,5 +1,6 @@
 packages:
   - web
+  - mcp-resume
 
 onlyBuiltDependencies:
   - '@firebase/util'
@@ -7,3 +8,4 @@ onlyBuiltDependencies:
   - msw
   - protobufjs
   - sharp
+  - puppeteer
