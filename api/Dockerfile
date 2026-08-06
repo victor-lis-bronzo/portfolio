@@ -1,10 +1,10 @@
 # Multi-stage build
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
 # Enable corepack for pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.26.0 --activate
 
 # Copy package definition
 COPY package.json pnpm-lock.yaml* ./
@@ -20,11 +20,11 @@ COPY src ./src
 RUN pnpm run build
 
 # Stage 2: Runner
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.26.0 --activate
 
 ENV NODE_ENV=production
 ENV PORT=3001
