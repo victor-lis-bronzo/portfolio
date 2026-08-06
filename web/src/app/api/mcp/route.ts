@@ -5,6 +5,17 @@ import { resumeSchema } from "@/lib/mcp/schema";
 import { renderResumeHtml } from "@/lib/mcp/render";
 import { generatePdfFromHtml } from "@/lib/mcp/pdf";
 
+// 1. Diretivas Críticas para Next.js / Vercel
+export const dynamic = "force-dynamic";
+export const maxDuration = 60; // Estende o timeout da Serverless Function
+
+// 2. Políticas de CORS inegociáveis para conexões de clientes remotos (Gemini)
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 const server = new McpServer({
   name: "ats-resume-generator-web",
   version: "1.0.0",
@@ -22,56 +33,34 @@ server.tool(
           .map((i) => `${i.path.join(".") || "root"}: ${i.message}`)
           .join("; ");
         return {
-          content: [
-            {
-              type: "text",
-              text: `Erro de compilação: O campo de entrada possui erros de validação: ${issues}. Corrija o JSON e tente novamente.`,
-            },
-          ],
+          content: [{ type: "text", text: `Erro de validação: ${issues}. Corrija o JSON e tente novamente.` }],
           isError: true,
         };
       }
 
       const html = renderResumeHtml(parsed.data);
       const pdfPath = await generatePdfFromHtml(html, parsed.data.outputFilename);
-      const normalizedPath = pdfPath.replace(/\\/g, "/");
 
       return {
-        content: [
-          {
-            type: "text",
-            text: `Arquivo PDF gerado e salvo com sucesso em: ${normalizedPath}. Avise o usuário que o arquivo está pronto.`,
-          },
-        ],
+        content: [{ type: "text", text: `Arquivo PDF gerado e salvo com sucesso em: ${pdfPath.replace(/\\/g, "/")}. Avise o usuário que o arquivo está pronto.` }],
       };
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       return {
-        content: [
-          {
-            type: "text",
-            text: `Erro de compilação ao gerar o PDF: ${errorMessage}. Corrija o JSON e tente novamente.`,
-          },
-        ],
+        content: [{ type: "text", text: `Erro crítico na geração do PDF: ${errorMessage}` }],
         isError: true,
       };
     }
   }
 );
 
-// Mapeamento de sessões ativas do transporte SSE
+// Mapeamento em memória. Atenção: Isso é volátil em arquiteturas Serverless.
 const activeTransports = new Map<string, SSEServerTransport>();
 
-/**
- * Cria um adaptador de resposta do Node.js sobre um ReadableStream Web nativo do Next.js App Router
- */
 function createSseAdapter() {
   const encoder = new TextEncoder();
   let controllerRef: ReadableStreamDefaultController | null = null;
-  const listeners: Record<string, Array<() => void>> = {
-    close: [],
-    finish: [],
-  };
+  const listeners: Record<string, Array<() => void>> = { close: [], finish: [] };
 
   const stream = new ReadableStream({
     start(controller) {
@@ -83,50 +72,51 @@ function createSseAdapter() {
   });
 
   const mockRes = {
-    writeHead(_status: number, _headers?: Record<string, string>) {
-      return mockRes;
-    },
-    write(chunk: string | Uint8Array) {
+    writeHead: () => mockRes,
+    write: (chunk: string | Uint8Array) => {
       if (controllerRef) {
-        const data = typeof chunk === "string" ? encoder.encode(chunk) : chunk;
-        controllerRef.enqueue(data);
+        controllerRef.enqueue(typeof chunk === "string" ? encoder.encode(chunk) : chunk);
       }
       return true;
     },
-    end() {
+    end: () => {
       if (controllerRef) {
-        try {
-          controllerRef.close();
-        } catch {}
+        try { controllerRef.close(); } catch { }
       }
     },
-    on(event: string, listener: () => void) {
-      if (listeners[event]) {
-        listeners[event].push(listener);
-      }
+    on: (event: string, listener: () => void) => {
+      if (listeners[event]) listeners[event].push(listener);
       return mockRes;
     },
-    once(event: string, listener: () => void) {
-      if (listeners[event]) {
-        listeners[event].push(listener);
-      }
+    once: (event: string, listener: () => void) => {
+      if (listeners[event]) listeners[event].push(listener);
       return mockRes;
     },
-    emit(event: string) {
-      if (listeners[event]) {
-        listeners[event].forEach((fn) => fn());
-      }
+    emit: (event: string) => {
+      if (listeners[event]) listeners[event].forEach((fn) => fn());
     },
   };
 
   return { stream, mockRes };
 }
 
+// 3. Método OPTIONS: O porteiro que aprova a conexão do Gemini
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: CORS_HEADERS,
+  });
+}
+
 export async function GET(req: NextRequest) {
   const { stream, mockRes } = createSseAdapter();
 
-  const transport = new SSEServerTransport("/api/mcp", mockRes as any);
-  
+  // A URL de callback precisa ser a rota absoluta baseada na requisição atual
+  const url = new URL(req.url);
+  const callbackUrl = `${url.origin}${url.pathname}`;
+
+  const transport = new SSEServerTransport(callbackUrl, mockRes as any);
+
   const sessionId = transport.sessionId;
   activeTransports.set(sessionId, transport);
 
@@ -138,9 +128,10 @@ export async function GET(req: NextRequest) {
 
   return new Response(stream, {
     headers: {
+      ...CORS_HEADERS,
       "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache",
-      Connection: "keep-alive",
+      "Cache-Control": "no-cache, no-transform",
+      "Connection": "keep-alive",
     },
   });
 }
@@ -149,60 +140,35 @@ export async function POST(req: NextRequest) {
   const url = new URL(req.url);
   const sessionId = url.searchParams.get("sessionId");
 
-  // Se houver um sessionId ativo na query string, repassa para o transporte SSE do MCP
   if (sessionId && activeTransports.has(sessionId)) {
     const transport = activeTransports.get(sessionId)!;
     const body = await req.json();
 
     const mockRes = {
-      writeHead(_status: number) {
-        return mockRes;
-      },
-      end() {},
+      writeHead: () => mockRes,
+      end: () => { },
     };
 
     await transport.handlePostMessage(req as any, mockRes as any, body);
-    return new Response("Accepted", { status: 202 });
+
+    return new Response("Accepted", {
+      status: 202,
+      headers: CORS_HEADERS
+    });
   }
 
-  // Caso contrário, lida como uma chamada direta de API JSON
+  // Fallback para fallback de requisições JSON diretas
   try {
     const body = await req.json();
-
-    // Chamada no formato JSON-RPC 2.0
-    if (body?.method === "tools/call" && body?.params?.name === "generate_ats_resume_pdf") {
-      const parsed = resumeSchema.safeParse(body.params.arguments);
-      if (!parsed.success) {
-        return Response.json({
-          jsonrpc: "2.0",
-          id: body.id,
-          error: { code: -32602, message: parsed.error.message }
-        }, { status: 400 });
-      }
-      const html = renderResumeHtml(parsed.data);
-      const pdfPath = await generatePdfFromHtml(html, parsed.data.outputFilename);
-      return Response.json({
-        jsonrpc: "2.0",
-        id: body.id,
-        result: {
-          content: [{ type: "text", text: `Arquivo PDF gerado e salvo com sucesso em: ${pdfPath.replace(/\\/g, "/")}` }]
-        }
-      });
-    }
-
-    // Chamada com o JSON direto do currículo
     const parsed = resumeSchema.parse(body);
     const html = renderResumeHtml(parsed);
     const pdfPath = await generatePdfFromHtml(html, parsed.outputFilename);
-    const normalizedPath = pdfPath.replace(/\\/g, "/");
 
     return Response.json({
       success: true,
-      message: `Arquivo PDF gerado e salvo com sucesso em: ${normalizedPath}`,
-      path: normalizedPath,
-    });
+      path: pdfPath.replace(/\\/g, "/"),
+    }, { headers: CORS_HEADERS });
   } catch (err: unknown) {
-    const errorMessage = err instanceof Error ? err.message : String(err);
-    return Response.json({ error: `Erro na geração de PDF: ${errorMessage}` }, { status: 500 });
+    return Response.json({ error: `Erro: ${err}` }, { status: 500, headers: CORS_HEADERS });
   }
 }
