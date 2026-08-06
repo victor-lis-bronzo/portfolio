@@ -2,15 +2,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Handlebars from 'handlebars';
-import { type ResumeData } from './schema.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { type ResumeData } from './schema';
 
 export function renderResumeHtml(data: ResumeData): string {
-  let templatePath = path.resolve(__dirname, '../templates/resume.hbs');
+  // process.cwd() aponta para a raiz do pacote 'web' tanto no dev server do Next.js quanto via script npx tsx
+  let templatePath = path.resolve(process.cwd(), 'src/lib/mcp/templates/resume.hbs');
+  
   if (!fs.existsSync(templatePath)) {
-    templatePath = path.resolve(__dirname, '../../templates/resume.hbs');
+    // Fallback caso seja executado de outro diretório acidentalmente
+    templatePath = path.resolve(process.cwd(), 'lib/mcp/templates/resume.hbs');
   }
 
   if (!fs.existsSync(templatePath)) {

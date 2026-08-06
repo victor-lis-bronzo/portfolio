@@ -1,27 +1,29 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { resumeSchema } from './schema.js';
-import { renderResumeHtml } from './render.js';
-import { generatePdfFromHtml } from './pdf.js';
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { resumeSchema } from "./schema";
+import { renderResumeHtml } from "./render";
+import { generatePdfFromHtml } from "./pdf";
 
 const server = new McpServer({
-  name: 'ats-resume-generator',
-  version: '1.0.0',
+  name: "ats-resume-generator",
+  version: "1.0.0",
 });
 
 server.tool(
-  'generate_ats_resume_pdf',
-  'Gera um arquivo PDF de currículo formatado para ATS a partir de um JSON estruturado.',
+  "generate_ats_resume_pdf",
+  "Gera um arquivo PDF de currículo formatado para ATS a partir de um JSON estruturado.",
   resumeSchema.shape,
   async (args) => {
     try {
       const parsed = resumeSchema.safeParse(args);
       if (!parsed.success) {
-        const issues = parsed.error.issues.map((i) => `${i.path.join('.') || 'root'}: ${i.message}`).join('; ');
+        const issues = parsed.error.issues
+          .map((i) => `${i.path.join(".") || "root"}: ${i.message}`)
+          .join("; ");
         return {
           content: [
             {
-              type: 'text',
+              type: "text",
               text: `Erro de compilação: O campo de entrada possui erros de validação: ${issues}. Corrija o JSON e tente novamente.`,
             },
           ],
@@ -31,12 +33,12 @@ server.tool(
 
       const html = renderResumeHtml(parsed.data);
       const pdfPath = await generatePdfFromHtml(html, parsed.data.outputFilename);
-      const normalizedPath = pdfPath.replace(/\\/g, '/');
+      const normalizedPath = pdfPath.replace(/\\/g, "/");
 
       return {
         content: [
           {
-            type: 'text',
+            type: "text",
             text: `Arquivo PDF gerado e salvo com sucesso em: ${normalizedPath}. Avise o usuário que o arquivo está pronto.`,
           },
         ],
@@ -46,7 +48,7 @@ server.tool(
       return {
         content: [
           {
-            type: 'text',
+            type: "text",
             text: `Erro de compilação ao gerar o PDF: ${errorMessage}. Corrija o JSON e tente novamente.`,
           },
         ],
@@ -62,6 +64,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error('Fatal error in MCP Server:', err);
+  console.error("Fatal error in MCP Server:", err);
   process.exit(1);
 });

@@ -1,6 +1,5 @@
 packages:
   - web
-  - mcp-resume
 
 onlyBuiltDependencies:
   - '@firebase/util'
