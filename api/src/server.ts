@@ -16,33 +16,38 @@ app.register(cors, {
   exposedHeaders: ["mcp-session-id"],
 });
 
-// Instanciação do Servidor MCP
-const server = new McpServer({
-  name: "portfolio-mcp-server",
-  version: "1.0.0",
-});
+// Cria uma instância nova de servidor MCP por sessão — o SDK só aceita uma
+// transport conectada por vez em cada instância de McpServer.
+function createMcpServer() {
+  const server = new McpServer({
+    name: "portfolio-mcp-server",
+    version: "1.0.0",
+  });
 
-// Exemplo de tool MCP registrada
-server.tool(
-  "generate_ats_resume_pdf",
-  "Gera um arquivo PDF de currículo formatado para ATS.",
-  {
-    name: z.string().describe("Nome completo do candidato"),
-    role: z.string().describe("Cargo ou área pretendida"),
-    experience: z.array(z.string()).optional().describe("Lista de experiências"),
-  },
-  async (args) => {
-    // Lógica de geração de PDF / retorno
-    return {
-      content: [
-        {
-          type: "text",
-          text: `PDF gerado com sucesso para ${args.name} (${args.role}).`,
-        },
-      ],
-    };
-  }
-);
+  // Exemplo de tool MCP registrada
+  server.tool(
+    "generate_ats_resume_pdf",
+    "Gera um arquivo PDF de currículo formatado para ATS.",
+    {
+      name: z.string().describe("Nome completo do candidato"),
+      role: z.string().describe("Cargo ou área pretendida"),
+      experience: z.array(z.string()).optional().describe("Lista de experiências"),
+    },
+    async (args) => {
+      // Lógica de geração de PDF / retorno
+      return {
+        content: [
+          {
+            type: "text",
+            text: `PDF gerado com sucesso para ${args.name} (${args.role}).`,
+          },
+        ],
+      };
+    }
+  );
+
+  return server;
+}
 
 // Mapeamento de sessões Streamable HTTP ativas, por Mcp-Session-Id
 const transports = new Map<string, StreamableHTTPServerTransport>();
@@ -71,7 +76,9 @@ app.post("/", async (req, reply) => {
     transport.onclose = () => {
       if (transport!.sessionId) transports.delete(transport!.sessionId);
     };
-    await server.connect(transport);
+
+    const mcpServer = createMcpServer();
+    await mcpServer.connect(transport);
   }
 
   await transport.handleRequest(req.raw as any, reply.raw as any, req.body);
