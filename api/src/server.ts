@@ -1,7 +1,9 @@
+import { randomUUID } from "node:crypto";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
 const app = Fastify({ logger: true });
@@ -9,8 +11,9 @@ const app = Fastify({ logger: true });
 // Habilita o CORS de forma global e robusta para clientes (incluindo Gemini / Claude)
 app.register(cors, {
   origin: "*",
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "x-mcp-session-id"],
+  methods: ["GET", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "mcp-session-id"],
+  exposedHeaders: ["mcp-session-id"],
 });
 
 // Instanciação do Servidor MCP
@@ -41,38 +44,57 @@ server.tool(
   }
 );
 
-// Mapeamento de conexões ativas SSE
-const activeTransports = new Map<string, SSEServerTransport>();
+// Mapeamento de sessões Streamable HTTP ativas, por Mcp-Session-Id
+const transports = new Map<string, StreamableHTTPServerTransport>();
 
-// Rota 0: Responde ao ping de verificação de vida (HEAD) sem abrir SSE
-app.head("/api/mcp", async (_req, reply) => {
-  return reply.status(200).send();
-});
+// Rota 1: recebe as mensagens JSON-RPC do cliente MCP (inclui o handshake "initialize")
+app.post("/", async (req, reply) => {
+  const sessionId = req.headers["mcp-session-id"] as string | undefined;
+  let transport = sessionId ? transports.get(sessionId) : undefined;
 
-// Rota 1: Estabelece a conexão SSE
-app.get("/api/mcp", async (req, reply) => {
-  const transport = new SSEServerTransport("/api/mcp/message", reply.raw as any);
-  const sessionId = transport.sessionId;
-
-  activeTransports.set(sessionId, transport);
-
-  reply.raw.on("close", () => {
-    activeTransports.delete(sessionId);
-  });
-
-  await server.connect(transport);
-});
-
-// Rota 2: Recebe as mensagens JSON-RPC do cliente MCP
-app.post("/api/mcp/message", async (req, reply) => {
-  const sessionId = (req.query as any).sessionId;
-
-  const transport = activeTransports.get(sessionId);
   if (!transport) {
-    return reply.status(404).send({ error: "Session not found or expired" });
+    if (sessionId || !isInitializeRequest(req.body)) {
+      reply.status(400).send({
+        jsonrpc: "2.0",
+        error: { code: -32000, message: "Bad Request: No valid session ID provided" },
+        id: null,
+      });
+      return;
+    }
+
+    transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: () => randomUUID(),
+      onsessioninitialized: (sid) => transports.set(sid, transport!),
+    });
+    transport.onclose = () => {
+      if (transport!.sessionId) transports.delete(transport!.sessionId);
+    };
+    await server.connect(transport);
   }
 
-  await transport.handlePostMessage(req.raw as any, reply.raw as any, req.body);
+  await transport.handleRequest(req.raw as any, reply.raw as any, req.body);
+});
+
+// Rota 2: stream opcional de notificações do servidor para uma sessão existente
+app.get("/", async (req, reply) => {
+  const sessionId = req.headers["mcp-session-id"] as string | undefined;
+  const transport = sessionId ? transports.get(sessionId) : undefined;
+  if (!transport) {
+    reply.status(400).send("Invalid or missing session ID");
+    return;
+  }
+  await transport.handleRequest(req.raw as any, reply.raw as any);
+});
+
+// Rota 3: encerra a sessão
+app.delete("/", async (req, reply) => {
+  const sessionId = req.headers["mcp-session-id"] as string | undefined;
+  const transport = sessionId ? transports.get(sessionId) : undefined;
+  if (!transport) {
+    reply.status(400).send("Invalid or missing session ID");
+    return;
+  }
+  await transport.handleRequest(req.raw as any, reply.raw as any);
 });
 
 // Inicialização do servidor na porta 3001
