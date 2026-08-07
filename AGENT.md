@@ -85,6 +85,6 @@ Emprega o Padrão de Separação **_Service-Route_**:
 ### Design System e Infra de Proxy
 
 - **Design Protótipos (`config/.ui/`)**: O projeto conta com arquivos HTML/CSS/JS estáticos em `config/.ui/` atuando como a referência absoluta visual (Mockups de home, marketplace, prices) a se seguir na interface fluida.
-- **Proxy e Certificados**: O ambiente de produção atrela o tráfego usando roteamento `nginx` em HTTPs (`portfolio.api.victorlisbronzo.com` para API e `portfolio.victorlisbronzo.com` para a porta 3000 em web), validados através de configs de `certbot`.
+- **Proxy e Certificados**: A API (`api`, contêiner `mcp_api`, porta 3001) não expõe portas próprias nem roda seu próprio `nginx`/`certbot` — ela apenas se conecta à rede Docker externa `proxy-network`. Quem recebe o tráfego público (80/443) e faz o roteamento HTTPs por `server_name` é o Nginx "chefe" do projeto `vps-config`, que também é quem detém os certificados via `certbot`. O domínio roteado para a API é `mcp.victorlisbronzo.me`.
 
 ---
