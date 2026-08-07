@@ -64,7 +64,9 @@ app.post("/", async (req, reply) => {
 
     transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: () => randomUUID(),
-      onsessioninitialized: (sid) => transports.set(sid, transport!),
+      onsessioninitialized: (sid) => {
+        transports.set(sid, transport!);
+      },
     });
     transport.onclose = () => {
       if (transport!.sessionId) transports.delete(transport!.sessionId);
