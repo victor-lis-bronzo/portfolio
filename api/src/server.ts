@@ -44,6 +44,11 @@ server.tool(
 // Mapeamento de conexões ativas SSE
 const activeTransports = new Map<string, SSEServerTransport>();
 
+// Rota 0: Responde ao ping de verificação de vida (HEAD) sem abrir SSE
+app.head("/api/mcp", async (_req, reply) => {
+  return reply.status(200).send();
+});
+
 // Rota 1: Estabelece a conexão SSE
 app.get("/api/mcp", async (req, reply) => {
   const transport = new SSEServerTransport("/api/mcp/message", reply.raw as any);
