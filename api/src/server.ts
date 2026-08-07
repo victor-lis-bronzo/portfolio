@@ -5,10 +5,10 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+import { generateResumePdf } from "./pdf.js";
 
 const app = Fastify({ logger: true });
 
-// Habilita o CORS de forma global e robusta para clientes (incluindo Gemini / Claude)
 app.register(cors, {
   origin: "*",
   methods: ["GET", "POST", "DELETE", "OPTIONS"],
@@ -24,22 +24,64 @@ function createMcpServer() {
     version: "1.0.0",
   });
 
-  // Exemplo de tool MCP registrada
+  // Gera um PDF de currículo formatado para ATS via Typst
   server.tool(
     "generate_ats_resume_pdf",
-    "Gera um arquivo PDF de currículo formatado para ATS.",
+    "Gera um arquivo PDF de currículo formatado para ATS a partir dos dados do candidato.",
     {
       name: z.string().describe("Nome completo do candidato"),
-      role: z.string().describe("Cargo ou área pretendida"),
-      experience: z.array(z.string()).optional().describe("Lista de experiências"),
+      position: z.string().describe("Cargo/posição pretendida"),
+      contactInformation: z.object({
+        email: z.string(),
+        address: z.string(),
+        linkedin: z.string().describe("Ex: linkedin.com/in/usuario, sem https://"),
+        github: z.string().describe("Ex: github.com/usuario, sem https://"),
+        portfolio: z.string().describe("Ex: victorlisbronzo.com, sem https://"),
+      }),
+      summary: z.string(),
+      workExperience: z.array(
+        z.object({
+          position: z.string(),
+          company: z.string(),
+          startYear: z.string(),
+          endYear: z.string(),
+          description: z.string(),
+          keyAchievements: z.array(z.string()).optional().default([]),
+        })
+      ),
+      projects: z.array(
+        z.object({
+          name: z.string(),
+          link: z.string().describe("Ex: github.com/usuario/repo, sem https://"),
+          description: z.string(),
+          technologies: z.array(z.string()),
+        })
+      ),
+      education: z.array(
+        z.object({
+          degree: z.string(),
+          school: z.string(),
+          startYear: z.string(),
+          endYear: z.string(),
+        })
+      ),
+      skills: z.object({
+        languages: z.array(z.string()),
+        frameworks: z.array(z.string()),
+        tools: z.array(z.string()),
+      }),
     },
     async (args) => {
-      // Lógica de geração de PDF / retorno
+      const pdfBuffer = await generateResumePdf(args);
       return {
         content: [
           {
-            type: "text",
-            text: `PDF gerado com sucesso para ${args.name} (${args.role}).`,
+            type: "resource",
+            resource: {
+              uri: `resource://portfolio-mcp/cv-${randomUUID()}.pdf`,
+              mimeType: "application/pdf",
+              blob: pdfBuffer.toString("base64"),
+            },
           },
         ],
       };
