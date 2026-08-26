@@ -18,7 +18,7 @@ on:
         required: true
 
 concurrency:
-  group: production-release
+  group: release-web-production
   cancel-in-progress: false
 
 jobs:
