@@ -75,6 +75,12 @@ pnpm dev
 
 A aplicação estará rodando em `http://localhost:3000`.
 
+## 🚀 Deploy
+
+O deploy de produção é controlado por tags Git e roda via GitHub Actions + Vercel.
+Veja [DEPLOY.md](DEPLOY.md) para o fluxo completo, convenção de tags, rollback e
+secrets/variables necessários.
+
 ---
 
 *Projetado e desenvolvido por Victor Lis Bronzo.*
