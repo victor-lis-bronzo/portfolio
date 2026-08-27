@@ -1,3 +1,56 @@
+# Decisões — Conteúdo real de `core/data/*.ts`
+
+## Origem dos dados
+
+**Decisão:** os placeholders de `profile.ts`, `skills.ts`, `projects.ts` e
+`articles.ts` foram substituídos por conteúdo real, extraído de três fontes fornecidas
+pelo usuário: o export completo do LinkedIn (`Complete_LinkedInDataExport_08-22-2026.zip`
+— `Profile.csv`, `Positions.csv`, `Skills.csv`, `Projects.csv`), o GitHub público
+(`github.com/victor-lis-bronzo`, via `gh api`) e o perfil do dev.to
+(`dev.to/victorlisbronzo`, resumos extraídos do corpo real de cada artigo via `WebFetch`,
+não inventados a partir dos títulos).
+
+**Curadoria aplicada:**
+- `skills.ts`: reduzido de ~68 itens do LinkedIn para ~27 skills técnicas objetivas,
+  descartando soft skills (Liderança, Oratória, Comunicação) e itens genéricos/redundantes
+  (Programação (computação), Front-End/Back-End genéricos) que não cabem no propósito de
+  badges técnicas para ATS.
+- `projects.ts`: 6 projetos curados entre os ~105 repositórios públicos — os 3 destacados
+  (Git Assets, Eco-Play, In.Orbit) foram os já citados na especificação original do
+  produto; os outros 3 (LangClips, CodeUp, Legal Eagle RAG) foram escolhidos por serem os
+  mais recentes/sofisticados tecnicamente.
+- `articles.ts`: as 7 versões em **português** dos 14 artigos do dev.to (existem
+  duplicatas em inglês), já que o site é `lang="pt-BR"`.
+
+**Pendências explícitas (não resolvidas nesta tarefa):**
+- `profile.cvHref` continua `/cv.pdf` — o usuário ainda não tem um PDF de currículo
+  pronto; o arquivo não existe em `public/`, então o link fica quebrado até ele fornecer
+  o PDF.
+- Nenhuma imagem/avatar foi adicionada aos projetos ou ao perfil — os componentes de
+  `features/recruiter/` não pedem imagem no schema atual (`core/entities/`), então não
+  havia campo para preencher.
+
+## `SITE_URL` definido
+
+**Decisão:** `src/shared/lib/site-config.ts` — `SITE_URL` alterado de
+`https://victorlisbronzo.dev` (placeholder) para `https://victorlisbronzo.me`, domínio
+confirmado pelo usuário (já usado no GitHub, LinkedIn e no deploy do Git Assets).
+
+## CRLF generalizado após `git stash`/`git stash pop`
+
+**Decisão:** rodado `pnpm exec biome format --write src` para normalizar todo `src/`
+de volta para LF depois de editar os arquivos de dados.
+
+**Por quê:** o repositório tem `core.autocrlf=true` no ambiente Windows. Um `git stash` /
+`git stash pop` usado anteriormente nesta sessão (para testar isoladamente uma mudança em
+`package.json`) dispara uma re-checkout interna que reconverteu ~25 arquivos já commitados
+para CRLF no working tree — arquivos que não tinham sido tocados nesta tarefa, mas que
+`pnpm lint` passou a reportar (30 erros, em vez dos 2 pré-existentes documentados na Fase
+2). Como o conteúdo (via `git diff`) não mudou, só a codificação de fim de linha no disco,
+rodar o formatter foi suficiente para resolver sem tocar em nenhum conteúdo.
+
+---
+
 # Decisões — Fase 2 (Módulo Recrutador & SSR)
 
 ## `/recruiter` como rota própria em vez de branch client-side
