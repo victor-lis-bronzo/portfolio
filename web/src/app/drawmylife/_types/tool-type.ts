@@ -1,1 +1,0 @@
-export type ToolType = "text" | "pan";
