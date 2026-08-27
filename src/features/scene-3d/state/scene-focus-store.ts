@@ -4,8 +4,8 @@ import type { SceneWaypointId } from "@/core/entities";
 /**
  * Local, ephemeral bridge between the R3F-internal camera controller
  * (see hooks/use-camera-controller.ts, which only runs inside the
- * <Canvas> tree) and sibling DOM overlays rendered outside of it
- * (whiteboard-wall-overlay.tsx, dev-waypoint-debug.tsx).
+ * <Canvas> tree) and DOM controls rendered outside of it
+ * (dev-waypoint-debug.tsx, assistant dialogs).
  *
  * This intentionally lives under features/scene-3d/state, not
  * core/state: it is scoped to this feature and has no meaning outside

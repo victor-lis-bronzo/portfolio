@@ -6,7 +6,6 @@ import type { SceneWaypointId } from "@/core/entities";
 import { useSceneFocusStore } from "../state/scene-focus-store";
 import { DevWaypointDebug } from "./dev-waypoint-debug";
 import { LoadingFallback } from "./loading-fallback";
-import { WhiteboardWallOverlay } from "./whiteboard-wall-overlay";
 
 // The only file allowed to reference ./voxel-studio: everything else in
 // this feature must stay free of "three" / "@react-three/fiber" imports
@@ -26,7 +25,6 @@ export function VoxelStudioLoader() {
 	return (
 		<div className="relative h-full w-full">
 			<VoxelStudio />
-			<WhiteboardWallOverlay focused={currentWaypoint === "WHITEBOARD_FOCUS"} />
 			{process.env.NODE_ENV === "development" && (
 				<DevWaypointDebug
 					currentWaypoint={currentWaypoint}

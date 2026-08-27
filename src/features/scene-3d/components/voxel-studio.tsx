@@ -6,10 +6,10 @@ import { SceneCameraRig } from "./scene-camera-rig";
 import { VoxelDesk } from "./voxel-desk";
 import { VoxelIotBench } from "./voxel-iot-bench";
 import { VoxelPrinter } from "./voxel-printer";
+import { VoxelRoom } from "./voxel-room";
+import { VoxelWhiteboard } from "./voxel-whiteboard";
 
-const FLOOR_SIZE = 18;
-const FLOOR_COLOR = "#1e293b";
-const BACKGROUND_COLOR = "#0f172a";
+const BACKGROUND_COLOR = "#0b0f19";
 
 /**
  * The real <Canvas> root. Only ever reached via voxel-studio-loader.tsx's
@@ -22,13 +22,11 @@ export function VoxelStudio() {
 			<color attach="background" args={[BACKGROUND_COLOR]} />
 			<SceneCameraRig />
 			<IsometricLighting />
+			<VoxelRoom />
 			<VoxelDesk />
-			<VoxelIotBench />
 			<VoxelPrinter />
-			<mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-				<planeGeometry args={[FLOOR_SIZE, FLOOR_SIZE]} />
-				<meshStandardMaterial color={FLOOR_COLOR} />
-			</mesh>
+			<VoxelIotBench />
+			<VoxelWhiteboard />
 		</Canvas>
 	);
 }

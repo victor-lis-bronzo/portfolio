@@ -1,15 +1,29 @@
 "use client";
 
-const KEY_LIGHT_POSITION: [number, number, number] = [10, 12, 8];
-const FILL_LIGHT_POSITION: [number, number, number] = [-6, 8, -4];
+const KEY_LIGHT_POSITION: [number, number, number] = [12, 16, 12];
+const FILL_LIGHT_POSITION: [number, number, number] = [-10, 10, -10];
+const RIM_LIGHT_POSITION: [number, number, number] = [-8, 14, 8];
 
-/** Classic isometric two-light setup. No shadow maps in this phase. */
+/** Rich isometric three-light studio setup with balanced key, cool fill and warm rim light. */
 export function IsometricLighting() {
 	return (
 		<>
-			<ambientLight intensity={0.6} />
-			<directionalLight position={KEY_LIGHT_POSITION} intensity={1.1} />
-			<directionalLight position={FILL_LIGHT_POSITION} intensity={0.4} />
+			<ambientLight intensity={0.75} color="#e2e8f0" />
+			<directionalLight
+				position={KEY_LIGHT_POSITION}
+				intensity={1.4}
+				color="#ffffff"
+			/>
+			<directionalLight
+				position={FILL_LIGHT_POSITION}
+				intensity={0.5}
+				color="#93c5fd"
+			/>
+			<directionalLight
+				position={RIM_LIGHT_POSITION}
+				intensity={0.35}
+				color="#fef08a"
+			/>
 		</>
 	);
 }
