@@ -2,28 +2,33 @@
 
 Este projeto segue Clean Architecture com separação estrita entre domínio, features e
 apresentação, aplicando os princípios SOLID. A estrutura abaixo é o alvo completo da
-especificação do produto; a Fase 1 implementou apenas o essencial (marcado com ✅), o
-resto são diretórios reservados para as próximas fases.
+especificação do produto; Fase 1 e Fase 2 já implementadas (marcadas com ✅), o resto são
+diretórios reservados para as próximas fases.
 
 ```
 src/
 ├── core/                           # Domínio puro — zero dependência de UI/framework
-│   ├── entities/                   # (reservado — Fase 2+: Project, Skill, StoryScene, DiagramPayload)
+│   ├── entities/                   # ✅ Project, Skill, Article (Fase 2)
+│   ├── data/                       # ✅ dossiê estático — projects/skills/articles/profile (Fase 2)
 │   ├── interfaces/                 # (reservado — Fase 3+: ICameraController, IWhiteboardDriver, IStoryScript)
 │   └── state/                      # ✅ Zustand Store — mode-store.ts
 ├── features/
 │   ├── storyteller/                # (reservado — Fase 5)
 │   ├── scene-3d/                   # ✅ placeholder — Fase 4 implementa de fato
 │   ├── whiteboard/                 # (reservado — Fase 3)
-│   └── recruiter/                  # ✅ placeholder — Fase 2 implementa de fato
+│   └── recruiter/                  # ✅ Fase 2 — recruiter-view.tsx + components/
 ├── shared/
 │   ├── components/                 # ✅ mode-switcher.tsx, mode-hydration-boundary.tsx
-│   │   └── ui/                     # ✅ componentes shadcn (tabs, button)
+│   │   └── ui/                     # ✅ componentes shadcn (tabs, button, badge)
 │   ├── hooks/                      # ✅ use-mode.ts
-│   └── lib/                        # ✅ utils.ts (cn helper do shadcn)
+│   └── lib/                        # ✅ utils.ts, site-config.ts (SITE_URL)
 └── app/
-    ├── layout.tsx                  # ✅ Root Shell com o switcher de modo
-    ├── page.tsx                    # ✅ renderiza o placeholder do modo ativo
+    ├── layout.tsx                  # ✅ Root Shell com o switcher de modo + metadata base
+    ├── page.tsx                    # ✅ `/` — sempre a experiência Immersive
+    ├── recruiter/
+    │   └── page.tsx                # ✅ `/recruiter` — rota SSG dedicada (Fase 2)
+    ├── sitemap.ts                  # ✅ Fase 2
+    ├── robots.ts                   # ✅ Fase 2
     └── api/chat/route.ts           # (reservado — Fase 5, handler de IA opcional)
 ```
 
@@ -86,6 +91,61 @@ useModeStore (Zustand + persist, skipHydration: true)
         └── ModeHydrationBoundary (shared/components)
                 — monta em layout.tsx, chama persist.rehydrate() no useEffect
 ```
+
+## Fase 2 — Módulo Recrutador & SSR
+
+### `/recruiter` é uma rota própria, não um branch de render em `/`
+
+Na Fase 1, `page.tsx` decidia entre `ImmersivePlaceholder`/`RecruiterPlaceholder` no
+client, olhando `useMode().mode` — ou seja, o conteúdo do Recrutador só existia "dentro"
+de `/`, nunca era visitado como página própria, e por isso nunca era SSR/indexável de
+fato (primeiro paint sempre Immersive; conteúdo real só aparecia após um toggle no
+client). Na Fase 2 isso foi corrigido criando `src/app/recruiter/page.tsx` como rota
+própria: `pnpm build` confirma que ela sai como `○ (Static)` — SSG real, gerada em build
+time, servindo HTML completo (texto de projetos/skills/CV, `<script
+type="application/ld+json">`) sem depender de JavaScript no client.
+
+`ModeSwitcher` (`src/shared/components/mode-switcher.tsx`) deixou de só alternar estado
+local do Zustand e passou a navegar de verdade: usa `usePathname()` para saber qual aba
+está ativa (`pathname === "/recruiter"` → aba "Recrutador") e `useRouter().push(...)`
+para trocar de rota ao clicar. `setMode()` continua sendo chamado (mantém o
+`useModeStore` como "última preferência do usuário", útil para as Fases 4/5), mas quem
+decide o que é renderizado agora é o router do Next, não o estado do store — isso é o
+que garante SSR real.
+
+### `core/data/` — por que não fica dentro de `features/recruiter/`
+
+O dossiê estático (`projects.ts`, `skills.ts`, `articles.ts`, `profile.ts`) não é
+exclusivo do modo Recrutador: a Fase 5 (Storyteller) vai referenciar os mesmos projetos
+nos diálogos do mascote. Colocar em `core/data/`, tipado pelas interfaces de
+`core/entities/`, evita duplicação e acoplamento cruzado entre features — `recruiter-view.tsx`
+depende das entities (abstração de forma), não de onde o dado mora fisicamente (DIP).
+
+### Só um componente client em `features/recruiter/`
+
+Todos os componentes de `features/recruiter/components/` são Server Components — zero JS
+de UI enviado ao browser para eles. A única exceção é `copy-email-button.tsx`
+(`"use client"`), porque é o único ponto que precisa de uma API de browser
+(`navigator.clipboard.writeText`). Isso mantém o objetivo de bundle mínimo em
+`/recruiter`.
+
+### SEO/ATS: metadata, JSON-LD, sitemap, robots
+
+- `generateMetadata()` em `app/recruiter/page.tsx` — `title`, `description` (derivado de
+  `profile.summary`, truncado se necessário), `keywords` (nomes das skills), `openGraph`,
+  `twitter`, `alternates.canonical`.
+- Um `<script type="application/ld+json">` com schema.org `Person` (nome, cargo, links,
+  `knowsAbout`) é embutido diretamente pelo Server Component — ajuda tanto motores de
+  busca quanto parsers de ATS que leem dados estruturados.
+- `app/sitemap.ts`/`app/robots.ts` — expõem `/` e `/recruiter`, apontando pro domínio
+  central em `src/shared/lib/site-config.ts` (`SITE_URL`, hoje um placeholder — ver
+  `docs/decisions.md`).
+- `app/layout.tsx` define `metadata` base (`title.default`/`title.template`,
+  `description`, `metadataBase`) para que qualquer rota herde valores sensatos.
+- HTML semântico em `recruiter-view.tsx`: um único `<h1>` (nome, em `HeroSection`),
+  `<h2>` por seção com `<section aria-labelledby="...">`, todo conteúdo relevante como
+  texto visível (sem informação só em ícone/imagem) — requisito prático de parsers de
+  ATS.
 
 ### Por que não há hydration mismatch
 

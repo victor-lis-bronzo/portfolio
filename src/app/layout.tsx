@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
+import { profile } from "@/core/data/profile";
 import { ModeHydrationBoundary } from "@/shared/components/mode-hydration-boundary";
 import { ModeSwitcher } from "@/shared/components/mode-switcher";
+import { SITE_URL } from "@/shared/lib/site-config";
 import "./globals.css";
 
 export const metadata: Metadata = {
-	title: "Victor Lis Bronzo — Portfolio",
-	description: "Portfolio 3D & Whiteboard Assistant",
+	title: {
+		default: `${profile.name} — ${profile.role}`,
+		template: `%s | ${profile.name}`,
+	},
+	description: profile.summary,
+	metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({

@@ -1,3 +1,68 @@
+# Decisões — Fase 2 (Módulo Recrutador & SSR)
+
+## `/recruiter` como rota própria em vez de branch client-side
+
+**Decisão:** o plano inicial desta fase previa só transformar os componentes do
+Recrutador em Server Components, mantendo a decisão de "qual modo mostrar" client-side
+via `useMode()` — adiando SSR/SEO real para a Fase 6. O usuário pediu explicitamente para
+já resolver isso agora, criando `src/app/recruiter/page.tsx` como rota dedicada, SSG,
+indexável, com metadata/SEO/ATS completos.
+
+**Por quê:** uma URL própria (`/recruiter`) pode ir direto no currículo/LinkedIn e é lida
+por qualquer bot (Google, parser de ATS) sem precisar executar JavaScript de troca de
+modo. `pnpm build` confirma `/recruiter` como `○ (Static)`.
+
+**Efeito colateral assumido:** `ModeSwitcher` deixou de decidir sozinho o que `page.tsx`
+renderiza — agora navega de verdade (`usePathname`/`useRouter`), e `page.tsx` (`/`)
+passou a renderizar sempre `ImmersivePlaceholder`, sem branch. Ver
+[`architecture.md`](./architecture.md#fase-2--módulo-recrutador--ssr) para o detalhe.
+
+## `core/data/` como local do dossiê estático (não dentro de `features/recruiter/`)
+
+**Decisão:** `projects.ts`, `skills.ts`, `articles.ts`, `profile.ts` ficam em
+`src/core/data/`, tipados pelas interfaces novas de `src/core/entities/`.
+
+**Por quê:** a Fase 5 (Storyteller) vai reusar os mesmos projetos nos diálogos do
+mascote — colocar o dado dentro de `features/recruiter/` criaria acoplamento cruzado
+entre features que não deveriam se conhecer.
+
+## Conteúdo real ainda não fornecido — placeholders explícitos
+
+**Decisão:** `src/core/data/*.ts` foi implementado com exatamente um item placeholder por
+arquivo (marcado com `// TODO: substituir pelo conteúdo real fornecido pelo usuário`),
+em vez de inventar texto sobre o currículo/projetos reais do usuário.
+
+**Pendência:** o usuário ainda vai fornecer bio/resumo, projetos com métricas reais,
+skills, artigos do DEV.to, link do CV em PDF (hoje `profile.cvHref` aponta para
+`/cv.pdf`, que não existe em `public/`), e-mail, GitHub e LinkedIn reais. `SITE_URL`
+(`src/shared/lib/site-config.ts`) também é um placeholder
+(`https://victorlisbronzo.dev`) até a URL de produção real ser definida.
+
+## Bug de teste: `userEvent.setup()` sobrescreve `navigator.clipboard`
+
+**Decisão:** `copy-email-button.test.tsx` usa `vi.spyOn(navigator.clipboard,
+"writeText")` **depois** de `userEvent.setup()`, em vez de substituir
+`navigator.clipboard` inteiro via `Object.defineProperty` antes do `setup()`.
+
+**Por quê:** `@testing-library/user-event` v14 instala seu próprio stub de clipboard
+durante `setup()` — qualquer mock de `navigator.clipboard` atribuído antes disso é
+sobrescrito silenciosamente, fazendo o `expect(mock).toHaveBeenCalledWith(...)` falhar
+com zero chamadas registradas mesmo com o clique acontecendo normalmente. Espiar
+(`vi.spyOn`) o stub que o próprio `user-event` já instala evita a corrida.
+
+## Scope creep revertido: `"type": "module"` no `package.json`
+
+**Decisão:** um subagent, tentando silenciar um warning inofensivo do Vite ("ESM syntax
+in a file loaded as CommonJS" em `vitest.config.ts`), adicionou `"type": "module"` ao
+`package.json`. Essa alteração foi revertida antes do commit.
+
+**Por quê:** é uma mudança de escopo amplo (afeta resolução de módulos do projeto
+inteiro) não pedida nem necessária para esta fase — o warning é cosmético e não quebra
+build/lint/testes. Fica registrado aqui como lembrete de que o warning continua
+aparecendo (inofensivo) até alguém decidir endereçá-lo deliberadamente.
+
+---
+
 # Decisões — Fase 1 (Setup do Core & Shell)
 
 Registro das decisões e desvios tomados durante a implementação da Fase 1, com contexto
