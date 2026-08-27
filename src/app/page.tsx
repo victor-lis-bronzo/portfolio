@@ -1,5 +1,5 @@
-import { ImmersivePlaceholder } from "@/features/scene-3d/immersive-placeholder";
+import { VoxelStudioLoader } from "@/features/scene-3d";
 
 export default function Home() {
-	return <ImmersivePlaceholder />;
+	return <VoxelStudioLoader />;
 }
