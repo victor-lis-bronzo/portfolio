@@ -1,3 +1,22 @@
+# Decisões — `.gitattributes` fixando LF em todo o repo
+
+**Decisão:** adicionado `.gitattributes` na raiz com `* text=auto eol=lf`.
+
+**Por quê:** o ambiente Windows tem `core.autocrlf=true`, então todo checkout convertia
+arquivos de texto para CRLF, enquanto o Biome formata em LF por padrão — um conflito que
+gerava repetidamente arquivos "modificados" no `git status` (sem diff de conteúdo real)
+e, dependendo de qual lado "vencia" por último, erros de lint em cascata (documentado
+nas Fases 2 anteriores como um problema pontual em `layout.tsx`/`package.json`, mas que
+na prática se espalhava para qualquer arquivo tocado por um `git stash`/checkout). Fixar
+LF via `.gitattributes` resolve na raiz: Git e Biome passam a concordar
+permanentemente, independente do SO de quem clona o repo.
+
+**Efeito:** todos os arquivos de texto do repositório foram renormalizados para LF
+(`git add --renormalize .` + `pnpm exec biome format --write .`) nesta mesma mudança —
+sem alteração de conteúdo, só de codificação de fim de linha.
+
+---
+
 # Decisões — Conteúdo real de `core/data/*.ts`
 
 ## Origem dos dados
