@@ -16,7 +16,9 @@ export function IsometricLighting() {
 			/>
 			<directionalLight
 				position={FILL_LIGHT_POSITION}
-				intensity={0.5}
+				// Mirrored waypoints look at the -X faces of the props, which the
+				// key light never reaches; the fill carries them on its own.
+				intensity={0.85}
 				color="#93c5fd"
 			/>
 			<directionalLight

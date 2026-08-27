@@ -3,6 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import { IsometricLighting } from "./isometric-lighting";
 import { SceneCameraRig } from "./scene-camera-rig";
+import { StudioSideWalls } from "./studio-side-walls";
 import { VoxelDesk } from "./voxel-desk";
 import { VoxelIotBench } from "./voxel-iot-bench";
 import { VoxelPrinter } from "./voxel-printer";
@@ -21,6 +22,10 @@ export function VoxelStudio() {
 		<Canvas orthographic dpr={[1, 2]} gl={{ antialias: true }}>
 			<color attach="background" args={[BACKGROUND_COLOR]} />
 			<SceneCameraRig />
+			{/* Order matters: R3F runs useFrame in subscription order, so mounting
+			    StudioSideWalls after SceneCameraRig guarantees the walls read the
+			    camera direction of the same frame the camera moved in. */}
+			<StudioSideWalls />
 			<IsometricLighting />
 			<VoxelRoom />
 			<VoxelDesk />

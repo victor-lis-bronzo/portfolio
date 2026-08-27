@@ -54,19 +54,8 @@ export function VoxelRoom() {
 				<meshStandardMaterial color="#2d3748" roughness={0.9} />
 			</mesh>
 
-			{/* --- LEFT WALL (North-West, along X = -6) --- */}
-			<group position={[-ROOM_SIZE / 2, WALL_HEIGHT / 2, 0]}>
-				{/* Main Wall Slab */}
-				<mesh position={[-WALL_THICKNESS / 2, 0, 0]}>
-					<boxGeometry args={[WALL_THICKNESS, WALL_HEIGHT, ROOM_SIZE]} />
-					<meshStandardMaterial color={WALL_COLOR} roughness={0.8} />
-				</mesh>
-				{/* Baseboard */}
-				<mesh position={[0.02, -WALL_HEIGHT / 2 + BASEBOARD_HEIGHT / 2, 0]}>
-					<boxGeometry args={[0.04, BASEBOARD_HEIGHT, ROOM_SIZE]} />
-					<meshStandardMaterial color={BASEBOARD_COLOR} roughness={0.6} />
-				</mesh>
-			</group>
+			{/* The two side walls (X = ±6) live in studio-side-walls.tsx, which
+			    hides whichever one the camera would look through. */}
 
 			{/* --- BACK WALL (North-East, along Z = -6) --- */}
 			<group position={[0, WALL_HEIGHT / 2, -ROOM_SIZE / 2]}>

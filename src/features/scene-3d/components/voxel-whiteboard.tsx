@@ -137,19 +137,20 @@ export function VoxelWhiteboard() {
 					[-1.48, -0.93],
 					[1.48, -0.93],
 				].map(([x, y]) => (
-					<mesh key={`corner-${x}-${y}`} position={[x, y, 0.01]}>
+					<mesh key={`corner-${x}-${y}`} position={[x, y, 0.015]}>
 						<boxGeometry args={[0.08, 0.08, 0.06]} />
 						<meshStandardMaterial color={CORNER_COLOR} roughness={0.7} />
 					</mesh>
 				))}
 
 				{/* White Glossy Magnetic Board Surface */}
-				<mesh position={[0, 0, 0.015]}>
-					<boxGeometry args={[2.88, 1.78, 0.02]} />
+				{/* Z-offsets are deliberate to prevent z-fighting with aluminum frame */}
+				<mesh position={[0, 0, 0.02]}>
+					<boxGeometry args={[2.88, 1.78, 0.04]} />
 					<meshStandardMaterial
 						color={BOARD_COLOR}
-						roughness={0.15}
-						metalness={0.1}
+						roughness={0.55}
+						metalness={0}
 					/>
 				</mesh>
 
@@ -188,7 +189,7 @@ export function VoxelWhiteboard() {
 				{/* --- EMBEDDED WHITEBOARD CANVAS --- */}
 				<Html
 					transform
-					position={[0, 0, 0.03]}
+					position={[0, 0, 0.05]}
 					scale={0.0035}
 					style={{
 						width: "800px",

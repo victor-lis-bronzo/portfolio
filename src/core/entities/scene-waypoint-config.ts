@@ -10,7 +10,7 @@ export const SCENE_WAYPOINTS: SceneWaypoint[] = [
 	},
 	{
 		id: "DESK",
-		position: { x: 2.8, y: 6.1, z: 2.0 },
+		position: { x: -9.2, y: 11.1, z: 6.4 },
 		target: { x: -1.2, y: 1.1, z: -2.2 },
 		zoom: 95,
 		label: "Mesa do Desenvolvedor",
@@ -24,7 +24,7 @@ export const SCENE_WAYPOINTS: SceneWaypoint[] = [
 	},
 	{
 		id: "PRINTER_3D",
-		position: { x: 7, y: 6, z: 2 },
+		position: { x: -5, y: 11.1, z: 6.4 },
 		target: { x: 3, y: 1.1, z: -2.2 },
 		zoom: 95,
 		label: "Impressora 3D",
