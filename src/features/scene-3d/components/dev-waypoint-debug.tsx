@@ -19,7 +19,7 @@ export function DevWaypointDebug({
 	onFocusWaypoint,
 }: DevWaypointDebugProps) {
 	return (
-		<div className="fixed bottom-4 left-4 z-50 flex flex-col gap-1">
+		<div className="fixed right-4 bottom-4 z-50 flex flex-col gap-1 rounded-lg border border-border/50 bg-background/80 p-2 shadow-md backdrop-blur-sm">
 			{SCENE_WAYPOINTS.map((waypoint) => (
 				<Button
 					key={waypoint.id}

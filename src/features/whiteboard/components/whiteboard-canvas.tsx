@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import rough from "roughjs";
 import type { DiagramElement } from "@/core/entities/diagram-element";
 import { usePrefersReducedMotion } from "@/shared/hooks/use-prefers-reduced-motion";
+import { cn } from "@/shared/lib/utils";
 import {
 	DEFAULT_BOX_HEIGHT,
 	DEFAULT_BOX_WIDTH,
@@ -34,10 +35,9 @@ export function WhiteboardCanvas({
 
 	return (
 		<svg
-			width={width}
-			height={height}
 			viewBox={`0 0 ${width} ${height}`}
-			className={className}
+			className={cn("h-auto w-full", className)}
+			preserveAspectRatio="xMidYMid meet"
 			role="img"
 			aria-label="Diagrama de quadro branco"
 		>

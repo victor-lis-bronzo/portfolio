@@ -23,6 +23,14 @@ export function SceneCameraRig() {
 			zoom={INITIAL_WAYPOINT.zoom}
 			near={NEAR}
 			far={FAR}
+			onUpdate={(self) => {
+				self.lookAt(
+					INITIAL_WAYPOINT.target.x,
+					INITIAL_WAYPOINT.target.y,
+					INITIAL_WAYPOINT.target.z,
+				);
+				self.updateProjectionMatrix();
+			}}
 		/>
 	);
 }

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { profile } from "@/core/data/profile";
+import { AppChrome } from "@/shared/components/app-chrome";
 import { ModeHydrationBoundary } from "@/shared/components/mode-hydration-boundary";
-import { ModeSwitcher } from "@/shared/components/mode-switcher";
 import { SITE_URL } from "@/shared/lib/site-config";
 import "./globals.css";
 
@@ -37,11 +37,7 @@ export default function RootLayout({
 		>
 			<body>
 				<ModeHydrationBoundary>
-					<header className="flex items-center justify-between border-b p-4">
-						<span className="font-semibold">Victor Lis Bronzo</span>
-						<ModeSwitcher />
-					</header>
-					<main className="min-h-[calc(100vh-65px)]">{children}</main>
+					<AppChrome>{children}</AppChrome>
 				</ModeHydrationBoundary>
 			</body>
 		</html>

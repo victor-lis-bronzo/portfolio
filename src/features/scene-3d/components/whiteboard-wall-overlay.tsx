@@ -76,14 +76,14 @@ export function WhiteboardWallOverlay({ focused }: WhiteboardWallOverlayProps) {
 	return (
 		<div
 			className={cn(
-				"pointer-events-none absolute top-6 right-6 max-w-md",
+				"pointer-events-none absolute top-20 right-4 sm:right-6 w-[calc(100vw-2rem)] max-w-xs sm:max-w-sm md:max-w-md",
 				!prefersReducedMotion && "transition-opacity duration-500",
 				focused ? FOCUSED_OPACITY : SUBTLE_OPACITY,
 			)}
 		>
 			<WhiteboardCanvas
 				elements={diagramElements}
-				className="rounded-lg bg-background/80 shadow-lg"
+				className="rounded-lg border border-border/40 bg-background/80 shadow-lg backdrop-blur-sm"
 			/>
 		</div>
 	);

@@ -126,6 +126,10 @@ export function useCameraController(): ICameraController {
 	);
 
 	useEffect(() => {
+		applyInstant(DEFAULT_WAYPOINT);
+	}, [applyInstant]);
+
+	useEffect(() => {
 		registerFocusWaypoint(focusWaypoint);
 	}, [registerFocusWaypoint, focusWaypoint]);
 

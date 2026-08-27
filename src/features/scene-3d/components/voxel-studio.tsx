@@ -7,7 +7,7 @@ import { VoxelDesk } from "./voxel-desk";
 import { VoxelIotBench } from "./voxel-iot-bench";
 import { VoxelPrinter } from "./voxel-printer";
 
-const FLOOR_SIZE = 40;
+const FLOOR_SIZE = 18;
 const FLOOR_COLOR = "#1e293b";
 const BACKGROUND_COLOR = "#0f172a";
 
