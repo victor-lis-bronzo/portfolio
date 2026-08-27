@@ -27,7 +27,8 @@ describe("AppChrome", () => {
 		expect(rootWrapper).toHaveClass("relative", "h-dvh", "overflow-hidden");
 
 		const header = container.querySelector("header");
-		expect(header).toHaveClass("fixed", "backdrop-blur-md");
+		// Overlay transparente sobre a cena 3D: fixo e sem capturar cliques.
+		expect(header).toHaveClass("fixed", "pointer-events-none");
 	});
 
 	it("renders the standard scrollable layout when pathname is '/recruiter'", () => {

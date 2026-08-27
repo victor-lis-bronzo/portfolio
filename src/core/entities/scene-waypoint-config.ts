@@ -10,8 +10,8 @@ export const SCENE_WAYPOINTS: SceneWaypoint[] = [
 	},
 	{
 		id: "DESK",
-		position: { x: -7, y: 6, z: 2 },
-		target: { x: -3, y: 1.0, z: -2.2 },
+		position: { x: 2.8, y: 6.1, z: 2.0 },
+		target: { x: -1.2, y: 1.1, z: -2.2 },
 		zoom: 95,
 		label: "Mesa do Desenvolvedor",
 	},

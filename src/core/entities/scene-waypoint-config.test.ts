@@ -33,4 +33,19 @@ describe("SCENE_WAYPOINTS", () => {
 			expect(Number.isFinite(waypoint.target.z)).toBe(true);
 		}
 	});
+
+	it("keeps every camera position inside the room walls", () => {
+		for (const waypoint of SCENE_WAYPOINTS) {
+			expect(waypoint.position.x).toBeGreaterThan(-5.8);
+			expect(waypoint.position.z).toBeGreaterThan(-5.8);
+		}
+	});
+
+	it("looks toward the target from the standard isometric direction", () => {
+		for (const waypoint of SCENE_WAYPOINTS) {
+			expect(waypoint.position.x).toBeGreaterThan(waypoint.target.x);
+			expect(waypoint.position.y).toBeGreaterThan(waypoint.target.y);
+			expect(waypoint.position.z).toBeGreaterThan(waypoint.target.z);
+		}
+	});
 });

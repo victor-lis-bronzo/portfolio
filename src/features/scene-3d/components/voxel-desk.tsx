@@ -1,7 +1,7 @@
 "use client";
 
 // Positioned in Quadrant 1 (North-West / Back-Left)
-export const DESK_ORIGIN: [number, number, number] = [-3, 0, -2.2];
+export const DESK_ORIGIN: [number, number, number] = [-1.2, 0, -2.2];
 
 const TABLETOP_COLOR = "#5c3d24";
 const DESK_FRAME_COLOR = "#1e293b";
@@ -16,7 +16,7 @@ const ACCENT_RGB = "#6366f1";
 
 export function VoxelDesk() {
 	return (
-		<group position={DESK_ORIGIN}>
+		<group position={DESK_ORIGIN} scale={1.2}>
 			{/* ================= DESK STRUCTURE ================= */}
 			{/* Walnut Desktop */}
 			<mesh position={[0, 0.74, 0]}>

@@ -6,7 +6,9 @@ import { useCameraController } from "../hooks/use-camera-controller";
 
 const INITIAL_WAYPOINT = SCENE_WAYPOINTS[0];
 const NEAR = 0.1;
-const FAR = 200;
+// Orthographic depth is linear; a tighter frustum improves depth buffer
+// precision and avoids z-fighting. The full scene fits within 60.
+const FAR = 60;
 
 /** Owns the camera controller and renders the orthographic camera it drives. */
 export function SceneCameraRig() {

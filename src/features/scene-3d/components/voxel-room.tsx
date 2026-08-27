@@ -18,7 +18,7 @@ export function VoxelRoom() {
 	return (
 		<group>
 			{/* Foundation Plinth */}
-			<mesh position={[0, -0.2, 0]}>
+			<mesh position={[0, -0.22, 0]}>
 				<boxGeometry args={[ROOM_SIZE + 0.6, 0.4, ROOM_SIZE + 0.6]} />
 				<meshStandardMaterial color={FLOOR_FOUNDATION_COLOR} roughness={0.9} />
 			</mesh>
@@ -35,7 +35,7 @@ export function VoxelRoom() {
 				return (
 					<mesh
 						key={`floor-plank-${offset}`}
-						position={[0, 0.002, offset]}
+						position={[0, 0.012, offset]}
 						rotation={[-Math.PI / 2, 0, 0]}
 					>
 						<planeGeometry args={[ROOM_SIZE, 0.03]} />
@@ -45,11 +45,11 @@ export function VoxelRoom() {
 			})}
 
 			{/* Cozy Center Studio Rug */}
-			<mesh position={[0, 0.005, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
+			<mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
 				<planeGeometry args={[4.2, 4.2]} />
 				<meshStandardMaterial color="#1e293b" roughness={0.85} />
 			</mesh>
-			<mesh position={[0, 0.006, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
+			<mesh position={[0, 0.03, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
 				<planeGeometry args={[3.8, 3.8]} />
 				<meshStandardMaterial color="#2d3748" roughness={0.9} />
 			</mesh>
@@ -66,16 +66,6 @@ export function VoxelRoom() {
 					<boxGeometry args={[0.04, BASEBOARD_HEIGHT, ROOM_SIZE]} />
 					<meshStandardMaterial color={BASEBOARD_COLOR} roughness={0.6} />
 				</mesh>
-
-				{/* Acoustic Slatted Wood Panels (Behind Dev Desk) */}
-				<group position={[0.02, 0.3, -2.5]}>
-					{[-0.8, -0.4, 0, 0.4, 0.8].map((z) => (
-						<mesh key={`acoustic-left-${z}`} position={[0, 0, z]}>
-							<boxGeometry args={[0.04, 2.2, 0.2]} />
-							<meshStandardMaterial color={ACOUSTIC_WOOD} roughness={0.5} />
-						</mesh>
-					))}
-				</group>
 			</group>
 
 			{/* --- BACK WALL (North-East, along Z = -6) --- */}
@@ -90,6 +80,16 @@ export function VoxelRoom() {
 					<boxGeometry args={[ROOM_SIZE, BASEBOARD_HEIGHT, 0.04]} />
 					<meshStandardMaterial color={BASEBOARD_COLOR} roughness={0.6} />
 				</mesh>
+
+				{/* Acoustic Slatted Wood Panels (Behind Dev Desk) */}
+				<group position={[-1.2, -0.3, 0.02]}>
+					{[-0.8, -0.4, 0, 0.4, 0.8].map((x) => (
+						<mesh key={`acoustic-back-${x}`} position={[x, 0, 0]}>
+							<boxGeometry args={[0.2, 2.2, 0.04]} />
+							<meshStandardMaterial color={ACOUSTIC_WOOD} roughness={0.5} />
+						</mesh>
+					))}
+				</group>
 
 				{/* Ambient Neon Studio Light Bar */}
 				<mesh position={[0, 1.2, 0.02]}>

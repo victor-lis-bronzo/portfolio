@@ -93,11 +93,14 @@ export function useCameraController(): ICameraController {
 			resolveTransitionRef.current?.();
 			resolveTransitionRef.current = null;
 
+			// The UI reflects the click's intent immediately; `isTransitioning`
+			// keeps describing the camera's actual movement.
+			currentWaypointRef.current = id;
+			setCurrentWaypoint(id);
+
 			if (prefersReducedMotion) {
 				applyInstant(waypoint);
-				currentWaypointRef.current = id;
 				transitioningRef.current = false;
-				setCurrentWaypoint(id);
 				setTransitioning(false);
 				return Promise.resolve();
 			}
@@ -110,8 +113,6 @@ export function useCameraController(): ICameraController {
 
 			return new Promise((resolve) => {
 				resolveTransitionRef.current = () => {
-					currentWaypointRef.current = id;
-					setCurrentWaypoint(id);
 					resolve();
 				};
 			});

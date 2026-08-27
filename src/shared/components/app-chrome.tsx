@@ -25,8 +25,8 @@ export function AppChrome({ children }: AppChromeProps) {
 
 	return (
 		<div className="relative h-dvh w-screen overflow-hidden">
-			<header className="pointer-events-none fixed top-0 right-0 left-0 z-40 flex items-center justify-between border-b border-border/40 bg-background/40 p-4 backdrop-blur-md [&>*]:pointer-events-auto">
-				<span className="font-semibold">Victor Lis Bronzo</span>
+			<header className="pointer-events-none fixed top-0 right-0 left-0 z-40 flex items-center justify-between bg-none p-4 [&>*]:pointer-events-auto">
+				<span className="font-semibold text-white">Victor Lis Bronzo</span>
 				<ModeSwitcher />
 			</header>
 			<main className="h-full w-full">{children}</main>
