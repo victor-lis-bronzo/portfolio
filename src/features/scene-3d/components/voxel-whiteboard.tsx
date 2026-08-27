@@ -1,8 +1,7 @@
 "use client";
 
 import { Html } from "@react-three/drei";
-import type { DiagramElement } from "@/core/entities/diagram-element";
-import { WhiteboardCanvas } from "@/features/whiteboard";
+import { useWhiteboardStore, WhiteboardCanvas } from "@/features/whiteboard";
 
 // Positioned in Quadrant 4 (South-West / Front-Left)
 export const WHITEBOARD_ORIGIN: [number, number, number] = [-2.5, 0, 2.2];
@@ -12,57 +11,6 @@ export const WHITEBOARD_ROTATION: [number, number, number] = [
 	0,
 ];
 
-const diagramElements: DiagramElement[] = [
-	{
-		id: "frontend-box",
-		type: "box",
-		x: 60,
-		y: 80,
-		width: 160,
-		height: 70,
-		label: "Frontend",
-		delayMs: 0,
-	},
-	{
-		id: "backend-box",
-		type: "box",
-		x: 420,
-		y: 80,
-		width: 160,
-		height: 70,
-		label: "Backend",
-		delayMs: 200,
-	},
-	{
-		id: "connector-arrow",
-		type: "arrow",
-		x: 220,
-		y: 115,
-		width: 200,
-		height: 0,
-		delayMs: 400,
-	},
-	{
-		id: "solid-badge",
-		type: "badge",
-		x: 260,
-		y: 220,
-		width: 100,
-		height: 36,
-		label: "SOLID",
-		color: "#4f46e5",
-		delayMs: 600,
-	},
-	{
-		id: "architecture-label",
-		type: "text",
-		x: 200,
-		y: 320,
-		label: "Arquitetura Limpa",
-		delayMs: 800,
-	},
-];
-
 const FRAME_COLOR = "#64748b";
 const CORNER_COLOR = "#334155";
 const BOARD_COLOR = "#f8fafc";
@@ -70,6 +18,9 @@ const STAND_COLOR = "#475569";
 const TRAY_COLOR = "#94a3b8";
 
 export function VoxelWhiteboard() {
+	const elements = useWhiteboardStore((s) => s.elements);
+	const revision = useWhiteboardStore((s) => s.revision);
+
 	return (
 		<group position={WHITEBOARD_ORIGIN} rotation={WHITEBOARD_ROTATION}>
 			{/* --- WHEELED MOBILE STAND --- */}
@@ -199,7 +150,8 @@ export function VoxelWhiteboard() {
 					}}
 				>
 					<WhiteboardCanvas
-						elements={diagramElements}
+						key={revision}
+						elements={elements}
 						className="h-full w-full bg-transparent"
 					/>
 				</Html>

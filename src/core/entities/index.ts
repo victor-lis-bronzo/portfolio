@@ -8,3 +8,5 @@ export type {
 } from "./scene-waypoint";
 export { SCENE_WAYPOINTS } from "./scene-waypoint-config";
 export type { Skill, SkillCategory } from "./skill";
+export type { StoryScript, StoryScriptId } from "./story-script";
+export type { StoryStep } from "./story-step";

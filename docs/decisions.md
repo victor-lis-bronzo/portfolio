@@ -1,3 +1,78 @@
+# Decisões — Fase 5 (Orquestração do Storyteller)
+
+## Roteiros em `core/data/story-scripts/`, não em `features/storyteller/`
+
+**Decisão:** os 3 roteiros (`dev-desk-git-assets.ts`, `iot-bench-eco-play.ts`,
+`solid-architecture.ts`) e o `IDLE_BOARD_DIAGRAM` moram em `src/core/data/story-scripts/`,
+um arquivo por roteiro, tipados por `StoryScript`/`StoryStep` de `core/entities/`.
+
+**Por quê:** mesmo racional já registrado na Fase 2 para `projects.ts` — é **dado
+estático**, não estado de runtime, e é consumido por mais de uma feature (`whiteboard` lê
+`diagramElements`, `scene-3d` recebe `waypointId`, `storyteller` orquestra). Guardar dentro
+de `features/storyteller/` criaria acoplamento cruzado e impediria uma futura versão
+textual dos roteiros no `/recruiter` sem refactor. Um arquivo por roteiro é OCP literal:
+adicionar o 4º é criar um arquivo e registrá-lo no array de `index.ts`.
+
+## `whiteboard-store.ts` é a primeira implementação REAL de `IWhiteboardDriver`
+
+**Decisão:** criado `src/features/whiteboard/state/whiteboard-store.ts` implementando
+`IWhiteboardDriver` (`render`/`clear`) de fato, e `voxel-whiteboard.tsx` passou a ler
+`elements`/`revision` dessa store em vez de carregar um diagrama hardcoded.
+
+**Por quê:** a interface existia desde a Fase 3, mas era cumprida só *implicitamente*, via
+props de `WhiteboardCanvas` — nada no código dizia "eu sou um `IWhiteboardDriver`", então a
+abstração não estava sendo usada como ponto de inversão (DIP), só como documentação. Com a
+store, o storyteller passa a depender do tipo e não de quem desenha.
+
+**Onde mora:** `features/whiteboard/state/`, não `core/state/` — mesmo precedente de
+`scene-focus-store.ts`: é ponte de runtime entre um consumidor que só existe dentro do
+`<Canvas>` e um produtor de fora. `core/` fica livre de fiação de runtime.
+
+**Sem `reset()`:** alargaria a interface por conveniência (ISP). O storyteller já conhece
+`IDLE_BOARD_DIAGRAM` e chama `render(IDLE_BOARD_DIAGRAM)` ao encerrar o tour. `revision`
+existe para servir de `key` do `WhiteboardCanvas` e forçar o replay da animação de traço
+mesmo quando ids de elementos se repetem entre steps.
+
+## Guarda de staleness via `runId` no `storyteller-store`
+
+**Decisão:** `storyteller-store.ts` mantém um contador `runId` (e o handle de timer) em
+escopo de módulo, fora do estado reativo. Todo `applyStep` tira um snapshot do contador e
+**aborta** depois do `await focusWaypoint(...)` se o contador tiver mudado.
+
+**Por quê:** `focusWaypoint` é assíncrono (o voo da câmera dura ~1s). Se o usuário clicar
+"Próximo" — ou "Fechar" — durante o voo, a promise antiga resolve *depois* de a nova
+aplicação já ter começado, e sem a guarda ela agendaria um `setTimeout` de auto-avanço
+duplicado: na prática, um step pulado, ou um tour "fechado" que continua andando sozinho.
+`play`/`next`/`stop` incrementam o contador, o que invalida qualquer voo em andamento.
+Ficar fora do estado reativo é deliberado: ninguém deve re-renderizar por causa de um
+handle de timer (mesmo espírito dos refs em `scene-3d/hooks/use-camera-controller.ts`).
+
+## `autoAdvance` desligado sob `prefers-reduced-motion`
+
+**Decisão:** `hooks/use-autoplay-preference.ts` é o **único** ponto que liga
+`usePrefersReducedMotion()` ao campo `autoAdvance` da store, e é chamado uma vez por
+`StorytellerOverlay`.
+
+**Por quê:** WCAG 2.2.2 (Pause, Stop, Hide) — avanço automático de conteúdo tem que
+respeitar quem pediu menos movimento; com a preferência ligada, a navegação continua
+funcionando 100% pelos botões "Próximo"/"Concluir". A store não pode resolver isso sozinha
+porque é um módulo de estado sem React/DOM e não chama hooks — daí um hook de efeito
+colateral puro fazendo a ponte, sem retorno (o `autoAdvance` é lido pela store, nunca por
+um componente).
+
+## `app/api/chat/route.ts` continua intencionalmente NÃO criado
+
+**Decisão:** a Fase 5 fecha sem o endpoint de chat de IA. Ele permanece como TODO
+documentado (`docs/architecture.md`), não como arquivo vazio.
+
+**Por quê:** coerente com a decisão já registrada na Fase 1 — não deixar endpoint morto no
+código sem consumidor. O escopo desta fase, fechado com o usuário, é o motor de roteiros
+guiados; o chat é opcional e viria depois. O ponto de extensão já está pronto:
+`getStoryOrchestrator()` expõe a máquina de estados como `IStoryOrchestrator`, um handle
+sem React que um handler de rota poderia consumir direto, sem tocar em nenhum componente.
+
+---
+
 # Decisões — `.gitattributes` fixando LF em todo o repo
 
 **Decisão:** adicionado `.gitattributes` na raiz com `* text=auto eol=lf`.

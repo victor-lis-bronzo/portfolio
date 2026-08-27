@@ -2,20 +2,20 @@
 
 Este projeto segue Clean Architecture com separação estrita entre domínio, features e
 apresentação, aplicando os princípios SOLID. A estrutura abaixo é o alvo completo da
-especificação do produto; Fase 1 e Fase 2 já implementadas (marcadas com ✅), o resto são
-diretórios reservados para as próximas fases.
+especificação do produto; as Fases 1 a 5 já estão implementadas (marcadas com ✅), o
+resto são diretórios reservados para as próximas fases.
 
 ```
 src/
 ├── core/                           # Domínio puro — zero dependência de UI/framework
-│   ├── entities/                   # ✅ Project, Skill, Article (Fase 2)
-│   ├── data/                       # ✅ dossiê estático — projects/skills/articles/profile (Fase 2)
-│   ├── interfaces/                 # (reservado — Fase 3+: ICameraController, IWhiteboardDriver, IStoryScript)
+│   ├── entities/                   # ✅ Project, Skill, Article (Fase 2), SceneWaypoint/DiagramElement (Fases 3-4), StoryStep/StoryScript (Fase 5)
+│   ├── data/                       # ✅ dossiê estático (Fase 2) + story-scripts/ (Fase 5)
+│   ├── interfaces/                 # ✅ ICameraController (Fase 4), IWhiteboardDriver + IStoryOrchestrator (Fase 5)
 │   └── state/                      # ✅ Zustand Store — mode-store.ts
 ├── features/
-│   ├── storyteller/                # (reservado — Fase 5)
-│   ├── scene-3d/                   # ✅ placeholder — Fase 4 implementa de fato
-│   ├── whiteboard/                 # (reservado — Fase 3)
+│   ├── storyteller/                # ✅ Fase 5 — storyteller-store + overlay/mascote/roteiros
+│   ├── scene-3d/                   # ✅ Fase 4 — estúdio voxel R3F, waypoints de câmera, scene-focus-store
+│   ├── whiteboard/                 # ✅ Fase 3 — WhiteboardCanvas (Rough.js) + whiteboard-store (Fase 5)
 │   └── recruiter/                  # ✅ Fase 2 — recruiter-view.tsx + components/
 ├── shared/
 │   ├── components/                 # ✅ mode-switcher.tsx, mode-hydration-boundary.tsx
@@ -24,12 +24,12 @@ src/
 │   └── lib/                        # ✅ utils.ts, site-config.ts (SITE_URL)
 └── app/
     ├── layout.tsx                  # ✅ Root Shell com o switcher de modo + metadata base
-    ├── page.tsx                    # ✅ `/` — sempre a experiência Immersive
+    ├── page.tsx                    # ✅ `/` — VoxelStudioLoader + StorytellerOverlay
     ├── recruiter/
     │   └── page.tsx                # ✅ `/recruiter` — rota SSG dedicada (Fase 2)
     ├── sitemap.ts                  # ✅ Fase 2
     ├── robots.ts                   # ✅ Fase 2
-    └── api/chat/route.ts           # (reservado — Fase 5, handler de IA opcional)
+    └── api/chat/route.ts           # (ainda NÃO criado — ver docs/decisions.md, Fase 5)
 ```
 
 ## Por que cada camada existe
@@ -156,3 +156,61 @@ do store. O valor real salvo pelo usuário só é aplicado depois do mount, dent
 parte da árvore hidratada. Isso é validado por `src/app/hydration.test.tsx`, que simula
 SSR + hidratação real (com `localStorage` pré-populado) e garante zero warnings de
 mismatch, além de confirmar que o modo persistido é aplicado depois do mount.
+
+## Fase 5 — Orquestração do Storyteller
+
+O Storyteller é o motor que sincroniza três coisas que antes viviam soltas: o foco da
+câmera 3D, o conteúdo desenhado no quadro branco e a fala do mascote. Ele não conhece
+`three`, R3F, Rough.js nem DOM — fala com as duas features vizinhas só através das portas
+declaradas em `core/interfaces/`.
+
+```
+src/core/data/story-scripts/            # dado puro: STORY_SCRIPTS + IDLE_BOARD_DIAGRAM
+        │
+src/features/storyteller/state/storyteller-store.ts    # máquina de estados (Zustand)
+        │       ├── porta câmera: Pick<ICameraController, "focusWaypoint">
+        │       │        → src/features/scene-3d/state/scene-focus-store.ts
+        │       │              → hooks/use-camera-controller.ts (dentro do <Canvas>)
+        │       └── porta quadro: IWhiteboardDriver
+        │                → src/features/whiteboard/state/whiteboard-store.ts
+        │                      → src/features/scene-3d/components/voxel-whiteboard.tsx
+        │                            → WhiteboardCanvas (key={revision})
+        │
+src/features/storyteller/hooks/use-storyteller.ts         # projeção read/write p/ componentes
+src/features/storyteller/hooks/use-autoplay-preference.ts # prefers-reduced-motion → autoAdvance
+        │
+src/features/storyteller/components/storyteller-overlay.tsx   # único container "use client"
+        ├── tour-chip-list.tsx     (estado idle: 3 chips)
+        ├── mascot-avatar.tsx      (tour ativo)
+        ├── dialogue-bubble.tsx    (aria-live="polite")
+        └── story-controls.tsx     (progresso "N / total", Próximo/Concluir, Fechar)
+                │
+        montado em src/app/page.tsx, ao lado de <VoxelStudioLoader />
+```
+
+### Ponto de montagem
+
+`StorytellerOverlay` é montado em `src/app/page.tsx` como irmão de `VoxelStudioLoader`.
+Não em `shared/components/app-chrome.tsx` (violaria a regra "shared não depende de
+features") nem dentro de `voxel-studio-loader.tsx` (acoplaria `scene-3d` ao storyteller
+por fora da porta que já existe via `scene-focus-store`). Como `/recruiter` é rota própria
+e nunca renderiza `app/page.tsx`, zero JS do storyteller entra naquele bundle — sem
+precisar de nenhum branch de modo. `src/app/recruiter/page.test.tsx` guarda isso com uma
+assertion negativa, e `pnpm build` continua reportando `/recruiter` como `○ (Static)`.
+
+Camadas de `z-index` do overlay imersivo: header do `AppChrome` em `z-40`,
+`StorytellerOverlay` em `z-30` (canto inferior esquerdo) e o `DevWaypointDebug` dev-only
+em `z-50` (canto inferior direito) — cantos opostos, sem sobreposição.
+
+### SOLID nesta fase
+
+- **SRP** — `story-progression.ts` só decide (funções puras: qual ação de quadro, qual
+  próximo índice, se auto-avança); `storyteller-store.ts` só orquestra;
+  `storyteller-overlay.tsx` só compõe; os outros quatro componentes só desenham.
+- **OCP** — um 4º roteiro é um arquivo novo em `core/data/story-scripts/` registrado no
+  array de `index.ts`. Nenhum componente muda: `TourChipList` itera a lista recebida.
+- **ISP** — `IStoryOrchestrator` não tem `previous()`/`pause()`/`seek()` porque nenhum
+  consumidor precisa; a câmera é acessada por `Pick<ICameraController, "focusWaypoint">`,
+  não pelo controlador inteiro; `IWhiteboardDriver` não ganhou `reset()`.
+- **DIP** — o storyteller depende dos tipos de `core/interfaces`, não das implementações;
+  `WhiteboardCanvas` continua declarativa por props e não lê store nenhuma.
