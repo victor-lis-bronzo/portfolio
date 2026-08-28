@@ -233,3 +233,30 @@ aplicação real do valor persistido após o mount.
 **Por quê:** a primeira versão do teste renderizava só `<Home />`, que nunca chama
 `persist.rehydrate()` — o teste passaria mesmo com um bug real de rehidratação, porque
 nunca lia o `localStorage`.
+
+---
+
+# Decisões — Fase 5 (Storyteller Biográfico)
+
+## Rejeição de `IStoryScript`
+
+**Decisão:** `StoryScript`, `StoryChapter` e `StoryStep` foram implementados como entidades de dados puras (`src/core/entities/story-script.ts`), sem criar uma interface `IStoryScript`.
+
+**Por quê:** `StoryScript` é uma estrutura de dados imutável, não um serviço ou contrato com múltiplas implementações polimórficas (ao contrário de `ICameraController`, `IWhiteboardDriver` e `IDialogController`). Criar `IStoryScript` seria cerimônia e redundância desnecessária.
+
+## Orquestrador com Guarda de Época (`runIdRef`)
+
+**Decisão:** `useStoryOrchestrator` implementa um contador atômico de época (`runIdRef`) incrementado a cada novo passo e checado após a Promise do voo da câmera.
+
+**Por quê:** Quando o usuário clica rapidamente em "Próximo" durante o voo da câmera, o voo anterior é abandonado. Sem a guarda de época, a Promise defasada acordaria e sobrescreveria o quadro branco com o diagrama anterior. O teste de regressão em `use-story-orchestrator.test.ts` valida essa proteção.
+
+## Desacoplamento do Quadro Branco
+
+**Decisão:** `voxel-whiteboard.tsx` lê os elementos dinamicamente de `useWhiteboardStore`, e a interface `IWhiteboardDriver` é implementada via hook `useWhiteboardDriver`.
+
+**Por quê:** Permite ao Storyteller controlar o conteúdo do quadro branco 3D a partir da camada de orquestração no DOM sem acoplar a árvore do Three.js aos detalhes internos da máquina de estados narrativa.
+
+## Roteiro com Dados Biográficos 100% Autênticos
+
+**Decisão:** O roteiro (`src/core/data/story/script.ts`) reflete fielmente as experiências reais do desenvolvedor (circuitos de redstone no Minecraft, formação técnica na Etec com a regra de estudar 1 semestre à frente, nascimento do Eco-Play e as 2 tentativas na FETEPS, impressora 3D para IoT, sistema do Festival de Primavera 2024 em Next.js + Supabase, apresentações no CONFAAT/Sebrae, atuação na StarSeg e Iniciação Científica no IFSP sobre segurança MQTT).
+
