@@ -51,6 +51,10 @@ export function WhiteboardCanvas({
 							key={el.id}
 							x={shape.x}
 							y={shape.y}
+							fill="#0f172a"
+							fontSize="18"
+							fontWeight="600"
+							fontFamily="system-ui, -apple-system, sans-serif"
 							initial={prefersReducedMotion ? false : { opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={
@@ -89,6 +93,11 @@ export function WhiteboardCanvas({
 
 				const labelWidth = el.width ?? DEFAULT_BOX_WIDTH;
 				const labelHeight = el.height ?? DEFAULT_BOX_HEIGHT;
+				const isBadge = el.type === "badge";
+				const labelFill = isBadge && el.color ? "#ffffff" : "#0f172a";
+				const labelFontSize = isBadge ? "15" : "16";
+				const labelFontWeight = isBadge ? "600" : "500";
+
 				return [
 					...paths,
 					<motion.text
@@ -97,6 +106,10 @@ export function WhiteboardCanvas({
 						y={el.y + labelHeight / 2}
 						textAnchor="middle"
 						dominantBaseline="middle"
+						fill={labelFill}
+						fontSize={labelFontSize}
+						fontWeight={labelFontWeight}
+						fontFamily="system-ui, -apple-system, sans-serif"
 						initial={prefersReducedMotion ? false : { opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={
