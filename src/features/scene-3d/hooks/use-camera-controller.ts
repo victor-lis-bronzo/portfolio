@@ -30,6 +30,16 @@ const REFERENCE_CANVAS_HEIGHT = 720;
 const MIN_ASPECT_ZOOM_FACTOR = 0.2;
 
 /**
+ * Extra headroom beyond the pure "contain" fit, applied only when already
+ * zooming out (factor < 1 — never touches the desktop no-op case). Makes the
+ * framed subject a bit smaller on narrow viewports, which matters because the
+ * app chrome (fixed header, dialogue box) occupies fixed pixel bands that
+ * don't scale with zoom — shrinking the 3D content further increases the
+ * odds it clears those bands instead of sitting behind them.
+ */
+const MOBILE_EXTRA_ZOOM_OUT = 0.85;
+
+/**
  * Multiplier applied to every waypoint zoom so the world box framed at the
  * reference canvas size stays fully visible ("contain") on smaller or
  * differently-proportioned canvases.
@@ -37,6 +47,14 @@ const MIN_ASPECT_ZOOM_FACTOR = 0.2;
  * Clamped to <= 1 on purpose: canvases at or above the reference keep the
  * authored framing exactly, so this is a no-op on desktop and only ever zooms
  * out on narrow/portrait viewports.
+ *
+ * When the fit does reduce the zoom, MOBILE_EXTRA_ZOOM_OUT is multiplied in on
+ * top of it: the pure "contain" fit only guarantees the world box fits the
+ * *canvas*, while on mobile part of that canvas is covered by fixed-pixel app
+ * chrome (header, dialogue box). The extra margin buys back some of that space
+ * so the subject reads comfortably instead of hugging the edges. The result is
+ * still floored at MIN_ASPECT_ZOOM_FACTOR, so the margin can't push a very
+ * narrow canvas past the collapse guard.
  */
 export function getAspectZoomFactor(width: number, height: number): number {
 	if (!(width > 0) || !(height > 0)) return 1;
@@ -46,7 +64,9 @@ export function getAspectZoomFactor(width: number, height: number): number {
 		height / REFERENCE_CANVAS_HEIGHT,
 	);
 
-	return Math.min(1, Math.max(MIN_ASPECT_ZOOM_FACTOR, factor));
+	if (factor >= 1) return 1;
+
+	return Math.max(MIN_ASPECT_ZOOM_FACTOR, factor * MOBILE_EXTRA_ZOOM_OUT);
 }
 
 function findWaypoint(id: SceneWaypointId): SceneWaypoint {
