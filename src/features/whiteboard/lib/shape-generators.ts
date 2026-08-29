@@ -70,9 +70,9 @@ export function generateBadge(el: DiagramElement): Drawable {
 	const height = el.height ?? DEFAULT_BOX_HEIGHT;
 	const options: import("roughjs/bin/core").Options = {
 		...DEFAULT_ROUGH_OPTIONS,
-		stroke: el.color ?? "#2563eb",
+		stroke: el.color ?? "#5629c2",
 		fillStyle: "solid",
-		fill: el.color ?? "#2563eb",
+		fill: el.color ?? "#5629c2",
 		seed: seedFromId(el.id),
 	};
 	return generator.rectangle(el.x, el.y, width, height, options);

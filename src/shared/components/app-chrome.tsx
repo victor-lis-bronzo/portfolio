@@ -14,7 +14,7 @@ export function AppChrome({ children }: AppChromeProps) {
 	if (isRecruiter) {
 		return (
 			<div className="flex min-h-dvh flex-col">
-				<header className="sticky top-0 z-40 flex items-center justify-between border-b bg-background/95 p-4 backdrop-blur">
+				<header className="sticky top-0 z-40 flex items-center justify-between border-b bg-background p-4">
 					<span className="font-semibold">Victor Lis Bronzo</span>
 					<ModeSwitcher />
 				</header>

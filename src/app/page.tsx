@@ -19,7 +19,7 @@ export default function Home() {
 	useStoryKeyboardShortcuts();
 
 	return (
-		<main className="relative h-screen w-screen overflow-hidden bg-slate-950">
+		<main className="relative h-screen w-screen overflow-hidden bg-background">
 			{/* Accessible Hidden Main Heading */}
 			<h1 className="sr-only">
 				Victor Lis Bronzo — Portfólio & Storyteller Interativo 3D
