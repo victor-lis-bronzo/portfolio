@@ -38,7 +38,7 @@ export function PlaybackControls({
 		<div
 			role="toolbar"
 			aria-label="Controles de reprodução do Storyteller"
-			className={`flex flex-wrap items-center justify-between gap-x-2 gap-y-2 rounded-2xl border border-border bg-card px-2.5 py-2 text-card-foreground sm:gap-x-3 sm:px-4 sm:py-2.5 ${className}`}
+			className={`flex flex-wrap items-center justify-between gap-x-2 gap-y-2 rounded-2xl border border-border bg-card/90 backdrop-blur-md px-2.5 py-2 text-card-foreground sm:gap-x-3 sm:px-4 sm:py-2.5 ${className}`}
 		>
 			{/* Left side: Step counter & Auto-advance */}
 			<div className="flex items-center gap-2 sm:gap-3">
