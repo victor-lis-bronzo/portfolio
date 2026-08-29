@@ -1,96 +1,56 @@
 # Arquitetura
 
 Este projeto segue Clean Architecture com separação estrita entre domínio, features e
-apresentação, aplicando os princípios SOLID. A estrutura abaixo é o alvo completo da
-especificação do produto; as Fases 1 a 5 já estão implementadas (marcadas com ✅), o
-resto são diretórios reservados para as próximas fases.
+apresentação, aplicando os princípios SOLID.
 
 ```
 src/
-├── core/                           # Domínio puro — zero dependência de UI/framework
-│   ├── entities/                   # ✅ Project, Skill, Article (Fase 2), SceneWaypoint/DiagramElement (Fases 3-4), StoryStep/StoryScript (Fase 5)
-│   ├── data/                       # ✅ dossiê estático (Fase 2) + story-scripts/ (Fase 5)
-│   ├── interfaces/                 # ✅ ICameraController (Fase 4), IWhiteboardDriver + IStoryOrchestrator (Fase 5)
-│   └── state/                      # ✅ Zustand Store — mode-store.ts
+├── core/                           # Domínio puro — zero dependência de UI/framework/WebGL
+│   ├── entities/                   # ✅ Project, Skill, Article, StoryStep, StoryChapter, StoryScript, StoryTimeline
+│   ├── data/                       # ✅ Dossiê estático + roteiro biográfico (story/script.ts, diagrams.ts)
+│   ├── interfaces/                 # ✅ ICameraController, IWhiteboardDriver, IDialogController
+│   └── state/                      # ✅ Zustand Stores puros (mode-store.ts, storyteller-store.ts, storyteller-pacing.ts)
 ├── features/
-│   ├── storyteller/                # ✅ Fase 5 — storyteller-store + overlay/mascote/roteiros
-│   ├── scene-3d/                   # ✅ Fase 4 — estúdio voxel R3F, waypoints de câmera, scene-focus-store
-│   ├── whiteboard/                 # ✅ Fase 3 — WhiteboardCanvas (Rough.js) + whiteboard-store (Fase 5)
+│   ├── storyteller/                # ✅ Fase 5 — useStoryOrchestrator, dialogue-store, componentes de overlay & runtime
+│   ├── scene-3d/                   # ✅ Fase 4 — VoxelStudio, câmera isométrica, voxel-desk, voxel-iot-bench, voxel-printer, voxel-whiteboard
+│   ├── whiteboard/                 # ✅ Fase 3 — Rough.js canvas, shape-generators, whiteboard-store, use-whiteboard-driver
 │   └── recruiter/                  # ✅ Fase 2 — recruiter-view.tsx + components/
 ├── shared/
-│   ├── components/                 # ✅ mode-switcher.tsx, mode-hydration-boundary.tsx
+│   ├── components/                 # ✅ mode-switcher.tsx, mode-hydration-boundary.tsx, app-chrome.tsx
 │   │   └── ui/                     # ✅ componentes shadcn (tabs, button, badge)
-│   ├── hooks/                      # ✅ use-mode.ts
+│   ├── hooks/                      # ✅ use-mode.ts, use-prefers-reduced-motion.ts
 │   └── lib/                        # ✅ utils.ts, site-config.ts (SITE_URL)
 └── app/
     ├── layout.tsx                  # ✅ Root Shell com o switcher de modo + metadata base
-    ├── page.tsx                    # ✅ `/` — VoxelStudioLoader + StorytellerOverlay
+    ├── page.tsx                    # ✅ `/` — experiência Imersiva 3D com Storyteller integrado
     ├── recruiter/
     │   └── page.tsx                # ✅ `/recruiter` — rota SSG dedicada (Fase 2)
     ├── sitemap.ts                  # ✅ Fase 2
     ├── robots.ts                   # ✅ Fase 2
-    └── api/chat/route.ts           # (ainda NÃO criado — ver docs/decisions.md, Fase 5)
+    └── api/chat/route.ts           # (reservado — handler de IA opcional)
 ```
 
 ## Por que cada camada existe
 
-- **`core/`** não pode importar nada de React, Next.js ou qualquer biblioteca de UI. Hoje
-  contém só `mode-store.ts`, que é puro Zustand — lógica de estado sem nenhuma dependência
-  de renderização. Isso é o que garante que o domínio possa ser testado, reaproveitado ou
-  até trocado de framework de UI sem reescrever a lógica de negócio.
-- **`features/`** agrupa capacidades verticais do produto (storyteller, scene-3d,
-  whiteboard, recruiter). Cada uma pode evoluir de forma independente, sem que uma
-  precise conhecer os detalhes internos da outra.
-- **`shared/`** é o que várias features/o app usam em comum: componentes de UI puros
-  (incluindo os primitivos do shadcn), hooks reutilizáveis e utilitários.
-- **`app/`** é a camada de composição/roteamento do Next.js — só monta as peças
-  (`core`, `shared`, `features`), não contém lógica de domínio.
-
-### Erro cometido e corrigido: onde vive um componente de UI
-
-Durante a implementação da Fase 1, `ModeHydrationBoundary` (um componente `"use client"`
-que apenas dispara `useModeStore.persist.rehydrate()` num `useEffect`) foi criado por
-engano dentro de `core/state/`. Uma revisão de código pegou isso: por ser um componente
-React que retorna JSX, ele não pertence à camada de domínio puro — foi movido para
-`shared/components/mode-hydration-boundary.tsx`, deixando `core/state/mode-store.ts`
-como o único arquivo da camada `core/state`, e esse sim 100% livre de React. Esse é o
-critério prático para decidir onde um arquivo novo deve morar: **se o arquivo importa
-React/JSX/DOM, ele nunca vai em `core/`.**
+- **`core/`** não pode importar nada de React, Next.js ou qualquer biblioteca de UI/WebGL. Contém entidades de dados, interfaces polimórficas e reducers de estado puros (`mode-store.ts`, `storyteller-store.ts`, `storyteller-pacing.ts`, `story-timeline.ts`). Isso garante que o domínio possa ser 100% testado em Node/jsdom sem WebGL e reaproveitado independentemente do framework de UI.
+- **`features/`** agrupa capacidades verticais do produto (`storyteller`, `scene-3d`, `whiteboard`, `recruiter`). Cada uma evolui de forma independente comunicando-se via stores e interfaces do `core/`.
+- **`shared/`** abriga utilitários, hooks reutilizáveis (como detecção de `reduced-motion`) e primitivos de UI compartilhados.
+- **`app/`** é a camada de composição e roteamento do Next.js — orquestra os componentes e provê SSR/SSG.
 
 ## Mapeamento aos princípios SOLID
 
-1. **SRP (Single Responsibility)** — `mode-store.ts` faz só uma coisa: gerenciar o
-   estado do modo ativo e sua persistência. `mode-switcher.tsx` faz só uma coisa:
-   renderizar o controle de UI. `mode-hydration-boundary.tsx` faz só uma coisa: garantir
-   que a rehidratação do estado persistido aconteça no momento certo do ciclo de vida.
-2. **OCP (Open/Closed)** — novos modos (se algum dia existirem além de
-   `IMMERSIVE`/`RECRUITER`) seriam adicionados estendendo o union type `Mode` e o switch
-   dentro do store, sem precisar alterar `ModeSwitcher`, `useMode` ou `page.tsx`, que já
-   operam sobre o tipo genericamente.
-3. **LSP (Liskov Substitution)** — ainda não há uma interface com múltiplas
-   implementações trocáveis na Fase 1 (isso chega nas próximas fases, com
-   `IWhiteboardDriver`/`ICameraController`). O princípio já está refletido na decisão de
-   `core/interfaces/` existir como diretório reservado exatamente para esse propósito.
-4. **ISP (Interface Segregation)** — o hook `useMode()` expõe só `mode`, `setMode` e
-   `toggleMode`; ele não vaza a API interna do Zustand (`getState`, `subscribe`, etc.)
-   para os componentes que só precisam ler/alternar o modo.
-5. **DIP (Dependency Inversion)** — `page.tsx` e `mode-switcher.tsx` dependem do hook
-   `useMode()` (uma abstração), não diretamente do `useModeStore` do Zustand. Se a
-   implementação de estado mudar no futuro, só o hook precisa mudar.
-
-## Fluxo do switch de modo
-
-```
-useModeStore (Zustand + persist, skipHydration: true)
-        │
-        ├── useMode() hook (shared/hooks) — expõe mode/setMode/toggleMode
-        │       │
-        │       ├── ModeSwitcher (shared/components) — UI (Tabs do shadcn)
-        │       └── Home / page.tsx (app) — decide qual placeholder renderizar
-        │
-        └── ModeHydrationBoundary (shared/components)
-                — monta em layout.tsx, chama persist.rehydrate() no useEffect
-```
+1. **SRP (Single Responsibility)**:
+   - `storyteller-store.ts`: gerencia estritamente o estado e passos da máquina de reprodução.
+   - `use-story-orchestrator.ts`: executa os efeitos colaterais coordenando câmera, diálogo e quadro.
+   - `whiteboard-store.ts`: armazena os elementos visuais do diagrama exibido no quadro 3D.
+2. **OCP (Open/Closed)**:
+   - Novos capítulos e passos do roteiro são adicionados estendendo o `StoryScript` sem modificar a lógica do orquestrador ou da máquina de estados.
+3. **LSP (Liskov Substitution)**:
+   - Os adaptadores implementam estritamente `ICameraController`, `IWhiteboardDriver` e `IDialogController`, permitindo substituição por implementações mock em testes.
+4. **ISP (Interface Segregation)**:
+   - Interfaces segregadas e enxutas (`say`/`clear` em `IDialogController`, `render`/`clear` em `IWhiteboardDriver`, `focusWaypoint`/`getCurrentWaypoint` em `ICameraController`).
+5. **DIP (Dependency Inversion)**:
+   - O orquestrador depende exclusivamente das interfaces (`ICameraController`, `IDialogController`, `IWhiteboardDriver`) e de tipos de entidades do `core/`.
 
 ## Fase 2 — Módulo Recrutador & SSR
 
@@ -157,60 +117,23 @@ parte da árvore hidratada. Isso é validado por `src/app/hydration.test.tsx`, q
 SSR + hidratação real (com `localStorage` pré-populado) e garante zero warnings de
 mismatch, além de confirmar que o modo persistido é aplicado depois do mount.
 
-## Fase 5 — Orquestração do Storyteller
+## Fase 5 — Storyteller Biográfico
 
-O Storyteller é o motor que sincroniza três coisas que antes viviam soltas: o foco da
-câmera 3D, o conteúdo desenhado no quadro branco e a fala do mascote. Ele não conhece
-`three`, R3F, Rough.js nem DOM — fala com as duas features vizinhas só através das portas
-declaradas em `core/interfaces/`.
+### Máquina de Estados Pura e Orquestrador de Efeitos
+A máquina de estados em `core/state/storyteller-store.ts` é um reducer puro que gerencia o índice do passo e os estados `IDLE`, `PLAYING`, `PAUSED`, `ENDED`.
+O hook `useStoryOrchestrator` em `features/storyteller/hooks/` observa as mudanças de passo e executa a sequência:
+1. Emite o diálogo na caixa de fala (`dialogController.say()`) de forma imediata.
+2. Comanda a transição de câmera via `cameraController.focusWaypoint()`.
+3. Valida a **Guarda de Época** (`runIdRef`) após a finalização da movimentação da câmera.
+4. Desenha ou limpa o diagrama no quadro branco 3D através de `whiteboardDriver.render()`.
+5. Calcula o tempo de leitura (*dwell time*) e arma o avanço automático.
 
-```
-src/core/data/story-scripts/            # dado puro: STORY_SCRIPTS + IDLE_BOARD_DIAGRAM
-        │
-src/features/storyteller/state/storyteller-store.ts    # máquina de estados (Zustand)
-        │       ├── porta câmera: Pick<ICameraController, "focusWaypoint">
-        │       │        → src/features/scene-3d/state/scene-focus-store.ts
-        │       │              → hooks/use-camera-controller.ts (dentro do <Canvas>)
-        │       └── porta quadro: IWhiteboardDriver
-        │                → src/features/whiteboard/state/whiteboard-store.ts
-        │                      → src/features/scene-3d/components/voxel-whiteboard.tsx
-        │                            → WhiteboardCanvas (key={revision})
-        │
-src/features/storyteller/hooks/use-storyteller.ts         # projeção read/write p/ componentes
-src/features/storyteller/hooks/use-autoplay-preference.ts # prefers-reduced-motion → autoAdvance
-        │
-src/features/storyteller/components/storyteller-overlay.tsx   # único container "use client"
-        ├── tour-chip-list.tsx     (estado idle: 3 chips)
-        ├── mascot-avatar.tsx      (tour ativo)
-        ├── dialogue-bubble.tsx    (aria-live="polite")
-        └── story-controls.tsx     (progresso "N / total", Próximo/Concluir, Fechar)
-                │
-        montado em src/app/page.tsx, ao lado de <VoxelStudioLoader />
-```
+### Guarda de Época (`runIdRef`)
+Para prevenir condições de corrida causadas por cliques rápidos do usuário em "Próximo" durante voos de câmera, o orquestrador incrementa um `runId` atômico no início de cada passo. Quando a Promise da câmera resolve, o hook checa se a época atual ainda coincide com o passo. Se o usuário avançou antes do voo terminar, os efeitos defasados são sumariamente descartados, garantindo que o quadro branco nunca retenha o diagrama anterior.
 
-### Ponto de montagem
-
-`StorytellerOverlay` é montado em `src/app/page.tsx` como irmão de `VoxelStudioLoader`.
-Não em `shared/components/app-chrome.tsx` (violaria a regra "shared não depende de
-features") nem dentro de `voxel-studio-loader.tsx` (acoplaria `scene-3d` ao storyteller
-por fora da porta que já existe via `scene-focus-store`). Como `/recruiter` é rota própria
-e nunca renderiza `app/page.tsx`, zero JS do storyteller entra naquele bundle — sem
-precisar de nenhum branch de modo. `src/app/recruiter/page.test.tsx` guarda isso com uma
-assertion negativa, e `pnpm build` continua reportando `/recruiter` como `○ (Static)`.
-
-Camadas de `z-index` do overlay imersivo: header do `AppChrome` em `z-40`,
-`StorytellerOverlay` em `z-30` (canto inferior esquerdo) e o `DevWaypointDebug` dev-only
-em `z-50` (canto inferior direito) — cantos opostos, sem sobreposição.
-
-### SOLID nesta fase
-
-- **SRP** — `story-progression.ts` só decide (funções puras: qual ação de quadro, qual
-  próximo índice, se auto-avança); `storyteller-store.ts` só orquestra;
-  `storyteller-overlay.tsx` só compõe; os outros quatro componentes só desenham.
-- **OCP** — um 4º roteiro é um arquivo novo em `core/data/story-scripts/` registrado no
-  array de `index.ts`. Nenhum componente muda: `TourChipList` itera a lista recebida.
-- **ISP** — `IStoryOrchestrator` não tem `previous()`/`pause()`/`seek()` porque nenhum
-  consumidor precisa; a câmera é acessada por `Pick<ICameraController, "focusWaypoint">`,
-  não pelo controlador inteiro; `IWhiteboardDriver` não ganhou `reset()`.
-- **DIP** — o storyteller depende dos tipos de `core/interfaces`, não das implementações;
-  `WhiteboardCanvas` continua declarativa por props e não lê store nenhuma.
+### Acessibilidade (WCAG 2.2.2 / Live Regions)
+- Diálogo do mascote veiculado em live region acessível: `role="status"`, `aria-live="polite"`, `aria-atomic="true"`.
+- Container da cena 3D marcado com `aria-hidden="true"` para manter o leitor de tela focado no conteúdo relevante.
+- `<h1>` semântico acessível (`sr-only`) na home.
+- Transcrição completa em texto aberta a bots de busca e leitores de tela, totalmente navegável por cliques diretos nos passos.
+- Atalhos de teclado operáveis com guardas (Espaço, K, Setas, Esc).

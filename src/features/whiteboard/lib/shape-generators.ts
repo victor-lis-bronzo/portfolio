@@ -1,7 +1,7 @@
 import rough from "roughjs";
 import type { Drawable } from "roughjs/bin/core";
 import type { DiagramElement } from "@/core/entities/diagram-element";
-import { getColorOptions } from "./rough-options";
+import { DEFAULT_ROUGH_OPTIONS, getColorOptions } from "./rough-options";
 
 const generator = rough.generator();
 
@@ -33,7 +33,12 @@ export type GeneratedShape =
 export function generateBox(el: DiagramElement): Drawable {
 	const width = el.width ?? DEFAULT_BOX_WIDTH;
 	const height = el.height ?? DEFAULT_BOX_HEIGHT;
-	const options = { ...getColorOptions(el.color), seed: seedFromId(el.id) };
+	const options = {
+		...getColorOptions(el.color),
+		fill: undefined,
+		fillStyle: undefined,
+		seed: seedFromId(el.id),
+	};
 	return generator.rectangle(el.x, el.y, width, height, options);
 }
 
@@ -64,9 +69,10 @@ export function generateBadge(el: DiagramElement): Drawable {
 	const width = el.width ?? DEFAULT_BOX_WIDTH;
 	const height = el.height ?? DEFAULT_BOX_HEIGHT;
 	const options: import("roughjs/bin/core").Options = {
-		...getColorOptions(el.color),
+		...DEFAULT_ROUGH_OPTIONS,
+		stroke: el.color ?? "#2563eb",
 		fillStyle: "solid",
-		fill: el.color ?? "#f0f0f0",
+		fill: el.color ?? "#2563eb",
 		seed: seedFromId(el.id),
 	};
 	return generator.rectangle(el.x, el.y, width, height, options);

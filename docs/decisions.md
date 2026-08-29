@@ -1,78 +1,3 @@
-# Decisões — Fase 5 (Orquestração do Storyteller)
-
-## Roteiros em `core/data/story-scripts/`, não em `features/storyteller/`
-
-**Decisão:** os 3 roteiros (`dev-desk-git-assets.ts`, `iot-bench-eco-play.ts`,
-`solid-architecture.ts`) e o `IDLE_BOARD_DIAGRAM` moram em `src/core/data/story-scripts/`,
-um arquivo por roteiro, tipados por `StoryScript`/`StoryStep` de `core/entities/`.
-
-**Por quê:** mesmo racional já registrado na Fase 2 para `projects.ts` — é **dado
-estático**, não estado de runtime, e é consumido por mais de uma feature (`whiteboard` lê
-`diagramElements`, `scene-3d` recebe `waypointId`, `storyteller` orquestra). Guardar dentro
-de `features/storyteller/` criaria acoplamento cruzado e impediria uma futura versão
-textual dos roteiros no `/recruiter` sem refactor. Um arquivo por roteiro é OCP literal:
-adicionar o 4º é criar um arquivo e registrá-lo no array de `index.ts`.
-
-## `whiteboard-store.ts` é a primeira implementação REAL de `IWhiteboardDriver`
-
-**Decisão:** criado `src/features/whiteboard/state/whiteboard-store.ts` implementando
-`IWhiteboardDriver` (`render`/`clear`) de fato, e `voxel-whiteboard.tsx` passou a ler
-`elements`/`revision` dessa store em vez de carregar um diagrama hardcoded.
-
-**Por quê:** a interface existia desde a Fase 3, mas era cumprida só *implicitamente*, via
-props de `WhiteboardCanvas` — nada no código dizia "eu sou um `IWhiteboardDriver`", então a
-abstração não estava sendo usada como ponto de inversão (DIP), só como documentação. Com a
-store, o storyteller passa a depender do tipo e não de quem desenha.
-
-**Onde mora:** `features/whiteboard/state/`, não `core/state/` — mesmo precedente de
-`scene-focus-store.ts`: é ponte de runtime entre um consumidor que só existe dentro do
-`<Canvas>` e um produtor de fora. `core/` fica livre de fiação de runtime.
-
-**Sem `reset()`:** alargaria a interface por conveniência (ISP). O storyteller já conhece
-`IDLE_BOARD_DIAGRAM` e chama `render(IDLE_BOARD_DIAGRAM)` ao encerrar o tour. `revision`
-existe para servir de `key` do `WhiteboardCanvas` e forçar o replay da animação de traço
-mesmo quando ids de elementos se repetem entre steps.
-
-## Guarda de staleness via `runId` no `storyteller-store`
-
-**Decisão:** `storyteller-store.ts` mantém um contador `runId` (e o handle de timer) em
-escopo de módulo, fora do estado reativo. Todo `applyStep` tira um snapshot do contador e
-**aborta** depois do `await focusWaypoint(...)` se o contador tiver mudado.
-
-**Por quê:** `focusWaypoint` é assíncrono (o voo da câmera dura ~1s). Se o usuário clicar
-"Próximo" — ou "Fechar" — durante o voo, a promise antiga resolve *depois* de a nova
-aplicação já ter começado, e sem a guarda ela agendaria um `setTimeout` de auto-avanço
-duplicado: na prática, um step pulado, ou um tour "fechado" que continua andando sozinho.
-`play`/`next`/`stop` incrementam o contador, o que invalida qualquer voo em andamento.
-Ficar fora do estado reativo é deliberado: ninguém deve re-renderizar por causa de um
-handle de timer (mesmo espírito dos refs em `scene-3d/hooks/use-camera-controller.ts`).
-
-## `autoAdvance` desligado sob `prefers-reduced-motion`
-
-**Decisão:** `hooks/use-autoplay-preference.ts` é o **único** ponto que liga
-`usePrefersReducedMotion()` ao campo `autoAdvance` da store, e é chamado uma vez por
-`StorytellerOverlay`.
-
-**Por quê:** WCAG 2.2.2 (Pause, Stop, Hide) — avanço automático de conteúdo tem que
-respeitar quem pediu menos movimento; com a preferência ligada, a navegação continua
-funcionando 100% pelos botões "Próximo"/"Concluir". A store não pode resolver isso sozinha
-porque é um módulo de estado sem React/DOM e não chama hooks — daí um hook de efeito
-colateral puro fazendo a ponte, sem retorno (o `autoAdvance` é lido pela store, nunca por
-um componente).
-
-## `app/api/chat/route.ts` continua intencionalmente NÃO criado
-
-**Decisão:** a Fase 5 fecha sem o endpoint de chat de IA. Ele permanece como TODO
-documentado (`docs/architecture.md`), não como arquivo vazio.
-
-**Por quê:** coerente com a decisão já registrada na Fase 1 — não deixar endpoint morto no
-código sem consumidor. O escopo desta fase, fechado com o usuário, é o motor de roteiros
-guiados; o chat é opcional e viria depois. O ponto de extensão já está pronto:
-`getStoryOrchestrator()` expõe a máquina de estados como `IStoryOrchestrator`, um handle
-sem React que um handler de rota poderia consumir direto, sem tocar em nenhum componente.
-
----
-
 # Decisões — `.gitattributes` fixando LF em todo o repo
 
 **Decisão:** adicionado `.gitattributes` na raiz com `* text=auto eol=lf`.
@@ -308,3 +233,102 @@ aplicação real do valor persistido após o mount.
 **Por quê:** a primeira versão do teste renderizava só `<Home />`, que nunca chama
 `persist.rehydrate()` — o teste passaria mesmo com um bug real de rehidratação, porque
 nunca lia o `localStorage`.
+
+---
+
+# Decisões — Fase 5 (Storyteller Biográfico)
+
+## Rejeição de `IStoryScript`
+
+**Decisão:** `StoryScript`, `StoryChapter` e `StoryStep` foram implementados como entidades de dados puras (`src/core/entities/story-script.ts`), sem criar uma interface `IStoryScript`.
+
+**Por quê:** `StoryScript` é uma estrutura de dados imutável, não um serviço ou contrato com múltiplas implementações polimórficas (ao contrário de `ICameraController`, `IWhiteboardDriver` e `IDialogController`). Criar `IStoryScript` seria cerimônia e redundância desnecessária.
+
+## Orquestrador com Guarda de Época (`runIdRef`)
+
+**Decisão:** `useStoryOrchestrator` implementa um contador atômico de época (`runIdRef`) incrementado a cada novo passo e checado após a Promise do voo da câmera.
+
+**Por quê:** Quando o usuário clica rapidamente em "Próximo" durante o voo da câmera, o voo anterior é abandonado. Sem a guarda de época, a Promise defasada acordaria e sobrescreveria o quadro branco com o diagrama anterior. O teste de regressão em `use-story-orchestrator.test.ts` valida essa proteção.
+
+## Desacoplamento do Quadro Branco
+
+**Decisão:** `voxel-whiteboard.tsx` lê os elementos dinamicamente de `useWhiteboardStore`, e a interface `IWhiteboardDriver` é implementada via hook `useWhiteboardDriver`.
+
+**Por quê:** Permite ao Storyteller controlar o conteúdo do quadro branco 3D a partir da camada de orquestração no DOM sem acoplar a árvore do Three.js aos detalhes internos da máquina de estados narrativa.
+
+## Roteiro com Dados Biográficos 100% Autênticos
+
+**Decisão:** O roteiro (`src/core/data/story/script.ts`) reflete fielmente as experiências reais do desenvolvedor (circuitos de redstone no Minecraft, formação técnica na Etec com a regra de estudar 1 semestre à frente, nascimento do Eco-Play e as 2 tentativas na FETEPS, impressora 3D para IoT, sistema do Festival de Primavera 2024 em Next.js + Supabase, apresentações no CONFAAT/Sebrae, atuação na StarSeg e Iniciação Científica no IFSP sobre segurança MQTT).
+
+## `prefers-reduced-motion` entra pelo cálculo de pacing, não por um flag de autoplay
+
+**Decisão:** a preferência de movimento reduzido é aplicada em um único ponto,
+`core/state/storyteller-pacing.ts`: `calculateStepDwellMs(step, { prefersReducedMotion })`
+deixa de somar `DIAGRAM_EXTRA_DWELL_MS` quando a preferência está ligada. Não existe um
+campo `autoAdvance` na store para ser desligado por fora.
+
+**Por quê:** o dwell é a única coisa que depende da preferência — o resto do fluxo
+(diálogo, foco de câmera, desenho do quadro) é idêntico nos dois modos. Concentrar isso
+numa função pura mantém a store livre de React/DOM (quem lê a media query é o hook
+`usePrefersReducedMotion()` do `shared/`, que só repassa o booleano) e deixa a regra
+testável sem renderizar nada — `storyteller-pacing.test.ts` cobre os dois caminhos. Um
+flag booleano na store espalharia a decisão por dois lugares (quem liga e quem lê) para
+resolver o mesmo requisito WCAG 2.2.2.
+
+## `app/api/chat/route.ts` continua intencionalmente NÃO criado
+
+**Decisão:** a Fase 5 fecha sem o endpoint de chat de IA. Ele permanece como TODO
+documentado (`docs/architecture.md`), não como arquivo vazio.
+
+**Por quê:** coerente com a decisão já registrada na Fase 1 — não deixar endpoint morto no
+código sem consumidor. O escopo desta fase, fechado com o usuário, é o motor de roteiros
+guiados; o chat é opcional e viria depois.
+
+---
+
+# Decisões — Ajustes de renderização do estúdio 3D (Fase 4)
+
+## Z-fighting resolvido por separação física, não por `polygonOffset`
+
+**Decisão:** as superfícies coplanares do estúdio foram afastadas no eixo de profundidade
+em vez de receberem `polygonOffset`/`renderOrder`. No `voxel-whiteboard.tsx`, a chapa
+branca passou de `position.z 0.015`/espessura `0.02` para `0.02`/`0.04`, as capinhas de
+canto de `0.01` para `0.015`, e o `<Html transform>` do `WhiteboardCanvas` de `0.03` para
+`0.05`. O mesmo racional vale para o piso do estúdio.
+
+**Por quê:** `polygonOffset` é um ajuste de rasterização que mascara o sintoma e continua
+frágil conforme a câmera se aproxima ou o `near`/`far` muda; separar as geometrias resolve
+na origem, custa nada em performance e permanece correto em qualquer ângulo — inclusive
+nos waypoints espelhados. Os offsets estão comentados no código justamente para que
+ninguém os "arrume" de volta para o mesmo plano.
+
+**Efeito colateral desejado:** a chapa deixou de ser envernizada (`roughness` 0.15 → 0.55,
+`metalness` 0.1 → 0) porque o brilho especular sobre o `<Html>` embutido lavava o traço do
+Rough.js; um quadro branco real é fosco.
+
+## Visibilidade das paredes laterais é função pura, fora do R3F
+
+**Decisão:** a regra de qual parede lateral esconder mora em
+`features/scene-3d/lib/side-wall-visibility.ts`, com teste próprio, e
+`studio-side-walls.tsx` só consome o resultado.
+
+**Por quê:** é geometria pura (ângulo da câmera → quais paredes ocluem a cena), não estado
+de renderização. Fora do componente, ela é testável em jsdom sem WebGL — mesmo critério
+usado para `scene-waypoint-config.ts`.
+
+---
+
+# Nota de reconciliação — merge das duas implementações da Fase 5
+
+Duas máquinas implementaram a Fase 5 de forma independente a partir do mesmo commit-base
+(`1ff9e87`), produzindo arquiteturas incompatíveis. A reconciliação adotou a versão do
+`origin` como canônica para o Storyteller (`core/state/storyteller-store.ts` +
+`useStoryOrchestrator` + `dialogue-store`), e descartou a versão local
+(`features/storyteller/state/storyteller-store.ts`, `core/data/story-scripts/`,
+`IStoryOrchestrator`, `story-step.ts`) — que nunca chegou a ser montada em `app/page.tsx`.
+
+Os fixes locais de `scene-3d` (z-fighting, câmeras espelhadas, reframe do waypoint da mesa,
+sync da aba ativa, `side-wall-visibility.ts`) foram preservados, e `voxel-whiteboard.tsx`
+foi reconciliado à mão: arquitetura desacoplada do `origin` (lê `elements` de
+`useWhiteboardStore`) com os offsets de z-fighting locais aplicados por cima.
+

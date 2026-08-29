@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { STORY_SCRIPTS } from "@/core/data/story-scripts";
+import { BIOGRAPHICAL_STORY_SCRIPT } from "@/core/data/story";
 import RecruiterPage, { generateMetadata } from "./page";
 
 describe("generateMetadata", () => {
@@ -38,17 +38,19 @@ describe("RecruiterPage", () => {
 	it("does not leak the storyteller into the recruiter mode", () => {
 		render(<RecruiterPage />);
 
-		for (const storyScript of STORY_SCRIPTS) {
-			expect(screen.queryByText(storyScript.title)).not.toBeInTheDocument();
-			for (const step of storyScript.steps) {
-				expect(screen.queryByText(step.speech)).not.toBeInTheDocument();
-			}
+		for (const chapter of BIOGRAPHICAL_STORY_SCRIPT.chapters) {
+			expect(screen.queryByText(chapter.title)).not.toBeInTheDocument();
+		}
+		for (const step of BIOGRAPHICAL_STORY_SCRIPT.steps) {
+			expect(screen.queryByText(step.mascotDialogue)).not.toBeInTheDocument();
 		}
 		expect(
-			screen.queryByRole("img", { name: "Mascote" }),
+			screen.queryByRole("toolbar", {
+				name: "Controles de reprodução do Storyteller",
+			}),
 		).not.toBeInTheDocument();
 		expect(
-			screen.queryByRole("button", { name: "Próximo" }),
+			screen.queryByRole("button", { name: "Próximo passo" }),
 		).not.toBeInTheDocument();
 	});
 });

@@ -18,9 +18,7 @@ const STAND_COLOR = "#475569";
 const TRAY_COLOR = "#94a3b8";
 
 export function VoxelWhiteboard() {
-	const elements = useWhiteboardStore((s) => s.elements);
-	const revision = useWhiteboardStore((s) => s.revision);
-
+	const elements = useWhiteboardStore((state) => state.elements);
 	return (
 		<group position={WHITEBOARD_ORIGIN} rotation={WHITEBOARD_ROTATION}>
 			{/* --- WHEELED MOBILE STAND --- */}
@@ -150,7 +148,6 @@ export function VoxelWhiteboard() {
 					}}
 				>
 					<WhiteboardCanvas
-						key={revision}
 						elements={elements}
 						className="h-full w-full bg-transparent"
 					/>

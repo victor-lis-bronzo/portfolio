@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { IDLE_BOARD_DIAGRAM } from "@/core/data/story-scripts";
+import { D1_LEARNING_TRACK } from "@/core/data/story";
 import type { DiagramElement } from "@/core/entities";
 import type { IWhiteboardDriver } from "@/core/interfaces";
 import { useWhiteboardStore } from "./whiteboard-store";
@@ -18,54 +18,42 @@ const NEXT_ELEMENTS: DiagramElement[] = [
 
 describe("useWhiteboardStore", () => {
 	beforeEach(() => {
-		useWhiteboardStore.setState({
-			elements: IDLE_BOARD_DIAGRAM,
-			revision: 0,
-		});
+		useWhiteboardStore.setState({ elements: D1_LEARNING_TRACK });
 	});
 
-	it("starts with IDLE_BOARD_DIAGRAM and revision 0", () => {
-		const state = useWhiteboardStore.getState();
-		expect(state.elements).toEqual(IDLE_BOARD_DIAGRAM);
-		expect(state.revision).toBe(0);
+	it("starts with the idle board diagram", () => {
+		expect(useWhiteboardStore.getState().elements).toEqual(D1_LEARNING_TRACK);
 	});
 
-	it("render replaces the elements and increments revision by 1", () => {
+	it("render replaces the elements", () => {
 		useWhiteboardStore.getState().render(NEXT_ELEMENTS);
 
-		const state = useWhiteboardStore.getState();
-		expect(state.elements).toEqual(NEXT_ELEMENTS);
-		expect(state.revision).toBe(1);
+		expect(useWhiteboardStore.getState().elements).toEqual(NEXT_ELEMENTS);
 	});
 
-	it("render increments revision on every call", () => {
-		useWhiteboardStore.getState().render(NEXT_ELEMENTS);
-		useWhiteboardStore.getState().render(IDLE_BOARD_DIAGRAM);
-
-		const state = useWhiteboardStore.getState();
-		expect(state.elements).toEqual(IDLE_BOARD_DIAGRAM);
-		expect(state.revision).toBe(2);
-	});
-
-	it("clear empties the elements and increments revision", () => {
-		useWhiteboardStore.getState().clear();
-
-		const state = useWhiteboardStore.getState();
-		expect(state.elements).toEqual([]);
-		expect(state.revision).toBe(1);
-	});
-
-	it("clear after render keeps incrementing revision", () => {
+	it("clear empties the elements", () => {
 		useWhiteboardStore.getState().render(NEXT_ELEMENTS);
 		useWhiteboardStore.getState().clear();
 
-		const state = useWhiteboardStore.getState();
-		expect(state.elements).toEqual([]);
-		expect(state.revision).toBe(2);
+		expect(useWhiteboardStore.getState().elements).toEqual([]);
 	});
 
-	it("conforms to the IWhiteboardDriver port", () => {
-		const driver: IWhiteboardDriver = useWhiteboardStore.getState();
+	it("reset restores the idle board diagram", () => {
+		useWhiteboardStore.getState().clear();
+		useWhiteboardStore.getState().reset();
+
+		expect(useWhiteboardStore.getState().elements).toEqual(D1_LEARNING_TRACK);
+	});
+
+	/**
+	 * The store is not typed as `IWhiteboardDriver` on purpose — `reset()` is a
+	 * store-local convenience that the port deliberately does not expose (ISP).
+	 * This guards that the `render`/`clear` pair the port does require stays
+	 * structurally compatible, which is what `useWhiteboardDriver` relies on.
+	 */
+	it("exposes a render/clear pair assignable to IWhiteboardDriver", () => {
+		const { render, clear } = useWhiteboardStore.getState();
+		const driver: IWhiteboardDriver = { render, clear };
 
 		expect(typeof driver.render).toBe("function");
 		expect(typeof driver.clear).toBe("function");
