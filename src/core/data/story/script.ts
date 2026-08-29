@@ -50,7 +50,7 @@ export const BIOGRAPHICAL_STORY_SCRIPT: StoryScript = {
 			title: "IFSP & Oportunidades",
 			description: "Graduação, pesquisa em segurança MQTT e próximos passos.",
 			stepIds: ["step-future-1", "step-future-2"],
-			entryWaypoint: "DESK",
+			entryWaypoint: "IFSP_BOARD",
 		},
 	],
 	steps: [
@@ -90,7 +90,7 @@ export const BIOGRAPHICAL_STORY_SCRIPT: StoryScript = {
 		},
 		{
 			id: "step-etec-3",
-			waypoint: "DESK",
+			waypoint: "ETEC_STAGE",
 			mascotDialogue:
 				"Fui eleito representante de classe por 3 anos seguidos e tive a honra de ser o juramentista da formatura da turma!",
 		},
@@ -98,7 +98,7 @@ export const BIOGRAPHICAL_STORY_SCRIPT: StoryScript = {
 		// --- Capítulo 3: Eco-Play & Hardware ---
 		{
 			id: "step-ecoplay-1",
-			waypoint: "IOT_BENCH",
+			waypoint: "ECOPLAY_ARCADE",
 			mascotDialogue:
 				"Em 2023, numa conversa sobre o Vestibulinho, nasceu o Eco-Play: e se a gente gamificasse a coleta de tampinhas plásticas?",
 		},
@@ -154,7 +154,7 @@ export const BIOGRAPHICAL_STORY_SCRIPT: StoryScript = {
 		// --- Capítulo 6: IFSP & Oportunidades ---
 		{
 			id: "step-future-1",
-			waypoint: "DESK",
+			waypoint: "IFSP_BOARD",
 			mascotDialogue:
 				"Hoje curso ADS no IFSP Bragança Paulista e realizo Iniciação Científica em vulnerabilidades e segurança no protocolo MQTT.",
 		},

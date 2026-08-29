@@ -5,8 +5,12 @@ import { IsometricLighting } from "./isometric-lighting";
 import { SceneCameraRig } from "./scene-camera-rig";
 import { StudioSideWalls } from "./studio-side-walls";
 import { VoxelDesk } from "./voxel-desk";
+import { VoxelEcoplayArcade } from "./voxel-ecoplay-arcade";
+import { VoxelEtecStage } from "./voxel-etec-stage";
+import { VoxelIfspPlaque } from "./voxel-ifsp-plaque";
 import { VoxelIotBench } from "./voxel-iot-bench";
 import { VoxelPrinter } from "./voxel-printer";
+import { VoxelRedstonePiston } from "./voxel-redstone-piston";
 import { VoxelRoom } from "./voxel-room";
 import { VoxelWhiteboard } from "./voxel-whiteboard";
 
@@ -32,6 +36,10 @@ export function VoxelStudio() {
 			<VoxelPrinter />
 			<VoxelIotBench />
 			<VoxelWhiteboard />
+			<VoxelEtecStage />
+			<VoxelIfspPlaque />
+			<VoxelEcoplayArcade />
+			<VoxelRedstonePiston />
 		</Canvas>
 	);
 }

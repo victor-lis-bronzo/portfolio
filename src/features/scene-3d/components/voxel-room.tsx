@@ -1,6 +1,15 @@
 "use client";
 
-const ROOM_SIZE = 12;
+// The room is no longer square: it grew in ±X and in +Z only, so the back wall
+// (and every prop anchored to it) could stay exactly where it always was.
+const ROOM_MIN_X = -8;
+const ROOM_MAX_X = 8;
+const ROOM_MIN_Z = -6;
+const ROOM_MAX_Z = 8;
+const ROOM_WIDTH = ROOM_MAX_X - ROOM_MIN_X; // 16
+const ROOM_DEPTH = ROOM_MAX_Z - ROOM_MIN_Z; // 14
+const ROOM_CENTER_Z = (ROOM_MIN_Z + ROOM_MAX_Z) / 2; // 1
+
 const WALL_HEIGHT = 4.2;
 const WALL_THICKNESS = 0.2;
 const BASEBOARD_HEIGHT = 0.16;
@@ -18,27 +27,27 @@ export function VoxelRoom() {
 	return (
 		<group>
 			{/* Foundation Plinth */}
-			<mesh position={[0, -0.22, 0]}>
-				<boxGeometry args={[ROOM_SIZE + 0.6, 0.4, ROOM_SIZE + 0.6]} />
+			<mesh position={[0, -0.22, ROOM_CENTER_Z]}>
+				<boxGeometry args={[ROOM_WIDTH + 0.6, 0.4, ROOM_DEPTH + 0.6]} />
 				<meshStandardMaterial color={FLOOR_FOUNDATION_COLOR} roughness={0.9} />
 			</mesh>
 
 			{/* Floor Parquet / Wood Planks Base */}
-			<mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-				<planeGeometry args={[ROOM_SIZE, ROOM_SIZE]} />
+			<mesh position={[0, 0, ROOM_CENTER_Z]} rotation={[-Math.PI / 2, 0, 0]}>
+				<planeGeometry args={[ROOM_WIDTH, ROOM_DEPTH]} />
 				<meshStandardMaterial color={WOOD_FLOOR_COLOR} roughness={0.6} />
 			</mesh>
 
 			{/* Stylized Floor Grid Planks (Voxel aesthetic) */}
-			{Array.from({ length: 6 }).map((_, i) => {
-				const offset = -ROOM_SIZE / 2 + (i + 1) * 2 - 1;
+			{Array.from({ length: 7 }).map((_, i) => {
+				const offset = ROOM_MIN_Z + (i + 1) * 2 - 1;
 				return (
 					<mesh
 						key={`floor-plank-${offset}`}
 						position={[0, 0.012, offset]}
 						rotation={[-Math.PI / 2, 0, 0]}
 					>
-						<planeGeometry args={[ROOM_SIZE, 0.03]} />
+						<planeGeometry args={[ROOM_WIDTH, 0.03]} />
 						<meshStandardMaterial color={WOOD_PLANK_ALT} roughness={0.7} />
 					</mesh>
 				);
@@ -54,19 +63,19 @@ export function VoxelRoom() {
 				<meshStandardMaterial color="#2d3748" roughness={0.9} />
 			</mesh>
 
-			{/* The two side walls (X = ±6) live in studio-side-walls.tsx, which
+			{/* The two side walls (X = ±8) live in studio-side-walls.tsx, which
 			    hides whichever one the camera would look through. */}
 
 			{/* --- BACK WALL (North-East, along Z = -6) --- */}
-			<group position={[0, WALL_HEIGHT / 2, -ROOM_SIZE / 2]}>
+			<group position={[0, WALL_HEIGHT / 2, ROOM_MIN_Z]}>
 				{/* Main Wall Slab */}
 				<mesh position={[0, 0, -WALL_THICKNESS / 2]}>
-					<boxGeometry args={[ROOM_SIZE, WALL_HEIGHT, WALL_THICKNESS]} />
+					<boxGeometry args={[ROOM_WIDTH, WALL_HEIGHT, WALL_THICKNESS]} />
 					<meshStandardMaterial color={WALL_COLOR} roughness={0.8} />
 				</mesh>
 				{/* Baseboard */}
 				<mesh position={[0, -WALL_HEIGHT / 2 + BASEBOARD_HEIGHT / 2, 0.02]}>
-					<boxGeometry args={[ROOM_SIZE, BASEBOARD_HEIGHT, 0.04]} />
+					<boxGeometry args={[ROOM_WIDTH, BASEBOARD_HEIGHT, 0.04]} />
 					<meshStandardMaterial color={BASEBOARD_COLOR} roughness={0.6} />
 				</mesh>
 

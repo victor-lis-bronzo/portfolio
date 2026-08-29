@@ -4,7 +4,7 @@ export type SideWallSide = "LEFT" | "RIGHT";
  * Picks which of the two mutually exclusive side walls stays visible for a
  * given camera view direction.
  *
- * The room only has a left wall (x = -6) and a right wall (x = +6); the one
+ * The room only has a left wall (x = -8) and a right wall (x = +8); the one
  * the camera looks *through* would sit in front of the scene, so it is hidden
  * (the classic isometric cutaway). The function is TOTAL: every input maps to
  * exactly one side, so the studio is never left with both laterals hidden.

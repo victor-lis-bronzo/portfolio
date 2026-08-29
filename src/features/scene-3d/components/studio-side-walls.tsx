@@ -6,7 +6,14 @@ import { DoubleSide, type Group, Vector3 } from "three";
 import { resolveSideWall } from "../lib/side-wall-visibility";
 
 // Kept in sync with voxel-room.tsx (same room shell, split across two files).
-const ROOM_SIZE = 12;
+const ROOM_MIN_X = -8;
+const ROOM_MAX_X = 8;
+const ROOM_MIN_Z = -6;
+const ROOM_MAX_Z = 8;
+const ROOM_WIDTH = ROOM_MAX_X - ROOM_MIN_X; // 16
+const ROOM_DEPTH = ROOM_MAX_Z - ROOM_MIN_Z; // 14
+const ROOM_CENTER_Z = (ROOM_MIN_Z + ROOM_MAX_Z) / 2; // 1
+
 const WALL_HEIGHT = 4.2;
 const WALL_THICKNESS = 0.2;
 const BASEBOARD_HEIGHT = 0.16;
@@ -36,10 +43,13 @@ function SideWall({ side }: { side: "LEFT" | "RIGHT" }) {
 	const inward = (offset: number) => -sign * offset;
 
 	return (
-		<group position={[(sign * ROOM_SIZE) / 2, 0, 0]}>
+		<group position={[(sign * ROOM_WIDTH) / 2, 0, 0]}>
 			{/* Main wall slab (zero-profile plane, visible from both faces) */}
-			<mesh position={[0, WALL_HEIGHT / 2, 0]} rotation={[0, Math.PI / 2, 0]}>
-				<planeGeometry args={[ROOM_SIZE, WALL_HEIGHT]} />
+			<mesh
+				position={[0, WALL_HEIGHT / 2, ROOM_CENTER_Z]}
+				rotation={[0, Math.PI / 2, 0]}
+			>
+				<planeGeometry args={[ROOM_DEPTH, WALL_HEIGHT]} />
 				<meshStandardMaterial
 					color={WALL_COLOR}
 					roughness={0.8}
@@ -48,8 +58,8 @@ function SideWall({ side }: { side: "LEFT" | "RIGHT" }) {
 			</mesh>
 
 			{/* Baseboard */}
-			<mesh position={[inward(0.02), BASEBOARD_HEIGHT / 2, 0]}>
-				<boxGeometry args={[0.04, BASEBOARD_HEIGHT, ROOM_SIZE]} />
+			<mesh position={[inward(0.02), BASEBOARD_HEIGHT / 2, ROOM_CENTER_Z]}>
+				<boxGeometry args={[0.04, BASEBOARD_HEIGHT, ROOM_DEPTH]} />
 				<meshStandardMaterial color={BASEBOARD_COLOR} roughness={0.6} />
 			</mesh>
 
@@ -59,7 +69,7 @@ function SideWall({ side }: { side: "LEFT" | "RIGHT" }) {
 				position={[
 					inward(-WALL_THICKNESS / 2),
 					WALL_HEIGHT / 2,
-					-ROOM_SIZE / 2 - WALL_THICKNESS / 2,
+					ROOM_MIN_Z - WALL_THICKNESS / 2,
 				]}
 			>
 				<boxGeometry args={[WALL_THICKNESS, WALL_HEIGHT, WALL_THICKNESS]} />

@@ -6,8 +6,8 @@ import { SCENE_WAYPOINTS } from "./scene-waypoint-config";
 // direction is features -> core, never the inverse, so a core/entities test
 // must not import helpers from features/scene-3d/lib.
 const NEAR = 0.1; // mirrors scene-camera-rig.tsx
-const ROOM_MIN: [number, number, number] = [-6, 0, -6];
-const ROOM_MAX: [number, number, number] = [6, 4.2, 6];
+const ROOM_MIN: [number, number, number] = [-8, 0, -6];
+const ROOM_MAX: [number, number, number] = [8, 4.2, 8];
 
 function viewDirection(waypoint: SceneWaypoint) {
 	const x = waypoint.target.x - waypoint.position.x;
@@ -45,11 +45,14 @@ const ALL_IDS: SceneWaypointId[] = [
 	"IOT_BENCH",
 	"PRINTER_3D",
 	"WHITEBOARD_FOCUS",
+	"ETEC_STAGE",
+	"ECOPLAY_ARCADE",
+	"IFSP_BOARD",
 ];
 
 describe("SCENE_WAYPOINTS", () => {
-	it("has exactly 5 entries", () => {
-		expect(SCENE_WAYPOINTS).toHaveLength(5);
+	it("has exactly 8 entries", () => {
+		expect(SCENE_WAYPOINTS).toHaveLength(8);
 	});
 
 	it("contains every SceneWaypointId exactly once", () => {
@@ -90,10 +93,14 @@ describe("SCENE_WAYPOINTS", () => {
 		expect(standard.length).toBeGreaterThanOrEqual(2);
 	});
 
+	// Per-axis bounds, not |value|: the room is no longer symmetric in z
+	// (it grew only towards +Z, the back wall stayed at z = -6).
 	it("keeps every target inside the walls", () => {
 		for (const waypoint of SCENE_WAYPOINTS) {
-			expect(Math.abs(waypoint.target.x)).toBeLessThan(5.5);
-			expect(Math.abs(waypoint.target.z)).toBeLessThan(5.5);
+			expect(waypoint.target.x).toBeGreaterThan(-7.5);
+			expect(waypoint.target.x).toBeLessThan(7.5);
+			expect(waypoint.target.z).toBeGreaterThan(-5.9);
+			expect(waypoint.target.z).toBeLessThan(7.5);
 		}
 	});
 

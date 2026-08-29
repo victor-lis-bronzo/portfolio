@@ -3,7 +3,10 @@ export type SceneWaypointId =
 	| "DESK"
 	| "IOT_BENCH"
 	| "PRINTER_3D"
-	| "WHITEBOARD_FOCUS";
+	| "WHITEBOARD_FOCUS"
+	| "ETEC_STAGE"
+	| "ECOPLAY_ARCADE"
+	| "IFSP_BOARD";
 
 export interface Vector3Tuple {
 	x: number;
