@@ -1,86 +1,36 @@
-# Portfólio Interativo & Assistente Autônomo de IA
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-> Uma aplicação Full-Stack arquitetada em Monorepo, contendo uma engine de manipulação de Canvas e um Agente Virtual integrado para consumo do meu contexto profissional.
+## Getting Started
 
-Este repositório não é apenas um site estático. É uma aplicação desenvolvida para demonstrar domínio prático em arquitetura de front-end avançada (Next.js/React), orquestração de pacotes e integração de Inteligência Artificial generativa otimizada para custo e latência.
+First, run the development server:
 
-## 🏗 Decisões Arquiteturais e Engenharia
-
-O projeto foi construído sobre uma fundação de **Monorepo (Turborepo + pnpm workspaces)**, permitindo o isolamento da aplicação web principal (`web/`) das configurações base, garantindo escalabilidade caso a aplicação cresça para múltiplos serviços.
-
-### 🧠 A Decisão sobre IA: Injeção de Contexto Estruturado vs. RAG Tradicional
-Um dos principais requisitos técnicos deste projeto era a implementação de um "Mascote" (Agente de IA) que pudesse responder perguntas sobre a minha carreira.
-
-**Por que não usei um RAG Tradicional (Vector DB + Embeddings)?**
-Em arquitetura de software, adoção de tecnologia deve ser guiada pelo problema de negócio. A aplicação de um RAG tradicional exigiria uma infraestrutura adicional (Bancos de Dados Vetoriais), adicionando latência de rede no _retrieval_ dos chunks e custos desnecessários em cloud para um dataset de tamanho fechado e determinístico (meu histórico profissional).
-
-**A Solução Implementada:**
-Implementei um modelo de **Injeção de Contexto Determinística (Stateless Context Injection)**. 
-1. Meus dados profissionais (Keypoints, Summary, Reports) são pré-processados e armazenados em estruturas JSON imutáveis.
-2. O serviço de IA (`generative-ai.service.ts`) consome esses dados e os injeta de forma otimizada diretamente no _System Prompt_ via Google Gemini SDK.
-3. **Resultado:** Tempo de latência de busca local reduzido a 0ms, custo de infraestrutura de banco de dados vetorial zerado (redução direta de OPEX) e eliminação do risco de "alucinação de chunks" comum em RAGs mal calibrados, garantindo 100% de precisão no _recall_ do contexto.
-
-### 🎨 Motor Gráfico (Canvas API)
-Além da integração com LLMs, o módulo `drawmylife` implementa lógicas complexas de front-end puro. A interface gerencia estados de renderização de Canvas, tracking de ponteiro de mouse, ferramentas de desenho e controle de câmera, integrando essas interações nativas do browser de forma reativa com os hooks do React.
-
-## 💻 Tech Stack
-
-- **Ecossistema:** Next.js (App Router), React, TypeScript.
-- **Inteligência Artificial:** Google Gemini SDK (`@google/generative-ai`).
-- **Styling & UI:** Tailwind CSS, componentes acessíveis.
-- **Orquestração:** Turborepo, pnpm workspaces.
-- **BaaS (Backend as a Service):** Firebase (configurado para escalabilidade de armazenamento e analytics, se necessário).
-
-## 📂 Estrutura do Projeto
-
-```text
-portfolio/
-├── web/
-│   ├── src/
-│   │   ├── app/                 # Rotas da aplicação (App Router)
-│   │   ├── api/                 # Serviços de backend (Gemini AI, Firebase)
-│   │   │   └── services/generative-ai/data/ # Contexto imutável do Agente (JSONs)
-│   │   ├── drawmylife/          # Módulo da engine de Canvas interativo
-│   │   └── components/          # Componentes reusáveis de UI e Animações (Framer Motion / GSAP concepts)
-├── package.json                 # Scripts unificados
-└── turbo.json                   # Pipeline de build otimizada
-
-```
-
-## 🚀 Como executar localmente
-
-1. **Clone o repositório e instale as dependências:**
-O projeto utiliza `pnpm`. Na raiz do monorepo, execute:
 ```bash
-pnpm install
-
-```
-
-
-2. **Configure as Variáveis de Ambiente:**
-Dentro da pasta `web/`, duplique o arquivo `.env.example` para `.env` e preencha com a sua chave da API do Google Gemini.
-```env
-GEMINI_API_KEY=sua_chave_aqui
-
-```
-
-
-3. **Inicie o servidor de desenvolvimento:**
-Na raiz do monorepo, inicie o Turborepo:
-```bash
+npm run dev
+# or
+yarn dev
+# or
 pnpm dev
-
+# or
+bun dev
 ```
 
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-A aplicação estará rodando em `http://localhost:3000`.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## 🚀 Deploy
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-O deploy de produção é controlado por tags Git e roda via GitHub Actions + Vercel.
-Veja [DEPLOY.md](DEPLOY.md) para o fluxo completo, convenção de tags, rollback e
-secrets/variables necessários.
+## Learn More
 
----
+To learn more about Next.js, take a look at the following resources:
 
-*Projetado e desenvolvido por Victor Lis Bronzo.*
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,11 +1,5 @@
-packages:
-  - web
-  - api
-
-onlyBuiltDependencies:
-  - '@firebase/util'
-  - esbuild
-  - msw
-  - protobufjs
-  - sharp
-  - puppeteer
+allowBuilds:
+  sharp: false
+  unrs-resolver: false
+minimumReleaseAgeExclude:
+  - '@rolldown/binding-openharmony-arm64@1.2.6'

@@ -1,0 +1,213 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-sans);
+	--font-mono: var(--font-geist-mono);
+	--font-heading: var(--font-sans);
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-chart-5: var(--chart-5);
+	--color-chart-4: var(--chart-4);
+	--color-chart-3: var(--chart-3);
+	--color-chart-2: var(--chart-2);
+	--color-chart-1: var(--chart-1);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--radius-sm: calc(var(--radius) * 0.6);
+	--radius-md: calc(var(--radius) * 0.8);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) * 1.4);
+	--radius-2xl: calc(var(--radius) * 1.8);
+	--radius-3xl: calc(var(--radius) * 2.2);
+	--radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+	--background: #10111e;
+	--foreground: #ffffff;
+	--card: #171933;
+	--card-foreground: #ffffff;
+	--popover: #171933;
+	--popover-foreground: #ffffff;
+	--primary: #5629c2;
+	--primary-foreground: #ffffff;
+	--secondary: #1c1f3a;
+	--secondary-foreground: #ffffff;
+	--muted: #191b30;
+	--muted-foreground: rgba(255, 255, 255, 0.65);
+	--accent: #5629c2;
+	--accent-foreground: #ffffff;
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: rgba(255, 255, 255, 0.1);
+	--input: rgba(255, 255, 255, 0.1);
+	--ring: #8b6fe8;
+	--chart-1: oklch(0.87 0 0);
+	--chart-2: oklch(0.556 0 0);
+	--chart-3: oklch(0.439 0 0);
+	--chart-4: oklch(0.371 0 0);
+	--chart-5: oklch(0.269 0 0);
+	--radius: 0.625rem;
+	--sidebar: #171933;
+	--sidebar-foreground: #ffffff;
+	--sidebar-primary: #5629c2;
+	--sidebar-primary-foreground: #ffffff;
+	--sidebar-accent: #5629c2;
+	--sidebar-accent-foreground: #ffffff;
+	--sidebar-border: rgba(255, 255, 255, 0.1);
+	--sidebar-ring: #8b6fe8;
+
+	/*
+	 * Height of the fixed/sticky app header (shared/components/app-chrome.tsx).
+	 * It is the single source of truth for the strip the header occupies at the
+	 * top of the viewport, so full-bleed overlays (the storyteller overlay is
+	 * `absolute inset-0`) can offset themselves with
+	 * `padding-top: var(--app-header-height)` instead of guessing a magic number.
+	 * The safe-area inset is baked in so the value is already correct on notched
+	 * devices under `viewportFit: "cover"`.
+	 */
+	--app-header-height: calc(3.25rem + env(safe-area-inset-top, 0px));
+}
+
+/* sm: — the header gets its roomier desktop padding back. */
+@media (min-width: 40rem) {
+	:root {
+		--app-header-height: calc(4rem + env(safe-area-inset-top, 0px));
+	}
+}
+
+.dark {
+	--background: #10111e;
+	--foreground: #ffffff;
+	--card: #171933;
+	--card-foreground: #ffffff;
+	--popover: #171933;
+	--popover-foreground: #ffffff;
+	--primary: #5629c2;
+	--primary-foreground: #ffffff;
+	--secondary: #1c1f3a;
+	--secondary-foreground: #ffffff;
+	--muted: #191b30;
+	--muted-foreground: rgba(255, 255, 255, 0.65);
+	--accent: #5629c2;
+	--accent-foreground: #ffffff;
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: rgba(255, 255, 255, 0.1);
+	--input: rgba(255, 255, 255, 0.1);
+	--ring: #8b6fe8;
+	--chart-1: oklch(0.87 0 0);
+	--chart-2: oklch(0.556 0 0);
+	--chart-3: oklch(0.439 0 0);
+	--chart-4: oklch(0.371 0 0);
+	--chart-5: oklch(0.269 0 0);
+	--sidebar: #171933;
+	--sidebar-foreground: #ffffff;
+	--sidebar-primary: #5629c2;
+	--sidebar-primary-foreground: #ffffff;
+	--sidebar-accent: #5629c2;
+	--sidebar-accent-foreground: #ffffff;
+	--sidebar-border: rgba(255, 255, 255, 0.1);
+	--sidebar-ring: #8b6fe8;
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+	html {
+		@apply font-sans;
+	}
+}
+
+/*
+ * Safe-area helpers for notched devices (paired with `viewportFit: "cover"` in
+ * app/layout.tsx). Each one owns the padding on its own side, so put them on a
+ * wrapper and keep the design padding (p-*, px-*) on an inner element rather
+ * than fighting Tailwind's utilities for the same declaration.
+ */
+@layer utilities {
+	.pt-safe {
+		padding-top: env(safe-area-inset-top, 0px);
+	}
+
+	.pb-safe {
+		padding-bottom: env(safe-area-inset-bottom, 0px);
+	}
+
+	.px-safe {
+		padding-left: env(safe-area-inset-left, 0px);
+		padding-right: env(safe-area-inset-right, 0px);
+	}
+}
+
+/* Custom scrollbars */
+.scrollbar-top {
+	transform: scaleY(-1);
+}
+
+.scrollbar-top > * {
+	transform: scaleY(-1);
+}
+
+/*
+ * Axis-agnostic: `scrollbar-width`/`scrollbar-color` apply to whichever axis
+ * actually scrolls, and the webkit rules set both `height` (horizontal bar) and
+ * `width` (vertical bar). Used horizontally by chapter-chips and vertically by
+ * the transcript panel.
+ */
+.scrollbar-themed {
+	scrollbar-width: thin;
+	scrollbar-color: var(--primary) rgba(255, 255, 255, 0.05);
+}
+
+.scrollbar-themed::-webkit-scrollbar {
+	height: 4px;
+	width: 4px;
+}
+
+.scrollbar-themed::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+.scrollbar-themed::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.05);
+	border-radius: 9999px;
+}
+
+.scrollbar-themed::-webkit-scrollbar-thumb {
+	background: var(--primary);
+	border-radius: 9999px;
+	transition: background-color 0.2s ease;
+}
+
+.scrollbar-themed::-webkit-scrollbar-thumb:hover {
+	background: var(--ring);
+}
