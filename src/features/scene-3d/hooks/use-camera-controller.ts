@@ -17,6 +17,38 @@ import { useSceneFocusStore } from "../state/scene-focus-store";
 const DAMP_LAMBDA = 6;
 const DEFAULT_WAYPOINT = SCENE_WAYPOINTS[0];
 
+/**
+ * Canvas size the waypoint zooms in scene-waypoint-config.ts were authored for.
+ * drei's <OrthographicCamera> derives its frustum from the canvas pixel size
+ * (left/right = ±width/2, top/bottom = ±height/2), so the visible world extent
+ * is `size / zoom`. A phone canvas is ~3x narrower than this reference, which
+ * shrank the visible world by the same factor and cropped the studio.
+ */
+const REFERENCE_CANVAS_WIDTH = 1280;
+const REFERENCE_CANVAS_HEIGHT = 720;
+/** Floor so a degenerate/zero-ish canvas can't collapse the camera. */
+const MIN_ASPECT_ZOOM_FACTOR = 0.2;
+
+/**
+ * Multiplier applied to every waypoint zoom so the world box framed at the
+ * reference canvas size stays fully visible ("contain") on smaller or
+ * differently-proportioned canvases.
+ *
+ * Clamped to <= 1 on purpose: canvases at or above the reference keep the
+ * authored framing exactly, so this is a no-op on desktop and only ever zooms
+ * out on narrow/portrait viewports.
+ */
+export function getAspectZoomFactor(width: number, height: number): number {
+	if (!(width > 0) || !(height > 0)) return 1;
+
+	const factor = Math.min(
+		width / REFERENCE_CANVAS_WIDTH,
+		height / REFERENCE_CANVAS_HEIGHT,
+	);
+
+	return Math.min(1, Math.max(MIN_ASPECT_ZOOM_FACTOR, factor));
+}
+
 function findWaypoint(id: SceneWaypointId): SceneWaypoint {
 	const waypoint = SCENE_WAYPOINTS.find((candidate) => candidate.id === id);
 	if (!waypoint) {
@@ -39,8 +71,21 @@ function findWaypoint(id: SceneWaypointId): SceneWaypoint {
  * drilling across the dynamic-import boundary.
  */
 export function useCameraController(): ICameraController {
-	const { camera } = useThree();
+	// Narrow selectors (rather than a bare `useThree()`, which subscribes to
+	// every root-state change) so this hook - and therefore SceneCameraRig,
+	// which calls it - only re-renders when the camera is swapped or the canvas
+	// is resized.
+	const camera = useThree((state) => state.camera);
+	const size = useThree((state) => state.size);
 	const prefersReducedMotion = usePrefersReducedMotion();
+
+	// Aspect compensation is kept in a ref (not baked into the stored target)
+	// so the refs below always hold the *authored* waypoint zoom. The factor is
+	// multiplied in at the moment the camera is written, which makes the mount
+	// path, the per-frame transition path and resize all agree on one number —
+	// otherwise the zoom would jump on the first waypoint transition.
+	const zoomFactor = getAspectZoomFactor(size.width, size.height);
+	const zoomFactorRef = useRef(zoomFactor);
 
 	const currentWaypointRef = useRef<SceneWaypointId>(DEFAULT_WAYPOINT.id);
 	const transitioningRef = useRef(false);
@@ -51,7 +96,10 @@ export function useCameraController(): ICameraController {
 		...DEFAULT_WAYPOINT.position,
 	});
 	const targetLookAtRef = useRef<Vector3Tuple>({ ...DEFAULT_WAYPOINT.target });
-	const targetZoomRef = useRef<number>(DEFAULT_WAYPOINT.zoom ?? camera.zoom);
+	/** Authored waypoint zoom, before aspect compensation. */
+	const targetBaseZoomRef = useRef<number>(
+		DEFAULT_WAYPOINT.zoom ?? camera.zoom,
+	);
 	const resolveTransitionRef = useRef<(() => void) | null>(null);
 
 	const setCurrentWaypoint = useSceneFocusStore(
@@ -75,8 +123,9 @@ export function useCameraController(): ICameraController {
 			camera.lookAt(waypoint.target.x, waypoint.target.y, waypoint.target.z);
 
 			if (waypoint.zoom !== undefined && "zoom" in camera) {
+				targetBaseZoomRef.current = waypoint.zoom;
 				const orthoCamera = camera as OrthographicCamera;
-				orthoCamera.zoom = waypoint.zoom;
+				orthoCamera.zoom = waypoint.zoom * zoomFactorRef.current;
 				orthoCamera.updateProjectionMatrix();
 			}
 		},
@@ -107,7 +156,8 @@ export function useCameraController(): ICameraController {
 
 			targetPositionRef.current = { ...waypoint.position };
 			targetLookAtRef.current = { ...waypoint.target };
-			targetZoomRef.current = waypoint.zoom ?? camera.zoom;
+			targetBaseZoomRef.current =
+				waypoint.zoom ?? camera.zoom / zoomFactorRef.current;
 			transitioningRef.current = true;
 			setTransitioning(true);
 
@@ -133,6 +183,20 @@ export function useCameraController(): ICameraController {
 	useEffect(() => {
 		registerFocusWaypoint(focusWaypoint);
 	}, [registerFocusWaypoint, focusWaypoint]);
+
+	// Resize / orientation change. useFrame only runs mid-transition, so the
+	// idle case needs its own path; snapping is fine here because a resize is
+	// already a discontinuity. Re-derives from the stored base zoom, so it is
+	// correct for whichever waypoint is currently framed - not just the initial
+	// one.
+	useEffect(() => {
+		zoomFactorRef.current = zoomFactor;
+		if (!("zoom" in camera)) return;
+
+		const orthoCamera = camera as OrthographicCamera;
+		orthoCamera.zoom = targetBaseZoomRef.current * zoomFactor;
+		orthoCamera.updateProjectionMatrix();
+	}, [camera, zoomFactor]);
 
 	useFrame((_, delta) => {
 		if (!transitioningRef.current) return;
@@ -163,7 +227,11 @@ export function useCameraController(): ICameraController {
 		if ("zoom" in camera) {
 			const orthoCamera = camera as OrthographicCamera;
 			const currentZoom = { x: orthoCamera.zoom, y: 0, z: 0 };
-			const targetZoom = { x: targetZoomRef.current, y: 0, z: 0 };
+			const targetZoom = {
+				x: targetBaseZoomRef.current * zoomFactorRef.current,
+				y: 0,
+				z: 0,
+			};
 			const nextZoom = dampVector3(
 				currentZoom,
 				targetZoom,

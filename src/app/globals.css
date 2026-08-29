@@ -81,6 +81,24 @@
 	--sidebar-accent-foreground: #ffffff;
 	--sidebar-border: rgba(255, 255, 255, 0.1);
 	--sidebar-ring: #8b6fe8;
+
+	/*
+	 * Height of the fixed/sticky app header (shared/components/app-chrome.tsx).
+	 * It is the single source of truth for the strip the header occupies at the
+	 * top of the viewport, so full-bleed overlays (the storyteller overlay is
+	 * `absolute inset-0`) can offset themselves with
+	 * `padding-top: var(--app-header-height)` instead of guessing a magic number.
+	 * The safe-area inset is baked in so the value is already correct on notched
+	 * devices under `viewportFit: "cover"`.
+	 */
+	--app-header-height: calc(3.25rem + env(safe-area-inset-top, 0px));
+}
+
+/* sm: — the header gets its roomier desktop padding back. */
+@media (min-width: 40rem) {
+	:root {
+		--app-header-height: calc(4rem + env(safe-area-inset-top, 0px));
+	}
 }
 
 .dark {
@@ -129,6 +147,27 @@
 	}
 }
 
+/*
+ * Safe-area helpers for notched devices (paired with `viewportFit: "cover"` in
+ * app/layout.tsx). Each one owns the padding on its own side, so put them on a
+ * wrapper and keep the design padding (p-*, px-*) on an inner element rather
+ * than fighting Tailwind's utilities for the same declaration.
+ */
+@layer utilities {
+	.pt-safe {
+		padding-top: env(safe-area-inset-top, 0px);
+	}
+
+	.pb-safe {
+		padding-bottom: env(safe-area-inset-bottom, 0px);
+	}
+
+	.px-safe {
+		padding-left: env(safe-area-inset-left, 0px);
+		padding-right: env(safe-area-inset-right, 0px);
+	}
+}
+
 /* Custom scrollbars */
 .scrollbar-top {
 	transform: scaleY(-1);
@@ -138,14 +177,24 @@
 	transform: scaleY(-1);
 }
 
+/*
+ * Axis-agnostic: `scrollbar-width`/`scrollbar-color` apply to whichever axis
+ * actually scrolls, and the webkit rules set both `height` (horizontal bar) and
+ * `width` (vertical bar). Used horizontally by chapter-chips and vertically by
+ * the transcript panel.
+ */
 .scrollbar-themed {
 	scrollbar-width: thin;
-	scrollbar-color: var(--primary) transparent;
+	scrollbar-color: var(--primary) rgba(255, 255, 255, 0.05);
 }
 
 .scrollbar-themed::-webkit-scrollbar {
 	height: 4px;
 	width: 4px;
+}
+
+.scrollbar-themed::-webkit-scrollbar-corner {
+	background: transparent;
 }
 
 .scrollbar-themed::-webkit-scrollbar-track {
