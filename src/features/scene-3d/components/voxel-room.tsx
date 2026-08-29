@@ -12,7 +12,7 @@ const WALL_COLOR = "#1e293b";
 const WALL_ACCENT = "#334155";
 const BASEBOARD_COLOR = "#3e2723";
 const ACOUSTIC_WOOD = "#a07855";
-const NEON_GLOW = "#38bdf8";
+const ACCENT_GLOW = "#5629c2";
 
 export function VoxelRoom() {
 	return (
@@ -80,13 +80,13 @@ export function VoxelRoom() {
 					))}
 				</group>
 
-				{/* Ambient Neon Studio Light Bar */}
+				{/* Ambient Studio Accent Light Bar */}
 				<mesh position={[0, 1.2, 0.02]}>
 					<boxGeometry args={[8, 0.06, 0.03]} />
 					<meshStandardMaterial
-						color={NEON_GLOW}
-						emissive={NEON_GLOW}
-						emissiveIntensity={1.2}
+						color={ACCENT_GLOW}
+						emissive={ACCENT_GLOW}
+						emissiveIntensity={0.4}
 					/>
 				</mesh>
 

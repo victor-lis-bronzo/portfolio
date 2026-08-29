@@ -10,7 +10,7 @@ import { VoxelPrinter } from "./voxel-printer";
 import { VoxelRoom } from "./voxel-room";
 import { VoxelWhiteboard } from "./voxel-whiteboard";
 
-const BACKGROUND_COLOR = "#0b0f19";
+const BACKGROUND_COLOR = "#10111e";
 
 /**
  * The real <Canvas> root. Only ever reached via voxel-studio-loader.tsx's

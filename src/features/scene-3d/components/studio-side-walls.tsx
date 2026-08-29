@@ -16,7 +16,7 @@ const WALL_ACCENT = "#334155";
 const BASEBOARD_COLOR = "#3e2723";
 const PANEL_DARK = "#0f172a";
 const AMBER_DETAIL = "#f59e0b";
-const NEON_GLOW = "#38bdf8";
+const ACCENT_GLOW = "#5629c2";
 const TOOL_COLORS = ["#f97316", "#06b6d4", "#84cc16", "#a855f7"];
 
 // Reused every frame; never allocate a Vector3 inside useFrame.
@@ -102,19 +102,19 @@ function SideWall({ side }: { side: "LEFT" | "RIGHT" }) {
 						<meshStandardMaterial
 							color={AMBER_DETAIL}
 							emissive={AMBER_DETAIL}
-							emissiveIntensity={0.5}
+							emissiveIntensity={0.25}
 						/>
 					</mesh>
 				))}
 			</group>
 
-			{/* Vertical neon strip, echoing the horizontal bar on the back wall */}
+			{/* Vertical accent strip, echoing the horizontal bar on the back wall */}
 			<mesh position={[inward(0.03), 2.1, 3.5]}>
 				<boxGeometry args={[0.03, 2.2, 0.06]} />
 				<meshStandardMaterial
-					color={NEON_GLOW}
-					emissive={NEON_GLOW}
-					emissiveIntensity={1.2}
+					color={ACCENT_GLOW}
+					emissive={ACCENT_GLOW}
+					emissiveIntensity={0.4}
 				/>
 			</mesh>
 		</group>

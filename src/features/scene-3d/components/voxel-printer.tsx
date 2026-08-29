@@ -97,7 +97,7 @@ export function VoxelPrinter() {
 						<meshStandardMaterial
 							color="#090d16"
 							emissive="#090d16"
-							emissiveIntensity={0.3}
+							emissiveIntensity={0.4}
 						/>
 					</mesh>
 					{/* Progress Bar & Status Text Mockup */}
@@ -106,7 +106,7 @@ export function VoxelPrinter() {
 						<meshStandardMaterial
 							color="#22c55e"
 							emissive="#22c55e"
-							emissiveIntensity={0.8}
+							emissiveIntensity={0.55}
 						/>
 					</mesh>
 					<mesh position={[-0.01, -0.02, 0.014]}>
@@ -276,7 +276,7 @@ export function VoxelPrinter() {
 							<meshStandardMaterial
 								color="#22c55e"
 								emissive="#22c55e"
-								emissiveIntensity={1.5}
+								emissiveIntensity={0.6}
 							/>
 						</mesh>
 						{/* Brass Nozzle Tip */}

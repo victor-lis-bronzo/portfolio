@@ -12,7 +12,15 @@ const SCREEN_TERMINAL_BG = "#090d16";
 const PC_CASE_COLOR = "#18181b";
 const CHAIR_FRAME_COLOR = "#18181b";
 const CHAIR_MESH_COLOR = "#27272a";
-const ACCENT_RGB = "#6366f1";
+
+/**
+ * Emissive palette — kept deliberately to two tones.
+ * `ACCENT_EMISSIVE` is the UI purple accent used for every screen/RGB detail.
+ * `LAMP_EMISSIVE` is the single warm tone, reserved for the desk light bar
+ * (an intentional warm light source, not neon).
+ */
+const ACCENT_EMISSIVE = "#5629c2";
+const LAMP_EMISSIVE = "#fef08a";
 
 export function VoxelDesk() {
 	return (
@@ -171,8 +179,8 @@ export function VoxelDesk() {
 					<meshStandardMaterial
 						color={SCREEN_IDE_BG}
 						roughness={0.2}
-						emissive={SCREEN_IDE_BG}
-						emissiveIntensity={0.2}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.1}
 					/>
 				</mesh>
 
@@ -182,53 +190,53 @@ export function VoxelDesk() {
 					<planeGeometry args={[1.14, 0.04]} />
 					<meshStandardMaterial color="#161b22" />
 				</mesh>
-				{/* Code lines (Cyan, Purple, Orange, Green, White) */}
+				{/* Code lines (single accent tone, varying weight) */}
 				<mesh position={[-0.25, 0.14, 0.024]}>
 					<planeGeometry args={[0.55, 0.025]} />
 					<meshStandardMaterial
-						color="#38bdf8"
-						emissive="#38bdf8"
-						emissiveIntensity={0.6}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.5}
 					/>
 				</mesh>
 				<mesh position={[-0.15, 0.08, 0.024]}>
 					<planeGeometry args={[0.4, 0.02]} />
 					<meshStandardMaterial
-						color="#c084fc"
-						emissive="#c084fc"
-						emissiveIntensity={0.5}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.4}
 					/>
 				</mesh>
 				<mesh position={[-0.05, 0.02, 0.024]}>
 					<planeGeometry args={[0.65, 0.02]} />
 					<meshStandardMaterial
-						color="#4ade80"
-						emissive="#4ade80"
-						emissiveIntensity={0.5}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.4}
 					/>
 				</mesh>
 				<mesh position={[-0.2, -0.04, 0.024]}>
 					<planeGeometry args={[0.45, 0.02]} />
 					<meshStandardMaterial
-						color="#fb923c"
-						emissive="#fb923c"
-						emissiveIntensity={0.5}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.4}
 					/>
 				</mesh>
 				<mesh position={[-0.1, -0.1, 0.024]}>
 					<planeGeometry args={[0.7, 0.02]} />
 					<meshStandardMaterial
-						color="#e2e8f0"
-						emissive="#e2e8f0"
-						emissiveIntensity={0.4}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.3}
 					/>
 				</mesh>
 				<mesh position={[-0.25, -0.16, 0.024]}>
 					<planeGeometry args={[0.35, 0.02]} />
 					<meshStandardMaterial
-						color="#38bdf8"
-						emissive="#38bdf8"
-						emissiveIntensity={0.5}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.4}
 					/>
 				</mesh>
 
@@ -240,9 +248,9 @@ export function VoxelDesk() {
 				<mesh position={[0, 0.29, 0.06]}>
 					<boxGeometry args={[0.5, 0.008, 0.01]} />
 					<meshStandardMaterial
-						color="#fef08a"
-						emissive="#fef08a"
-						emissiveIntensity={1.5}
+						color={LAMP_EMISSIVE}
+						emissive={LAMP_EMISSIVE}
+						emissiveIntensity={0.55}
 					/>
 				</mesh>
 			</group>
@@ -260,41 +268,41 @@ export function VoxelDesk() {
 					<meshStandardMaterial
 						color={SCREEN_TERMINAL_BG}
 						roughness={0.2}
-						emissive={SCREEN_TERMINAL_BG}
-						emissiveIntensity={0.2}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.1}
 					/>
 				</mesh>
-				{/* Terminal Green Prompt and Lines */}
+				{/* Terminal Prompt and Lines */}
 				<mesh position={[-0.05, 0.24, 0.024]}>
 					<planeGeometry args={[0.25, 0.02]} />
 					<meshStandardMaterial
-						color="#22c55e"
-						emissive="#22c55e"
-						emissiveIntensity={0.8}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.5}
 					/>
 				</mesh>
 				<mesh position={[0, 0.18, 0.024]}>
 					<planeGeometry args={[0.34, 0.018]} />
 					<meshStandardMaterial
-						color="#86efac"
-						emissive="#86efac"
-						emissiveIntensity={0.6}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.4}
 					/>
 				</mesh>
 				<mesh position={[-0.04, 0.12, 0.024]}>
 					<planeGeometry args={[0.26, 0.018]} />
 					<meshStandardMaterial
-						color="#94a3b8"
-						emissive="#94a3b8"
-						emissiveIntensity={0.4}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.3}
 					/>
 				</mesh>
 				<mesh position={[-0.08, 0.06, 0.024]}>
 					<planeGeometry args={[0.18, 0.018]} />
 					<meshStandardMaterial
-						color="#22c55e"
-						emissive="#22c55e"
-						emissiveIntensity={0.8}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.5}
 					/>
 				</mesh>
 			</group>
@@ -330,17 +338,17 @@ export function VoxelDesk() {
 				<mesh position={[0.02, -0.05, 0]}>
 					<boxGeometry args={[0.08, 0.1, 0.28]} />
 					<meshStandardMaterial
-						color={ACCENT_RGB}
-						emissive={ACCENT_RGB}
-						emissiveIntensity={1.5}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.5}
 					/>
 				</mesh>
 				<mesh position={[0.02, 0.12, -0.05]}>
 					<cylinderGeometry args={[0.05, 0.05, 0.04, 12]} />
 					<meshStandardMaterial
-						color="#38bdf8"
-						emissive="#38bdf8"
-						emissiveIntensity={1.2}
+						color={ACCENT_EMISSIVE}
+						emissive={ACCENT_EMISSIVE}
+						emissiveIntensity={0.4}
 					/>
 				</mesh>
 				{/* Front Intake Mesh with subtle glow */}

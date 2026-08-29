@@ -15,7 +15,7 @@ const LAB_EQUIPMENT_DARK = "#0f172a";
 const LAB_EQUIPMENT_GREY = "#334155";
 const SINE_WAVE_GREEN = "#22c55e";
 const PULSE_SPEED = 3;
-const STATIC_EMISSIVE = 1.0;
+const STATIC_EMISSIVE = 0.6;
 
 function PulsingCircuitLed({
 	position,
@@ -32,7 +32,7 @@ function PulsingCircuitLed({
 	useFrame(({ clock }) => {
 		if (prefersReducedMotion || !matRef.current) return;
 		const wave = Math.sin(clock.elapsedTime * PULSE_SPEED + phase) * 0.5 + 0.5;
-		matRef.current.emissiveIntensity = 0.3 + wave * 1.5;
+		matRef.current.emissiveIntensity = 0.2 + wave * 0.4;
 	});
 
 	return (
@@ -114,7 +114,7 @@ export function VoxelIotBench() {
 					<meshStandardMaterial
 						color={SINE_WAVE_GREEN}
 						emissive={SINE_WAVE_GREEN}
-						emissiveIntensity={1.5}
+						emissiveIntensity={0.6}
 					/>
 				</mesh>
 				<mesh position={[-0.08, -0.04, 0.114]}>
@@ -122,7 +122,7 @@ export function VoxelIotBench() {
 					<meshStandardMaterial
 						color="#38bdf8"
 						emissive="#38bdf8"
-						emissiveIntensity={1.2}
+						emissiveIntensity={0.5}
 					/>
 				</mesh>
 				{/* Rotary Knobs and BNC Channels */}
@@ -158,7 +158,7 @@ export function VoxelIotBench() {
 					<meshStandardMaterial
 						color="#ef4444"
 						emissive="#ef4444"
-						emissiveIntensity={1.5}
+						emissiveIntensity={0.6}
 					/>
 				</mesh>
 				<mesh position={[0.05, 0.05, 0.114]}>
@@ -166,7 +166,7 @@ export function VoxelIotBench() {
 					<meshStandardMaterial
 						color="#ef4444"
 						emissive="#ef4444"
-						emissiveIntensity={1.5}
+						emissiveIntensity={0.6}
 					/>
 				</mesh>
 				{/* Red & Black Banana Terminals */}
@@ -197,7 +197,7 @@ export function VoxelIotBench() {
 					<meshStandardMaterial
 						color="#38bdf8"
 						emissive="#38bdf8"
-						emissiveIntensity={1.2}
+						emissiveIntensity={0.5}
 					/>
 				</mesh>
 				{/* Soldering Iron Safety Cradle with Iron */}
