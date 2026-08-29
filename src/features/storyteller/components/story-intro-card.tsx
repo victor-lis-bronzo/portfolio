@@ -22,7 +22,7 @@ export function StoryIntroCard({
 			}
 			animate={{ opacity: 1, y: 0, scale: 1 }}
 			transition={{ duration: 0.4, ease: "easeOut" }}
-			className={`flex max-w-lg flex-col gap-5 rounded-3xl border border-border bg-card p-6 text-card-foreground md:p-8 ${className}`}
+			className={`flex max-h-[75dvh] w-full max-w-lg flex-col gap-4 overflow-y-auto scrollbar-themed rounded-3xl border border-border bg-card p-5 text-card-foreground sm:gap-5 sm:p-6 md:p-8 ${className}`}
 		>
 			{/* Top tag */}
 			<div className="flex items-center gap-2">

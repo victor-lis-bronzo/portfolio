@@ -16,7 +16,7 @@ export function MascotAvatar({
 
 	return (
 		<motion.div
-			className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary p-0.5 ring-1 ring-border ${className}`}
+			className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary p-0.5 ring-1 ring-border sm:h-11 sm:w-11 sm:rounded-2xl md:h-12 md:w-12 ${className}`}
 			animate={
 				prefersReducedMotion || !isSpeaking
 					? undefined
@@ -32,9 +32,9 @@ export function MascotAvatar({
 			}}
 			aria-hidden="true"
 		>
-			<div className="flex h-full w-full items-center justify-center rounded-[14px] bg-card">
+			<div className="flex h-full w-full items-center justify-center rounded-[10px] bg-card sm:rounded-[14px]">
 				<svg
-					className="h-7 w-7 text-primary-foreground"
+					className="h-5 w-5 text-primary-foreground sm:h-6 sm:w-6 md:h-7 md:w-7"
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="currentColor"
@@ -52,7 +52,7 @@ export function MascotAvatar({
 				</svg>
 			</div>
 			{isSpeaking && !prefersReducedMotion && (
-				<span className="absolute -top-1 -right-1 inline-flex h-3.5 w-3.5 animate-pulse rounded-full bg-primary ring-2 ring-background" />
+				<span className="absolute -top-1 -right-1 inline-flex h-3 w-3 animate-pulse rounded-full bg-primary ring-2 ring-background sm:h-3.5 sm:w-3.5" />
 			)}
 		</motion.div>
 	);

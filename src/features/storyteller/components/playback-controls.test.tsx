@@ -46,5 +46,41 @@ describe("PlaybackControls", () => {
 		});
 		fireEvent.click(autoBtn);
 		expect(onToggleAutoAdvance).toHaveBeenCalledTimes(1);
+
+		// The "Auto" label is visually collapsed below `sm`, but must stay in the
+		// DOM (and in the accessibility tree) rather than being removed.
+		const autoLabel = screen.getByText("Auto");
+		expect(autoLabel).toBeInTheDocument();
+		expect(autoLabel.className).toContain("sr-only");
+		expect(autoLabel.className).toContain("sm:not-sr-only");
+	});
+
+	it("keeps every touch target at 32px or larger", () => {
+		render(
+			<PlaybackControls
+				status="PAUSED"
+				currentStepIndex={0}
+				totalSteps={5}
+				autoAdvance={false}
+				onPlay={vi.fn()}
+				onPause={vi.fn()}
+				onNext={vi.fn()}
+				onPrev={vi.fn()}
+				onReset={vi.fn()}
+				onToggleAutoAdvance={vi.fn()}
+			/>,
+		);
+
+		const exitBtn = screen.getByRole("button", {
+			name: /Encerrar tour e voltar para visão geral/i,
+		});
+		expect(exitBtn.className).toContain("h-8");
+		expect(exitBtn.className).toContain("w-8");
+
+		const autoBtn = screen.getByRole("button", {
+			name: /Ativar avanço automático/i,
+		});
+		expect(autoBtn.className).toContain("min-h-[2rem]");
+		expect(autoBtn.className).toContain("min-w-[2rem]");
 	});
 });
