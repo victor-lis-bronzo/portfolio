@@ -21,12 +21,34 @@ export function useStoryKeyboardShortcuts() {
 				return;
 			}
 
+			// The transcript panel owns its own Esc handling (and stops propagation
+			// when focus is inside it); when focus lands elsewhere (e.g. the body),
+			// bail out here too so the panel doesn't get outrun by a global shortcut.
+			if (document.getElementById("story-transcript-panel")) {
+				return;
+			}
+
 			const state = useStorytellerStore.getState();
+			const isIdle = state.status === "IDLE";
+
+			// Free-navigation mode (story closed mid-way): every playback shortcut
+			// stays inert so the scene can be explored without accidentally
+			// reopening the narration — that is the resume button's job.
+			if (isIdle && state.hasStarted) {
+				return;
+			}
 
 			if (e.key === "ArrowRight") {
+				// Nothing to step through until the story is on screen.
+				if (isIdle) {
+					return;
+				}
 				e.preventDefault();
 				state.next();
 			} else if (e.key === "ArrowLeft") {
+				if (isIdle) {
+					return;
+				}
 				e.preventDefault();
 				state.prev();
 			} else if (e.key === " " || e.key === "k" || e.key === "K") {
@@ -38,6 +60,8 @@ export function useStoryKeyboardShortcuts() {
 				}
 			} else if (e.key === "Escape") {
 				e.preventDefault();
+				// Closes the story preserving the current step, matching the exit
+				// button in the playback controls.
 				state.stop();
 			}
 		}

@@ -14,12 +14,19 @@ describe("useStorytellerStore", () => {
 		expect(state.currentStepIndex).toBe(0);
 		expect(state.totalSteps).toBe(5);
 		expect(state.autoAdvance).toBe(true);
+		expect(state.hasStarted).toBe(false);
 	});
 
 	it("transitions to PLAYING on start()", () => {
 		useStorytellerStore.getState().start();
 		expect(useStorytellerStore.getState().status).toBe("PLAYING");
 		expect(useStorytellerStore.getState().currentStepIndex).toBe(0);
+	});
+
+	it("flags hasStarted on start()", () => {
+		expect(useStorytellerStore.getState().hasStarted).toBe(false);
+		useStorytellerStore.getState().start();
+		expect(useStorytellerStore.getState().hasStarted).toBe(true);
 	});
 
 	it("supports starting at a specific step index", () => {
@@ -84,10 +91,40 @@ describe("useStorytellerStore", () => {
 		expect(useStorytellerStore.getState().autoAdvance).toBe(true);
 	});
 
-	it("resets to IDLE on stop()", () => {
+	it("goes back to IDLE on stop() while preserving progress", () => {
 		useStorytellerStore.getState().start(3);
 		useStorytellerStore.getState().stop();
 		expect(useStorytellerStore.getState().status).toBe("IDLE");
+		expect(useStorytellerStore.getState().currentStepIndex).toBe(3);
+		expect(useStorytellerStore.getState().hasStarted).toBe(true);
+	});
+
+	it("resumes from the preserved step after stop()", () => {
+		useStorytellerStore.getState().start(2);
+		useStorytellerStore.getState().stop();
+
+		useStorytellerStore.getState().resume();
+		expect(useStorytellerStore.getState().status).toBe("PLAYING");
+		expect(useStorytellerStore.getState().currentStepIndex).toBe(2);
+	});
+
+	it("keeps the preserved step in bounds when the timeline shrinks", () => {
+		useStorytellerStore.getState().start(4);
+		useStorytellerStore.getState().stop();
+		useStorytellerStore.getState().setTotalSteps(2);
+
+		useStorytellerStore.getState().resume();
+		expect(useStorytellerStore.getState().status).toBe("PLAYING");
+		expect(useStorytellerStore.getState().currentStepIndex).toBe(1);
+	});
+
+	it("rewinds to the pristine state on reset()", () => {
+		useStorytellerStore.getState().start(3);
+		useStorytellerStore.getState().stop();
+
+		useStorytellerStore.getState().reset();
+		expect(useStorytellerStore.getState().status).toBe("IDLE");
 		expect(useStorytellerStore.getState().currentStepIndex).toBe(0);
+		expect(useStorytellerStore.getState().hasStarted).toBe(false);
 	});
 });

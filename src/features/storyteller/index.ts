@@ -6,6 +6,8 @@ export type { MascotAvatarProps } from "./components/mascot-avatar";
 export { MascotAvatar } from "./components/mascot-avatar";
 export type { PlaybackControlsProps } from "./components/playback-controls";
 export { PlaybackControls } from "./components/playback-controls";
+export type { ResumeStoryButtonProps } from "./components/resume-story-button";
+export { ResumeStoryButton } from "./components/resume-story-button";
 export type { StoryIntroCardProps } from "./components/story-intro-card";
 export { StoryIntroCard } from "./components/story-intro-card";
 export type { StoryTranscriptProps } from "./components/story-transcript";
