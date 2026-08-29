@@ -22,25 +22,25 @@ export function StoryIntroCard({
 			}
 			animate={{ opacity: 1, y: 0, scale: 1 }}
 			transition={{ duration: 0.4, ease: "easeOut" }}
-			className={`flex max-w-lg flex-col gap-5 rounded-3xl border border-white/15 bg-slate-950/80 p-6 text-slate-100 shadow-2xl backdrop-blur-2xl md:p-8 ${className}`}
+			className={`flex max-w-lg flex-col gap-5 rounded-3xl border border-border bg-card p-6 text-card-foreground md:p-8 ${className}`}
 		>
 			{/* Top tag */}
 			<div className="flex items-center gap-2">
-				<span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
-				<span className="text-xs font-semibold tracking-wider uppercase text-cyan-300">
+				<span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
+				<span className="text-xs font-semibold tracking-wider uppercase text-foreground/70">
 					Portfólio Interativo 3D
 				</span>
 			</div>
 
 			{/* Heading and bio */}
 			<div className="flex flex-col gap-2">
-				<h2 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+				<h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
 					Victor Lis Bronzo
 				</h2>
-				<p className="text-sm font-medium text-slate-300">
+				<p className="text-sm font-medium text-foreground/80">
 					Desenvolvedor Full Stack, IoT & Iniciação Científica
 				</p>
-				<p className="mt-1 text-xs leading-relaxed text-slate-400 md:text-sm">
+				<p className="mt-1 text-xs leading-relaxed text-foreground/60 md:text-sm">
 					Acompanhe uma narrativa guiada através do estúdio tridimensional,
 					conhecendo minhas origens na lógica, projetos de hardware, carreira e
 					pesquisa.
@@ -58,7 +58,7 @@ export function StoryIntroCard({
 				].map((tag) => (
 					<span
 						key={tag}
-						className="rounded-lg bg-white/5 px-2.5 py-1 text-[11px] font-medium text-slate-300 ring-1 ring-white/10"
+						className="rounded-lg border border-border bg-secondary px-2.5 py-1 text-[11px] font-medium text-secondary-foreground"
 					>
 						{tag}
 					</span>
@@ -70,7 +70,7 @@ export function StoryIntroCard({
 				<button
 					type="button"
 					onClick={onStartTour}
-					className="group flex flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-cyan-500/25 transition-all duration-200 hover:scale-[1.02] hover:shadow-cyan-500/40 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+					className="group flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors duration-200 hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					<svg
 						className="h-4 w-4 transition-transform group-hover:scale-110"
@@ -80,12 +80,12 @@ export function StoryIntroCard({
 						<title>Iniciar</title>
 						<polygon points="5 3 19 12 5 21 5 3" />
 					</svg>
-					<span>▶ Iniciar Minha História</span>
+					<span>Iniciar Minha História</span>
 				</button>
 
 				<Link
 					href="/recruiter"
-					className="flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-slate-200 backdrop-blur-md transition-all duration-200 hover:bg-white/10 hover:text-white active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+					className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-secondary px-4 py-3 text-sm font-semibold text-secondary-foreground transition-colors duration-200 hover:bg-secondary/80 hover:text-foreground active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					<span>Visão do Recrutador</span>
 					<svg

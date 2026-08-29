@@ -26,10 +26,10 @@ export function StoryTranscript({
 				onClick={() => setIsOpen((prev) => !prev)}
 				aria-expanded={isOpen}
 				aria-controls="story-transcript-panel"
-				className="flex items-center gap-2 rounded-xl border border-white/10 bg-slate-950/80 px-3.5 py-2 text-xs font-medium text-slate-300 shadow-lg backdrop-blur-xl transition hover:bg-slate-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+				className="flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-medium text-card-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 			>
 				<svg
-					className="h-4 w-4 text-cyan-400"
+					className="h-4 w-4 text-primary"
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="currentColor"
@@ -51,14 +51,14 @@ export function StoryTranscript({
 			{isOpen && (
 				<div
 					id="story-transcript-panel"
-					className="mt-2 max-h-[70vh] w-full max-w-md overflow-y-auto rounded-2xl border border-white/15 bg-slate-950/95 p-5 text-slate-100 shadow-2xl backdrop-blur-2xl"
+					className="mt-2 max-h-[70vh] w-full max-w-md overflow-y-auto rounded-2xl border border-border bg-card p-5 text-card-foreground"
 				>
-					<div className="flex items-center justify-between border-b border-white/10 pb-3">
+					<div className="flex items-center justify-between border-b border-border pb-3">
 						<div>
-							<h3 className="text-sm font-bold text-white">
+							<h3 className="text-sm font-semibold text-foreground">
 								Transcrição Completa da Narrativa
 							</h3>
-							<p className="text-xs text-slate-400">
+							<p className="text-xs text-foreground/60">
 								Clique em qualquer momento para navegar
 							</p>
 						</div>
@@ -66,7 +66,7 @@ export function StoryTranscript({
 							type="button"
 							onClick={() => setIsOpen(false)}
 							aria-label="Fechar transcrição"
-							className="rounded-lg p-1 text-slate-400 hover:bg-white/10 hover:text-white"
+							className="rounded-lg p-1 text-foreground/60 transition-colors hover:bg-secondary hover:text-foreground"
 						>
 							<svg
 								className="h-4 w-4"
@@ -88,14 +88,14 @@ export function StoryTranscript({
 						{timeline.chapters.map((chapter, chapterIdx) => {
 							return (
 								<section key={chapter.id} className="flex flex-col gap-2">
-									<h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-cyan-400">
-										<span className="flex h-4 w-4 items-center justify-center rounded bg-cyan-500/20 text-[10px] text-cyan-300">
+									<h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-foreground">
+										<span className="flex h-4 w-4 items-center justify-center rounded bg-primary/20 text-[10px] text-foreground">
 											{chapterIdx + 1}
 										</span>
 										{chapter.title}
 									</h4>
 									{chapter.description && (
-										<p className="text-xs text-slate-400 italic">
+										<p className="text-xs text-foreground/60 italic">
 											{chapter.description}
 										</p>
 									)}
@@ -116,27 +116,29 @@ export function StoryTranscript({
 														onJumpToStep(stepIndex);
 														setIsOpen(false);
 													}}
-													className={`flex flex-col gap-1 rounded-xl p-3 text-left transition ${
+													className={`flex flex-col gap-1 rounded-xl p-3 text-left transition-colors ${
 														isCurrent
-															? "bg-gradient-to-r from-blue-600/30 to-cyan-500/20 ring-1 ring-cyan-400"
-															: "bg-white/5 hover:bg-white/10"
+															? "border-l-2 border-primary bg-primary/15"
+															: "bg-secondary hover:bg-secondary/80"
 													}`}
 												>
 													<div className="flex items-center justify-between text-[11px] font-semibold">
 														<span
 															className={
-																isCurrent ? "text-cyan-300" : "text-slate-400"
+																isCurrent
+																	? "text-foreground"
+																	: "text-foreground/60"
 															}
 														>
 															Passo {stepIndex + 1} • {step.waypoint}
 														</span>
 														{isCurrent && (
-															<span className="rounded bg-cyan-400/20 px-1.5 py-0.5 text-[10px] text-cyan-300">
+															<span className="rounded bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground">
 																Atual
 															</span>
 														)}
 													</div>
-													<p className="text-xs leading-relaxed text-slate-200">
+													<p className="text-xs leading-relaxed text-foreground/85">
 														{step.mascotDialogue}
 													</p>
 												</button>

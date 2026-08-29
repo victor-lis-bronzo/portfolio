@@ -24,17 +24,17 @@ export function DialogueBox({
 
 	return (
 		<div
-			className={`flex flex-col gap-3 rounded-2xl border border-white/15 bg-slate-950/85 p-4 text-slate-100 shadow-2xl backdrop-blur-xl md:p-5 ${className}`}
+			className={`flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 text-card-foreground md:p-5 ${className}`}
 		>
 			{/* Chapter header (outside live region so screen reader does not repeat title on each phrase) */}
 			{(chapterTitle || stepInfo) && (
-				<div className="flex items-center justify-between border-b border-white/10 pb-2 text-xs text-slate-400 font-medium tracking-wide">
-					<span className="flex items-center gap-1.5 font-semibold text-cyan-400">
-						<span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+				<div className="flex items-center justify-between border-b border-border pb-2 text-xs text-foreground/60 font-medium tracking-wide">
+					<span className="flex items-center gap-1.5 font-semibold text-foreground">
+						<span className="h-1.5 w-1.5 rounded-full bg-primary" />
 						{chapterTitle ?? "Storyteller"}
 					</span>
 					{stepInfo && (
-						<span className="rounded-md bg-white/5 px-2 py-0.5 text-[11px] text-slate-300">
+						<span className="rounded-md border border-border bg-secondary px-2 py-0.5 text-[11px] text-secondary-foreground">
 							{stepInfo}
 						</span>
 					)}
@@ -50,16 +50,16 @@ export function DialogueBox({
 						role="status"
 						aria-live="polite"
 						aria-atomic="true"
-						className="min-h-[3rem] text-sm leading-relaxed text-slate-200 md:text-base selection:bg-cyan-500/30"
+						className="min-h-[3rem] text-sm leading-relaxed text-foreground/85 md:text-base selection:bg-primary/30"
 					>
 						{text}
 					</div>
 
 					{cta && (
-						<div className="mt-1 pt-2 border-t border-white/10">
+						<div className="mt-1 pt-2 border-t border-border">
 							<Link
 								href={cta.href}
-								className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-cyan-500/20 transition-all duration-200 hover:from-blue-500 hover:to-cyan-500 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+								className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 							>
 								<span>{cta.label}</span>
 								<svg

@@ -18,7 +18,7 @@ export function ChapterChips({
 	return (
 		<nav
 			aria-label="Navegação por capítulos da história"
-			className={`flex w-full items-center gap-2 overflow-x-auto p-1 scrollbar-none ${className}`}
+			className={`flex w-2/3 items-center gap-2 overflow-x-auto scrollbar-top scrollbar-themed pt-2.5 pb-1 px-1 ${className}`}
 		>
 			{chapters.map((chapter, idx) => {
 				const isActive = chapter.id === activeChapterId;
@@ -30,18 +30,18 @@ export function ChapterChips({
 						onClick={() => onSelectChapter(chapter.id)}
 						aria-pressed={isActive}
 						aria-label={`Capítulo ${idx + 1}: ${chapter.title}`}
-						className={`group flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
+						className={`group flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
 							isActive
-								? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-md shadow-cyan-500/20 ring-1 ring-white/30"
-								: "bg-slate-900/80 text-slate-300 ring-1 ring-white/10 hover:bg-slate-800 hover:text-white"
+								? "bg-primary text-primary-foreground"
+								: "border border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-foreground"
 						}`}
 					>
 						<span
 							aria-hidden="true"
-							className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold ${
+							className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-semibold ${
 								isActive
-									? "bg-white/20 text-white"
-									: "bg-white/5 text-slate-400 group-hover:text-slate-200"
+									? "bg-primary-foreground/20 text-primary-foreground"
+									: "bg-background/40 text-foreground/60 group-hover:text-foreground"
 							}`}
 						>
 							{idx + 1}

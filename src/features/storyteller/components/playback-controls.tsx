@@ -38,15 +38,15 @@ export function PlaybackControls({
 		<div
 			role="toolbar"
 			aria-label="Controles de reprodução do Storyteller"
-			className={`flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-2.5 shadow-xl backdrop-blur-xl ${className}`}
+			className={`flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-2.5 text-card-foreground ${className}`}
 		>
 			{/* Left side: Step counter & Auto-advance */}
 			<div className="flex items-center gap-3">
-				<span className="text-xs font-semibold text-slate-300">
+				<span className="text-xs font-semibold text-foreground/80">
 					{totalSteps > 0 ? (
 						<>
-							<span className="text-cyan-400">{currentStepIndex + 1}</span>
-							<span className="text-slate-500"> / {totalSteps}</span>
+							<span className="text-foreground">{currentStepIndex + 1}</span>
+							<span className="text-foreground/50"> / {totalSteps}</span>
 						</>
 					) : (
 						"—"
@@ -69,13 +69,13 @@ export function PlaybackControls({
 					aria-pressed={autoAdvance}
 					className={`flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-all ${
 						autoAdvance
-							? "bg-cyan-500/15 text-cyan-300 ring-1 ring-cyan-500/30"
-							: "bg-white/5 text-slate-400 hover:text-slate-200"
+							? "bg-primary/15 text-foreground ring-1 ring-border"
+							: "bg-secondary text-foreground/60 hover:text-foreground"
 					}`}
 				>
 					<span
 						className={`h-1.5 w-1.5 rounded-full ${
-							autoAdvance ? "bg-cyan-400 animate-pulse" : "bg-slate-500"
+							autoAdvance ? "bg-primary animate-pulse" : "bg-foreground/30"
 						}`}
 					/>
 					<span>Auto</span>
@@ -90,7 +90,7 @@ export function PlaybackControls({
 					onClick={onPrev}
 					disabled={!canPrev}
 					aria-label="Passo anterior"
-					className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/5 text-slate-300 transition hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+					className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary text-foreground/80 transition-colors hover:bg-secondary/80 hover:text-foreground disabled:opacity-30 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					<svg
 						className="h-4 w-4"
@@ -117,7 +117,7 @@ export function PlaybackControls({
 								? "Pausar tour"
 								: "Tocar tour"
 					}
-					className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/25 transition hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+					className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-colors hover:bg-primary/90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					{isEnded ? (
 						<svg
@@ -157,7 +157,7 @@ export function PlaybackControls({
 					onClick={onNext}
 					disabled={!canNext && !isEnded}
 					aria-label="Próximo passo"
-					className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/5 text-slate-300 transition hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+					className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary text-foreground/80 transition-colors hover:bg-secondary/80 hover:text-foreground disabled:opacity-30 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					<svg
 						className="h-4 w-4"
@@ -180,7 +180,7 @@ export function PlaybackControls({
 				onClick={onReset}
 				aria-label="Encerrar tour e voltar para visão geral"
 				title="Sair do tour (Esc)"
-				className="flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 transition hover:bg-white/10 hover:text-rose-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+				className="flex h-7 w-7 items-center justify-center rounded-lg text-foreground/60 transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 			>
 				<svg
 					className="h-4 w-4"
