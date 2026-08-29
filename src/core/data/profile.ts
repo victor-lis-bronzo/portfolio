@@ -21,6 +21,6 @@ export const profile: Profile = {
 	email: "victorlisbronzo1@gmail.com",
 	githubHref: "https://github.com/victor-lis-bronzo",
 	linkedinHref: "https://linkedin.com/in/victorlisbronzo",
-	cvHref: "/cv.pdf",
+	cvHref: "/cv.pdf", // TODO: public/cv.pdf doesn't exist yet — add it before this link works in production
 	location: "Atibaia, SP",
 };
