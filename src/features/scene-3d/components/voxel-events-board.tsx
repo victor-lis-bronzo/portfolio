@@ -7,6 +7,7 @@ import { useStorytellerStore } from "@/core/state/storyteller-store";
 import { useSceneFocusStore } from "@/features/scene-3d";
 import { TECH_EVENTS } from "@/features/events/data";
 import { EventBadge } from "@/features/events/components/event-badge";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 // Board matches size constraints mapped in scene planner.
 // Positioned along the left wall (X = -7.8) facing right (rotation-y = Math.PI/2)
@@ -17,6 +18,7 @@ const CORK_BOARD = "#2c1e16"; // Dark cork
 const HTML_TRANSFORM_UNIT_DISTANCE_FACTOR = 400;
 
 export function VoxelEventsBoard() {
+	const ui = useUiStrings();
 	const openModal = useEventsStore((state) => state.open);
 	const [hovered, setHovered] = useState(false);
 	
@@ -70,7 +72,7 @@ export function VoxelEventsBoard() {
 			>
 				<div className="w-full h-full p-8 flex flex-col overflow-hidden pointer-events-none">
 					<h2 className="text-4xl text-white font-bold mb-6 text-center">
-						Tech Events & Community
+						{ui.eventsBoardTitle}
 					</h2>
 					
 					{/* Render only first 3 events */}
@@ -85,7 +87,7 @@ export function VoxelEventsBoard() {
 					{/* Button without shadow/fade */}
 					<div className="flex-grow flex items-end justify-center pb-2">
 						<div className="bg-primary text-primary-foreground font-semibold px-8 py-4 rounded-xl text-xl shadow-lg">
-							Ver todos os {TECH_EVENTS.length} eventos
+							{ui.eventsBoardButton(TECH_EVENTS.length)}
 						</div>
 					</div>
 				</div>

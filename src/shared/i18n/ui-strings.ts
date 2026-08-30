@@ -102,6 +102,14 @@ export interface UiStrings {
 	assistantAnswerLabel: string;
 	assistantClear: string;
 
+	// --- Events ---
+	eventsBoardTitle: string;
+	eventsBoardButton: (count: number) => string;
+	eventsModalTitle: string;
+	eventsModalSubtitle: (count: number) => string;
+	eventsModalClose: string;
+	eventsBadgeLink: string;
+
 	// --- Decorative SVG titles (kept out of the a11y tree by their parents) ---
 	iconPrevious: string;
 	iconNext: string;
@@ -211,6 +219,13 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		assistantAnswerLabel: "Answer",
 		assistantClear: "Clear",
 
+		eventsBoardTitle: "Tech Events & Community",
+		eventsBoardButton: (count) => `View all ${count} events`,
+		eventsModalTitle: "Tech Events & Conferences",
+		eventsModalSubtitle: (count) => `${count} events documented`,
+		eventsModalClose: "Close Panel",
+		eventsBadgeLink: "See more details",
+
 		iconPrevious: "Previous",
 		iconNext: "Next",
 		iconPlay: "Play",
@@ -316,6 +331,13 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		assistantError: "Não deu certo. Tente de novo em instantes.",
 		assistantAnswerLabel: "Resposta",
 		assistantClear: "Limpar",
+
+		eventsBoardTitle: "Tech Events & Comunidade",
+		eventsBoardButton: (count) => `Ver todos os ${count} eventos`,
+		eventsModalTitle: "Tech Events & Conferências",
+		eventsModalSubtitle: (count) => `${count} eventos documentados`,
+		eventsModalClose: "Fechar Painel",
+		eventsBadgeLink: "Ver mais detalhes",
 
 		iconPrevious: "Anterior",
 		iconNext: "Próximo",

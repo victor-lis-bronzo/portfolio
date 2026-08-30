@@ -3,12 +3,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import type { TechEvent } from "../data";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 interface EventBadgeProps {
 	event: TechEvent;
 }
 
 export function EventBadge({ event }: EventBadgeProps) {
+	const ui = useUiStrings();
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
@@ -99,7 +101,7 @@ export function EventBadge({ event }: EventBadgeProps) {
 									rel="noopener noreferrer"
 									className="mt-4 bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg text-center hover:bg-indigo-700 transition-colors"
 								>
-									Ver mais detalhes
+									{ui.eventsBadgeLink}
 								</a>
 							)}
 						</motion.div>
