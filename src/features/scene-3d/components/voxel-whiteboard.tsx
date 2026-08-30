@@ -20,6 +20,23 @@ const BOARD_COLOR = "#f8fafc";
 const STAND_COLOR = "#475569";
 const TRAY_COLOR = "#94a3b8";
 
+/** CSS-pixel size the embedded board UI is authored at. */
+const PANEL_WIDTH_PX = 800;
+const PANEL_HEIGHT_PX = 500;
+/** World width the panel has to cover — the white surface is 2.88 wide. */
+const PANEL_WORLD_WIDTH = 2.8;
+/** World units per authored CSS pixel. */
+export const WHITEBOARD_PANEL_SCALE = PANEL_WORLD_WIDTH / PANEL_WIDTH_PX;
+/**
+ * drei's <Html transform> divides the object's world matrix by
+ * `400 / (distanceFactor ?? 10)` — i.e. by 40 unless `distanceFactor` is given.
+ * Passing 400 makes that divisor exactly 1, so `scale` alone maps CSS pixels to
+ * world units. Leaving it at the default shrinks the panel to 1/40 of the board
+ * (~0.07 world units), which under this scene's orthographic camera came out as
+ * a sub-pixel, unclickable overlay.
+ */
+const HTML_TRANSFORM_UNIT_DISTANCE_FACTOR = 400;
+
 type BoardView = "diagram" | "assistant";
 
 const BOARD_VIEWS: readonly BoardView[] = ["diagram", "assistant"];
@@ -156,10 +173,11 @@ export function VoxelWhiteboard() {
 				<Html
 					transform
 					position={[0, 0, 0.05]}
-					scale={0.0035}
+					scale={WHITEBOARD_PANEL_SCALE}
+					distanceFactor={HTML_TRANSFORM_UNIT_DISTANCE_FACTOR}
 					style={{
-						width: "800px",
-						height: "500px",
+						width: `${PANEL_WIDTH_PX}px`,
+						height: `${PANEL_HEIGHT_PX}px`,
 						// The overlay as a whole stays inert so scene gestures pass
 						// straight through the board. The view switcher and the assistant
 						// opt back in individually; the diagram never does.
