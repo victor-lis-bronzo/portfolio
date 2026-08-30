@@ -112,6 +112,13 @@ describe("SCENE_WAYPOINTS", () => {
 		}
 	});
 
+	it("labels every waypoint in both site languages", () => {
+		for (const waypoint of SCENE_WAYPOINTS) {
+			expect(waypoint.label?.en).toBeTruthy();
+			expect(waypoint.label?.pt).toBeTruthy();
+		}
+	});
+
 	it("keeps the camera outside the near clip range of the room", () => {
 		for (const waypoint of SCENE_WAYPOINTS) {
 			expect(distanceToRoom(waypoint)).toBeGreaterThan(NEAR);

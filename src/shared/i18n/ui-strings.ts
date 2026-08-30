@@ -54,6 +54,10 @@ export interface UiStrings {
 	// --- Resume affordance ---
 	resumeStory: string;
 
+	// --- Ask me launcher ---
+	askMeLauncherLabel: string;
+	askMeLauncherAriaLabel: string;
+
 	// --- Transcript ---
 	transcriptOpen: string;
 	transcriptClose: string;
@@ -84,6 +88,20 @@ export interface UiStrings {
 	ifspPlaqueTitle: string;
 	ifspPlaqueSubtitle: string;
 
+	// --- Whiteboard assistant ---
+	whiteboardViewsLabel: string;
+	whiteboardViewDiagram: string;
+	whiteboardViewAssistant: string;
+	assistantTitle: string;
+	assistantHint: string;
+	assistantInputLabel: string;
+	assistantPlaceholder: string;
+	assistantSubmit: string;
+	assistantLoading: string;
+	assistantError: string;
+	assistantAnswerLabel: string;
+	assistantClear: string;
+
 	// --- Decorative SVG titles (kept out of the a11y tree by their parents) ---
 	iconPrevious: string;
 	iconNext: string;
@@ -95,6 +113,7 @@ export interface UiStrings {
 	iconArrow: string;
 	iconResume: string;
 	iconStart: string;
+	iconChat: string;
 }
 
 export const UI_STRINGS: Record<Locale, UiStrings> = {
@@ -148,6 +167,9 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 
 		resumeStory: "Resume the story",
 
+		askMeLauncherLabel: "Ask me",
+		askMeLauncherAriaLabel: "Ask me a question on the whiteboard",
+
 		transcriptOpen: "Transcript (text)",
 		transcriptClose: "Close transcript",
 		transcriptTitle: "Full narration transcript",
@@ -175,6 +197,20 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		ifspPlaqueTitle: "IFSP · Bragança Paulista",
 		ifspPlaqueSubtitle: "Systems Analysis · MQTT security research",
 
+		whiteboardViewsLabel: "Whiteboard view",
+		whiteboardViewDiagram: "Diagram",
+		whiteboardViewAssistant: "Ask me",
+		assistantTitle: "Ask me directly",
+		assistantHint:
+			"Projects, stack, experience, what I'm researching — go ahead.",
+		assistantInputLabel: "Your question",
+		assistantPlaceholder: "What did you build at StarSeg?",
+		assistantSubmit: "Ask",
+		assistantLoading: "Thinking…",
+		assistantError: "That didn't go through. Try again in a moment.",
+		assistantAnswerLabel: "Answer",
+		assistantClear: "Clear",
+
 		iconPrevious: "Previous",
 		iconNext: "Next",
 		iconPlay: "Play",
@@ -185,6 +221,7 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		iconArrow: "Arrow",
 		iconResume: "Resume",
 		iconStart: "Start",
+		iconChat: "Chat",
 	},
 	pt: {
 		modeSwitcherLabel: "Escolher visualização",
@@ -236,6 +273,9 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 
 		resumeStory: "Retomar a história",
 
+		askMeLauncherLabel: "Me pergunte",
+		askMeLauncherAriaLabel: "Me faça uma pergunta no quadro branco",
+
 		transcriptOpen: "Transcrição (texto)",
 		transcriptClose: "Fechar transcrição",
 		transcriptTitle: "Transcrição completa da narrativa",
@@ -263,6 +303,20 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		ifspPlaqueTitle: "IFSP · Bragança Paulista",
 		ifspPlaqueSubtitle: "ADS · Iniciação Científica MQTT",
 
+		whiteboardViewsLabel: "Visualização do quadro",
+		whiteboardViewDiagram: "Diagrama",
+		whiteboardViewAssistant: "Me pergunte",
+		assistantTitle: "Pergunte direto pra mim",
+		assistantHint:
+			"Projetos, stack, experiência, o que estou pesquisando — manda.",
+		assistantInputLabel: "Sua pergunta",
+		assistantPlaceholder: "O que você construiu na StarSeg?",
+		assistantSubmit: "Perguntar",
+		assistantLoading: "Pensando…",
+		assistantError: "Não deu certo. Tente de novo em instantes.",
+		assistantAnswerLabel: "Resposta",
+		assistantClear: "Limpar",
+
 		iconPrevious: "Anterior",
 		iconNext: "Próximo",
 		iconPlay: "Tocar",
@@ -273,5 +327,6 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		iconArrow: "Seta",
 		iconResume: "Retomar",
 		iconStart: "Iniciar",
+		iconChat: "Conversa",
 	},
 };

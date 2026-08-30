@@ -1,3 +1,5 @@
+import type { Localized } from "@/shared/i18n/types";
+
 export type SceneWaypointId =
 	| "OVERVIEW"
 	| "DESK"
@@ -19,5 +21,6 @@ export interface SceneWaypoint {
 	position: Vector3Tuple;
 	target: Vector3Tuple;
 	zoom?: number;
-	label?: string;
+	/** Reader-facing name of the waypoint, authored in both site languages. */
+	label?: Localized;
 }

@@ -2,6 +2,12 @@ import type { Localized } from "@/shared/i18n/types";
 
 export interface Profile {
 	name: string;
+	/**
+	 * ISO `YYYY-MM-DD`. Deliberately not `Localized`: a date is the same fact in
+	 * every language. Age is derived from it at render time (see
+	 * `data/assistant/system-prompt.ts`) so nothing goes stale on a birthday.
+	 */
+	birthDate: string;
 	role: Localized;
 	summary: Localized;
 	email: string;
@@ -13,6 +19,7 @@ export interface Profile {
 
 export const profile: Profile = {
 	name: "Victor Lis Bronzo",
+	birthDate: "2007-02-16",
 	role: {
 		en: "Full-Stack Developer | TypeScript · React · Next.js · Node.js",
 		pt: "Desenvolvedor Full-Stack | TypeScript · React · Next.js · Node.js",
