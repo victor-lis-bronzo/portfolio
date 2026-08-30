@@ -7,6 +7,7 @@ import { StudioSideWalls } from "./studio-side-walls";
 import { VoxelDesk } from "./voxel-desk";
 import { VoxelEcoplayArcade } from "./voxel-ecoplay-arcade";
 import { VoxelEtecStage } from "./voxel-etec-stage";
+import { VoxelEventsBoard } from "./voxel-events-board";
 import { VoxelIfspPlaque } from "./voxel-ifsp-plaque";
 import { VoxelIotBench } from "./voxel-iot-bench";
 import { VoxelPrinter } from "./voxel-printer";
@@ -40,6 +41,7 @@ export function VoxelStudio() {
 			<VoxelIfspPlaque />
 			<VoxelEcoplayArcade />
 			<VoxelRedstonePiston />
+			<VoxelEventsBoard />
 		</Canvas>
 	);
 }

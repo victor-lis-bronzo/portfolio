@@ -6,7 +6,8 @@ export type SceneWaypointId =
 	| "WHITEBOARD_FOCUS"
 	| "ETEC_STAGE"
 	| "ECOPLAY_ARCADE"
-	| "IFSP_BOARD";
+	| "IFSP_BOARD"
+	| "EVENTS_BOARD";
 
 export interface Vector3Tuple {
 	x: number;
