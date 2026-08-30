@@ -76,47 +76,51 @@ function SideWall({ side }: { side: "LEFT" | "RIGHT" }) {
 				<meshStandardMaterial color={WALL_COLOR} roughness={0.8} />
 			</mesh>
 
-			{/* Tool pegboard (inside the z ∈ [-3, 4] band visible at every angle) */}
-			<group position={[inward(0.03), 1.9, 1.75]}>
-				<mesh>
-					<boxGeometry args={[0.04, 1.4, 2.4]} />
-					<meshStandardMaterial color={WALL_ACCENT} roughness={0.75} />
-				</mesh>
-				{TOOL_COLORS.map((color, index) => (
-					<mesh
-						key={`side-tool-${side}-${color}`}
-						position={[
-							inward(0.07),
-							index % 2 === 0 ? 0.32 : -0.28,
-							-0.85 + index * 0.56,
-						]}
-					>
-						<boxGeometry args={[0.1, 0.34, 0.14]} />
-						<meshStandardMaterial color={color} roughness={0.7} />
-					</mesh>
-				))}
-			</group>
+			{side === "RIGHT" && (
+				<>
+					{/* Tool pegboard (inside the z ∈ [-3, 4] band visible at every angle) */}
+					<group position={[inward(0.03), 1.9, 1.75]}>
+						<mesh>
+							<boxGeometry args={[0.04, 1.4, 2.4]} />
+							<meshStandardMaterial color={WALL_ACCENT} roughness={0.75} />
+						</mesh>
+						{TOOL_COLORS.map((color, index) => (
+							<mesh
+								key={`side-tool-${side}-${color}`}
+								position={[
+									inward(0.07),
+									index % 2 === 0 ? 0.32 : -0.28,
+									-0.85 + index * 0.56,
+								]}
+							>
+								<boxGeometry args={[0.1, 0.34, 0.14]} />
+								<meshStandardMaterial color={color} roughness={0.7} />
+							</mesh>
+						))}
+					</group>
 
-			{/* Electrical panel */}
-			<group position={[inward(0.05), 2.2, -1.5]}>
-				<mesh>
-					<boxGeometry args={[0.1, 0.7, 0.5]} />
-					<meshStandardMaterial color={PANEL_DARK} roughness={0.6} />
-				</mesh>
-				{[-0.18, 0, 0.18].map((z) => (
-					<mesh
-						key={`side-breaker-${side}-${z}`}
-						position={[inward(0.03), 0.14, z]}
-					>
-						<boxGeometry args={[0.04, 0.06, 0.12]} />
-						<meshStandardMaterial
-							color={AMBER_DETAIL}
-							emissive={AMBER_DETAIL}
-							emissiveIntensity={0.25}
-						/>
-					</mesh>
-				))}
-			</group>
+					{/* Electrical panel */}
+					<group position={[inward(0.05), 2.2, -1.5]}>
+						<mesh>
+							<boxGeometry args={[0.1, 0.7, 0.5]} />
+							<meshStandardMaterial color={PANEL_DARK} roughness={0.6} />
+						</mesh>
+						{[-0.18, 0, 0.18].map((z) => (
+							<mesh
+								key={`side-breaker-${side}-${z}`}
+								position={[inward(0.03), 0.14, z]}
+							>
+								<boxGeometry args={[0.04, 0.06, 0.12]} />
+								<meshStandardMaterial
+									color={AMBER_DETAIL}
+									emissive={AMBER_DETAIL}
+									emissiveIntensity={0.25}
+								/>
+							</mesh>
+						))}
+					</group>
+				</>
+			)}
 
 			{/* Vertical accent strip, echoing the horizontal bar on the back wall */}
 			<mesh position={[inward(0.03), 2.1, 3.5]}>

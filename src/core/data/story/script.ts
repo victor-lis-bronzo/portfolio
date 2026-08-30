@@ -46,6 +46,13 @@ export const BIOGRAPHICAL_STORY_SCRIPT: StoryScript = {
 			entryWaypoint: "DESK",
 		},
 		{
+			id: "ch-events",
+			title: "Eventos Tech & Comunidade",
+			description: "Participação em eventos, networking e aprendizado contínuo.",
+			stepIds: ["step-events-1"],
+			entryWaypoint: "EVENTS_BOARD",
+		},
+		{
 			id: "ch-future",
 			title: "IFSP & Oportunidades",
 			description: "Graduação, pesquisa em segurança MQTT e próximos passos.",
@@ -149,6 +156,14 @@ export const BIOGRAPHICAL_STORY_SCRIPT: StoryScript = {
 			waypoint: "DESK",
 			mascotDialogue:
 				"Refatorei sistemas críticos em Next.js e criei extensões de produtividade para o time, unindo comunicação ágil e código limpo.",
+		},
+
+		// --- Capítulo 5.5: Eventos ---
+		{
+			id: "step-events-1",
+			waypoint: "EVENTS_BOARD",
+			mascotDialogue:
+				"Participo ativamente de eventos como AWS Summit e encontros de tecnologia para expandir conexões e conhecimentos.",
 		},
 
 		// --- Capítulo 6: IFSP & Oportunidades ---
