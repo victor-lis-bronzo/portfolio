@@ -79,7 +79,7 @@ export function VoxelEventsBoard() {
 					</div>
 
 					{/* Gradient Fade + Button */}
-					<div className="absolute inset-0 bg-gradient-to-t from-[#2c1e16] via-[#2c1e16]/80 to-transparent flex items-end justify-center pb-12">
+					<div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#2c1e16] via-[#2c1e16]/90 to-transparent flex items-end justify-center pb-12">
 						<div className="bg-primary text-primary-foreground font-semibold px-8 py-4 rounded-xl text-xl shadow-lg">
 							Ver todos os {TECH_EVENTS.length} eventos
 						</div>
@@ -95,7 +95,7 @@ export function VoxelEventsBoard() {
 				onPointerOut={handlePointerOut}
 			>
 				<planeGeometry args={[3.2, 2.0]} />
-				<meshBasicMaterial visible={false} />
+				<meshBasicMaterial transparent opacity={0} />
 			</mesh>
 		</group>
 	);
