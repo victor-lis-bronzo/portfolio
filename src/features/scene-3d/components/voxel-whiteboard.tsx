@@ -177,6 +177,7 @@ export function VoxelWhiteboard() {
 					position={[0, 0, 0.05]}
 					scale={WHITEBOARD_PANEL_SCALE}
 					distanceFactor={HTML_TRANSFORM_UNIT_DISTANCE_FACTOR}
+					zIndexRange={[0, 0]}
 					style={{
 						width: `${PANEL_WIDTH_PX}px`,
 						height: `${PANEL_HEIGHT_PX}px`,

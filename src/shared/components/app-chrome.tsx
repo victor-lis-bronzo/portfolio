@@ -2,6 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { AskMeLauncher } from "./ask-me-launcher";
+import { EventsLauncher } from "@/features/events/components/events-launcher";
+import { EventsModal } from "@/features/events/components/events-modal";
 import { LocaleToggle } from "./locale-toggle";
 import { ModeSwitcher } from "./mode-switcher";
 
@@ -59,12 +61,18 @@ export function AppChrome({ children }: AppChromeProps) {
 				</div>
 			</header>
 			<main className="h-full w-full">{children}</main>
+			
+			<EventsModal />
+
 			{/*
 			 * Immersive-only: it drives the 3D scene (camera + embedded whiteboard),
 			 * which the recruiter route does not render. Sibling of <main> so it
 			 * stays outside the <Canvas> and is never unmounted by the scene.
 			 */}
-			<AskMeLauncher />
+			<div className="-translate-y-1/2 fixed top-1/2 right-0 z-40 px-safe flex flex-col gap-2 pointer-events-none">
+				<AskMeLauncher />
+				<EventsLauncher />
+			</div>
 		</div>
 	);
 }

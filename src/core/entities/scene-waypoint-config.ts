@@ -62,4 +62,11 @@ export const SCENE_WAYPOINTS: SceneWaypoint[] = [
 		zoom: 130,
 		label: { en: "IFSP & Research", pt: "IFSP & Pesquisa" },
 	},
+	{
+		id: "EVENTS_BOARD",
+		position: { x: 0, y: 4.8, z: 4.0 },
+		target: { x: -7.8, y: 1.8, z: 4.0 },
+		zoom: 100,
+		label: "Eventos Tech",
+	},
 ];

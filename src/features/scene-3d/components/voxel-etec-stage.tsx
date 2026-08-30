@@ -158,6 +158,7 @@ export function VoxelEtecStage() {
 					transform
 					position={[0, 0, 0.06]}
 					scale={0.004}
+					zIndexRange={[0, 0]}
 					style={{
 						width: "520px",
 						height: "200px",
