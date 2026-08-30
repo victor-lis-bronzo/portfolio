@@ -26,9 +26,9 @@ export function EventsModal() {
 				>
 					<div className="w-full max-w-5xl px-8 py-12">
 						{/* Header */}
-						<div className="w-full mb-8 border-b-2 border-slate-700/50 pb-6 flex items-end justify-between sticky top-0 bg-slate-900/95 backdrop-blur-md pt-4 z-10">
+						<div className="w-full mb-8 border-b-2 border-slate-700/50 pb-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 sticky top-0 bg-slate-900/95 backdrop-blur-md pt-4 z-10">
 							<div>
-								<h2 className="text-4xl font-black text-slate-100 tracking-tight">
+								<h2 className="text-3xl sm:text-4xl font-black text-slate-100 tracking-tight">
 									{ui.eventsModalTitle}
 								</h2>
 								<span className="text-slate-400 font-medium mt-2 block">
@@ -38,7 +38,7 @@ export function EventsModal() {
 							<button
 								type="button"
 								onClick={close}
-								className="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg font-bold"
+								className="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg font-bold shrink-0"
 							>
 								{ui.eventsModalClose}
 							</button>

@@ -24,7 +24,7 @@ export function PortfolioJsonLd() {
 			"@type": "Event",
 			name: event.name,
 			startDate: event.date,
-			description: event.description,
+			description: event.description.pt,
 			url: event.link,
 			eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
 		})),

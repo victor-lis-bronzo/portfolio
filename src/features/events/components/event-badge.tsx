@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import type { TechEvent } from "../data";
 import { useUiStrings } from "@/shared/i18n/use-ui-strings";
+import { useLocalized } from "@/shared/i18n/use-localized";
 
 interface EventBadgeProps {
 	event: TechEvent;
@@ -12,12 +13,14 @@ interface EventBadgeProps {
 export function EventBadge({ event }: EventBadgeProps) {
 	const ui = useUiStrings();
 	const [isOpen, setIsOpen] = useState(false);
+	const role = useLocalized(event.role);
+	const description = useLocalized(event.description);
 
 	return (
 		<>
 			{/* The Badge (Lanyard style) */}
 			<motion.div
-				layoutId={`badge-${event.id}`}
+				layoutId={"badge-" + event.id}
 				onClick={() => setIsOpen(true)}
 				whileHover={{ scale: 1.05, y: -5, rotateZ: (Math.random() - 0.5) * 4 }}
 				whileTap={{ scale: 0.95 }}
@@ -36,7 +39,7 @@ export function EventBadge({ event }: EventBadgeProps) {
 					<div className="flex-1 flex flex-col items-center justify-center p-2 text-center text-slate-800 space-y-2">
 						<h3 className="font-bold text-sm leading-tight">{event.name}</h3>
 						<span className="text-[10px] uppercase font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded-full border border-slate-200">
-							{event.role}
+							{role}
 						</span>
 					</div>
 
@@ -44,7 +47,7 @@ export function EventBadge({ event }: EventBadgeProps) {
 					<div className="h-8 shrink-0 flex items-center justify-center opacity-30 gap-[1px]">
 						{[...Array(12)].map((_, i) => (
 							<div
-								key={`barcode-${i}`}
+								key={"barcode-" + i}
 								className="bg-slate-900 h-4"
 								style={{ width: Math.random() > 0.5 ? "2px" : "1px" }}
 							/>
@@ -64,7 +67,7 @@ export function EventBadge({ event }: EventBadgeProps) {
 						onClick={() => setIsOpen(false)}
 					>
 						<motion.div
-							layoutId={`badge-${event.id}`}
+							layoutId={"badge-" + event.id}
 							className="bg-slate-100 rounded-xl p-8 max-w-md w-full shadow-2xl flex flex-col gap-4 border-t-8 border-indigo-600"
 							onClick={(e) => e.stopPropagation()}
 						>
@@ -87,11 +90,11 @@ export function EventBadge({ event }: EventBadgeProps) {
 							</div>
 
 							<div className="bg-indigo-100 text-indigo-800 font-semibold px-3 py-1 rounded-full w-fit text-sm">
-								{event.role}
+								{role}
 							</div>
 
 							<p className="text-slate-600 text-lg leading-relaxed mt-2">
-								{event.description}
+								{description}
 							</p>
 
 							{event.link && (
