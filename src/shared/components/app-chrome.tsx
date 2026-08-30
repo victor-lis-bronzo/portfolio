@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { AskMeLauncher } from "./ask-me-launcher";
 import { LocaleToggle } from "./locale-toggle";
 import { ModeSwitcher } from "./mode-switcher";
 
@@ -58,6 +59,12 @@ export function AppChrome({ children }: AppChromeProps) {
 				</div>
 			</header>
 			<main className="h-full w-full">{children}</main>
+			{/*
+			 * Immersive-only: it drives the 3D scene (camera + embedded whiteboard),
+			 * which the recruiter route does not render. Sibling of <main> so it
+			 * stays outside the <Canvas> and is never unmounted by the scene.
+			 */}
+			<AskMeLauncher />
 		</div>
 	);
 }

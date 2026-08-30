@@ -54,6 +54,10 @@ export interface UiStrings {
 	// --- Resume affordance ---
 	resumeStory: string;
 
+	// --- Ask me launcher ---
+	askMeLauncherLabel: string;
+	askMeLauncherAriaLabel: string;
+
 	// --- Transcript ---
 	transcriptOpen: string;
 	transcriptClose: string;
@@ -109,6 +113,7 @@ export interface UiStrings {
 	iconArrow: string;
 	iconResume: string;
 	iconStart: string;
+	iconChat: string;
 }
 
 export const UI_STRINGS: Record<Locale, UiStrings> = {
@@ -162,6 +167,9 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 
 		resumeStory: "Resume the story",
 
+		askMeLauncherLabel: "Ask me",
+		askMeLauncherAriaLabel: "Ask me a question on the whiteboard",
+
 		transcriptOpen: "Transcript (text)",
 		transcriptClose: "Close transcript",
 		transcriptTitle: "Full narration transcript",
@@ -213,6 +221,7 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		iconArrow: "Arrow",
 		iconResume: "Resume",
 		iconStart: "Start",
+		iconChat: "Chat",
 	},
 	pt: {
 		modeSwitcherLabel: "Escolher visualização",
@@ -263,6 +272,9 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		exitTourTitle: "Sair do tour (Esc)",
 
 		resumeStory: "Retomar a história",
+
+		askMeLauncherLabel: "Me pergunte",
+		askMeLauncherAriaLabel: "Me faça uma pergunta no quadro branco",
 
 		transcriptOpen: "Transcrição (texto)",
 		transcriptClose: "Fechar transcrição",
@@ -315,5 +327,6 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		iconArrow: "Seta",
 		iconResume: "Retomar",
 		iconStart: "Iniciar",
+		iconChat: "Conversa",
 	},
 };

@@ -1,4 +1,5 @@
 import { articles } from "@/core/data/articles";
+import { LINKEDIN_PROFILE } from "@/core/data/assistant/linkedin-profile";
 import { profile } from "@/core/data/profile";
 import { projects } from "@/core/data/projects";
 import { BIOGRAPHICAL_STORY_SCRIPT } from "@/core/data/story";
@@ -21,9 +22,31 @@ function pick(value: Localized, locale: Locale): string {
 	return value[locale];
 }
 
+/**
+ * Full years elapsed between `birthDate` (ISO `YYYY-MM-DD`) and `reference`.
+ *
+ * The prompt is built server-side on every request, so deriving the age here
+ * instead of storing a number means it is never a year stale — and the
+ * birthday-not-yet-reached case is handled, which a plain year subtraction
+ * gets wrong for roughly six weeks a year.
+ *
+ * The ISO string is split by hand rather than passed to `new Date()`, which
+ * would parse it as UTC midnight and shift the day backwards in Brazil.
+ */
+export function computeAge(birthDate: string, reference = new Date()): number {
+	const [year, month, day] = birthDate.split("-").map(Number);
+	let age = reference.getFullYear() - year;
+	const monthDelta = reference.getMonth() + 1 - month;
+	if (monthDelta < 0 || (monthDelta === 0 && reference.getDate() < day)) {
+		age -= 1;
+	}
+	return age;
+}
+
 function renderProfile(locale: Locale): string {
 	const lines = [
 		`Name: ${profile.name}`,
+		`Age: ${computeAge(profile.birthDate)} (born ${profile.birthDate})`,
 		`Role: ${pick(profile.role, locale)}`,
 		`Summary: ${pick(profile.summary, locale)}`,
 	];
@@ -103,6 +126,42 @@ function renderArticles(locale: Locale): string {
 }
 
 /**
+ * Section order and block headings for the LinkedIn-derived career record.
+ *
+ * Declared here rather than inferred from the object keys so the ordering is
+ * intentional (what a visitor asks about most comes first) and the headings
+ * read like the hand-written ones above instead of camelCase leaking into the
+ * prompt.
+ */
+const LINKEDIN_SECTIONS: readonly (readonly [string, string])[] = [
+	["experience", "EXPERIENCE"],
+	["education", "EDUCATION"],
+	["skills", "SKILLS, ENDORSEMENTS & LANGUAGES"],
+	["projectArchive", "PROJECT ARCHIVE"],
+	["certifications", "CERTIFICATIONS"],
+	["learning", "CONTINUED LEARNING"],
+	["recommendations", "RECOMMENDATIONS"],
+	["numbers", "TRACK RECORD IN NUMBERS"],
+];
+
+/**
+ * One `=== CONTEXT: ... ===` block per section rather than a single wall:
+ * separate headings give the model something to anchor a citation to, and the
+ * existing blocks already establish that shape.
+ */
+function renderLinkedinProfile(locale: Locale): string {
+	return LINKEDIN_SECTIONS.map(([key, heading]) => {
+		const section = LINKEDIN_PROFILE[key];
+		if (!section) {
+			return "";
+		}
+		return `=== CONTEXT: ${heading} ===\n${pick(section, locale)}`;
+	})
+		.filter(Boolean)
+		.join("\n\n");
+}
+
+/**
  * Builds the full system prompt for the whiteboard assistant.
  *
  * The instructional wrapper is always English — it is model-facing, never shown
@@ -141,5 +200,7 @@ ${renderProjects(locale)}
 
 === CONTEXT: WRITING ===
 ${renderArticles(locale)}
+
+${renderLinkedinProfile(locale)}
 `;
 }

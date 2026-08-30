@@ -20,6 +20,7 @@ export interface StorytellerState {
 	pause: () => void;
 	resume: () => void;
 	stop: () => void;
+	dismiss: () => void;
 	next: () => void;
 	prev: () => void;
 	jumpToStep: (stepIndex: number) => void;
@@ -83,6 +84,21 @@ export const useStorytellerStore = create<StorytellerState>((set, get) => ({
 	stop: () => {
 		set({
 			status: "IDLE",
+		});
+	},
+
+	/**
+	 * Puts the storyteller straight into free-navigation mode without ever
+	 * playing a step: no dialogue box, no intro card, just the resume
+	 * affordance. `stop()` alone is not enough for a visitor who never started
+	 * the story — it leaves `hasStarted` false, so the intro card would keep
+	 * covering the scene. Used by the global "ask me" launcher, which needs an
+	 * unobstructed view of the whiteboard.
+	 */
+	dismiss: () => {
+		set({
+			status: "IDLE",
+			hasStarted: true,
 		});
 	},
 

@@ -1,10 +1,13 @@
 "use client";
 
 import { Html } from "@react-three/drei";
-import { useState } from "react";
 import { useWhiteboardStore, WhiteboardCanvas } from "@/features/whiteboard";
 import { AssistantPanel } from "@/features/whiteboard-assistant";
 import { useUiStrings } from "@/shared/i18n/use-ui-strings";
+import {
+	type BoardView,
+	useWhiteboardViewStore,
+} from "../state/whiteboard-view-store";
 
 // Positioned in Quadrant 4 (South-West / Front-Left)
 export const WHITEBOARD_ORIGIN: [number, number, number] = [-2.5, 0, 2.2];
@@ -37,16 +40,15 @@ export const WHITEBOARD_PANEL_SCALE = PANEL_WORLD_WIDTH / PANEL_WIDTH_PX;
  */
 const HTML_TRANSFORM_UNIT_DISTANCE_FACTOR = 400;
 
-type BoardView = "diagram" | "assistant";
-
 const BOARD_VIEWS: readonly BoardView[] = ["diagram", "assistant"];
 
 export function VoxelWhiteboard() {
 	const elements = useWhiteboardStore((state) => state.elements);
 	const ui = useUiStrings();
-	// The board defaults to the diagram so the narrated story looks exactly as it
-	// did before; the assistant is something a visitor opts into.
-	const [view, setView] = useState<BoardView>("diagram");
+	// Store-backed (not local state) so DOM controls outside the <Canvas> — the
+	// global "ask me" launcher — can flip the board straight to the assistant.
+	const view = useWhiteboardViewStore((state) => state.view);
+	const setView = useWhiteboardViewStore((state) => state.setView);
 
 	const viewLabels: Record<BoardView, string> = {
 		diagram: ui.whiteboardViewDiagram,
