@@ -3,6 +3,8 @@
 import type { StoryTimeline } from "@/core/entities/story-timeline";
 import { useStorytellerStore } from "@/core/state/storyteller-store";
 import { useSceneFocusStore } from "@/features/scene-3d";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
+import { useLocale } from "@/shared/state/locale-store";
 import { ChapterChips } from "./chapter-chips";
 import { DialogueBox } from "./dialogue-box";
 import { PlaybackControls } from "./playback-controls";
@@ -39,6 +41,9 @@ export function StorytellerOverlay({
 	// lets the overlay move the camera without waking the narration back up.
 	const focusWaypoint = useSceneFocusStore((state) => state.focusWaypoint);
 
+	const locale = useLocale();
+	const ui = useUiStrings();
+
 	const isIdle = status === "IDLE";
 	/** Story closed mid-way: scene is freely navigable, narration is dormant. */
 	const isFreeMode = isIdle && hasStarted;
@@ -51,19 +56,19 @@ export function StorytellerOverlay({
 
 	const chapterInfo =
 		currentChapterIndex >= 0 && timeline.totalChapters > 0
-			? `Cap. ${currentChapterIndex + 1} de ${timeline.totalChapters}`
+			? `${ui.chapterWordShort} ${currentChapterIndex + 1} ${ui.ofWord} ${timeline.totalChapters}`
 			: undefined;
 
 	const stepInfo =
 		timeline.totalSteps > 0
-			? `Passo ${currentStepIndex + 1} de ${timeline.totalSteps}${
+			? `${ui.stepWord} ${currentStepIndex + 1} ${ui.ofWord} ${timeline.totalSteps}${
 					chapterInfo ? ` • ${chapterInfo}` : ""
 				}`
 			: undefined;
 
 	return (
 		<aside
-			aria-label="Interface do Storyteller"
+			aria-label={ui.overlayLabel}
 			// `--app-header-height` is owned by the app chrome; the fallback keeps
 			// the chips clear of the fixed header even before it is defined.
 			// `overflow-y-auto` + `shrink-0` children keep the regions from
@@ -119,7 +124,7 @@ export function StorytellerOverlay({
 				{!isIdle && (
 					<div className="pointer-events-auto mx-auto flex w-full flex-col gap-3 sm:max-w-2xl lg:max-w-3xl">
 						<DialogueBox
-							chapterTitle={currentChapter?.title}
+							chapterTitle={currentChapter?.title[locale]}
 							stepInfo={stepInfo}
 						/>
 

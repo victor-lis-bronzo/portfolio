@@ -4,43 +4,45 @@ import type {
 	DialogSayOptions,
 	IDialogController,
 } from "@/core/interfaces/dialog-controller";
+import type { Localized } from "@/shared/i18n/types";
 
 export interface DialogueState {
-	text: string;
+	/** Both languages of the current phrase; `null` while nothing is being said. */
+	text: Localized | null;
 	isTyping: boolean;
-	cta?: StoryCta;
-	say: (text: string, options?: DialogSayOptions) => void;
-	setCta: (cta?: StoryCta) => void;
+	ctas: StoryCta[];
+	say: (text: Localized, options?: DialogSayOptions) => void;
+	setCtas: (ctas?: StoryCta[]) => void;
 	clear: () => void;
 }
 
 export const useDialogueStore = create<DialogueState>((set) => ({
-	text: "",
+	text: null,
 	isTyping: false,
-	cta: undefined,
+	ctas: [],
 
-	say: (text: string, _options?: DialogSayOptions) => {
+	say: (text: Localized, _options?: DialogSayOptions) => {
 		set({
 			text,
 			isTyping: false,
 		});
 	},
 
-	setCta: (cta?: StoryCta) => {
-		set({ cta });
+	setCtas: (ctas?: StoryCta[]) => {
+		set({ ctas: ctas ?? [] });
 	},
 
 	clear: () => {
 		set({
-			text: "",
+			text: null,
 			isTyping: false,
-			cta: undefined,
+			ctas: [],
 		});
 	},
 }));
 
 export const dialogueController: IDialogController = {
-	say: (text: string, options?: DialogSayOptions) => {
+	say: (text: Localized, options?: DialogSayOptions) => {
 		useDialogueStore.getState().say(text, options);
 	},
 	clear: () => {

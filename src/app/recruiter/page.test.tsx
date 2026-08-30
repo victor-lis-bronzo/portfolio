@@ -9,7 +9,7 @@ describe("generateMetadata", () => {
 
 		expect(typeof metadata.title).toBe("string");
 		expect((metadata.title as string).length).toBeGreaterThan(0);
-		expect(metadata.title).toContain("Currículo");
+		expect(metadata.title).toContain("Résumé");
 
 		expect(typeof metadata.description).toBe("string");
 		expect((metadata.description as string).length).toBeGreaterThan(0);
@@ -39,18 +39,20 @@ describe("RecruiterPage", () => {
 		render(<RecruiterPage />);
 
 		for (const chapter of BIOGRAPHICAL_STORY_SCRIPT.chapters) {
-			expect(screen.queryByText(chapter.title)).not.toBeInTheDocument();
+			expect(screen.queryByText(chapter.title.en)).not.toBeInTheDocument();
 		}
 		for (const step of BIOGRAPHICAL_STORY_SCRIPT.steps) {
-			expect(screen.queryByText(step.mascotDialogue)).not.toBeInTheDocument();
+			expect(
+				screen.queryByText(step.mascotDialogue.en),
+			).not.toBeInTheDocument();
 		}
 		expect(
 			screen.queryByRole("toolbar", {
-				name: "Controles de reprodução do Storyteller",
+				name: "Storyteller playback controls",
 			}),
 		).not.toBeInTheDocument();
 		expect(
-			screen.queryByRole("button", { name: "Próximo passo" }),
+			screen.queryByRole("button", { name: "Next step" }),
 		).not.toBeInTheDocument();
 	});
 });

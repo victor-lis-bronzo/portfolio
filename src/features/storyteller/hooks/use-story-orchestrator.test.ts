@@ -10,11 +10,14 @@ import type {
 import { useStorytellerStore } from "@/core/state/storyteller-store";
 import { useStoryOrchestrator } from "./use-story-orchestrator";
 
+/** These cases assert orchestration, so both locales carry the same text. */
+const both = (text: string) => ({ en: text, pt: text });
+
 const testTimeline = buildStoryTimeline({
 	chapters: [
 		{
 			id: "ch1",
-			title: "Capítulo 1",
+			title: both("Capítulo 1"),
 			stepIds: ["s1", "s2"],
 		},
 	],
@@ -22,7 +25,7 @@ const testTimeline = buildStoryTimeline({
 		{
 			id: "s1",
 			waypoint: "OVERVIEW",
-			mascotDialogue: "Primeiro passo",
+			mascotDialogue: both("Primeiro passo"),
 			diagramElements: [
 				{ id: "d1", type: "box", x: 10, y: 10, label: "Diag 1" },
 			],
@@ -30,7 +33,7 @@ const testTimeline = buildStoryTimeline({
 		{
 			id: "s2",
 			waypoint: "WHITEBOARD_FOCUS",
-			mascotDialogue: "Segundo passo",
+			mascotDialogue: both("Segundo passo"),
 			diagramElements: [
 				{ id: "d2", type: "box", x: 20, y: 20, label: "Diag 2" },
 			],
@@ -80,7 +83,7 @@ describe("useStoryOrchestrator", () => {
 		});
 
 		// 1. Dialogue emitted immediately
-		expect(dialogController.say).toHaveBeenCalledWith("Primeiro passo");
+		expect(dialogController.say).toHaveBeenCalledWith(both("Primeiro passo"));
 		expect(cameraController.focusWaypoint).toHaveBeenCalledWith("OVERVIEW");
 
 		// 2. Wait for camera promise resolution
@@ -126,14 +129,14 @@ describe("useStoryOrchestrator", () => {
 			useStorytellerStore.getState().start(0);
 		});
 
-		expect(dialogController.say).toHaveBeenCalledWith("Primeiro passo");
+		expect(dialogController.say).toHaveBeenCalledWith(both("Primeiro passo"));
 
 		// User clicks next while camera is still flying for step 0
 		act(() => {
 			useStorytellerStore.getState().next();
 		});
 
-		expect(dialogController.say).toHaveBeenCalledWith("Segundo passo");
+		expect(dialogController.say).toHaveBeenCalledWith(both("Segundo passo"));
 
 		// Now step 0 camera finishes AFTER step 1 was triggered
 		await act(async () => {

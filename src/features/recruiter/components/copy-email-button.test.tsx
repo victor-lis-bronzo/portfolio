@@ -10,9 +10,9 @@ describe("CopyEmailButton", () => {
 
 		render(<CopyEmailButton email="test@example.com" />);
 
-		await user.click(screen.getByRole("button", { name: /copiar/i }));
+		await user.click(screen.getByRole("button", { name: /copy e-mail/i }));
 
 		expect(writeTextSpy).toHaveBeenCalledWith("test@example.com");
-		expect(await screen.findByText("Copiado!")).toBeInTheDocument();
+		expect(await screen.findByText("Copied!")).toBeInTheDocument();
 	});
 });

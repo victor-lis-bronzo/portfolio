@@ -3,6 +3,7 @@
 import type { SceneWaypointId } from "@/core/entities";
 import { SCENE_WAYPOINTS } from "@/core/entities";
 import { Button } from "@/shared/components/ui/button";
+import { useLocale } from "@/shared/state/locale-store";
 
 export interface DevWaypointDebugProps {
 	currentWaypoint: SceneWaypointId;
@@ -18,6 +19,10 @@ export function DevWaypointDebug({
 	currentWaypoint,
 	onFocusWaypoint,
 }: DevWaypointDebugProps) {
+	// One locale read for the whole list: `useLocalized` is a hook and cannot be
+	// called per item inside the map below.
+	const locale = useLocale();
+
 	return (
 		<div className="fixed right-4 bottom-4 z-50 flex flex-col gap-1 rounded-lg border border-border/50 bg-background/80 p-2 shadow-md backdrop-blur-sm">
 			{SCENE_WAYPOINTS.map((waypoint) => (
@@ -28,7 +33,7 @@ export function DevWaypointDebug({
 					variant={currentWaypoint === waypoint.id ? "default" : "outline"}
 					onClick={() => onFocusWaypoint(waypoint.id)}
 				>
-					{waypoint.label ?? waypoint.id}
+					{waypoint.label?.[locale] ?? waypoint.id}
 				</Button>
 			))}
 		</div>

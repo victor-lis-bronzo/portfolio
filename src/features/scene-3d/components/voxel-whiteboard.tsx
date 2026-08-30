@@ -2,6 +2,12 @@
 
 import { Html } from "@react-three/drei";
 import { useWhiteboardStore, WhiteboardCanvas } from "@/features/whiteboard";
+import { AssistantPanel } from "@/features/whiteboard-assistant";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
+import {
+	type BoardView,
+	useWhiteboardViewStore,
+} from "../state/whiteboard-view-store";
 
 // Positioned in Quadrant 4 (South-West / Front-Left)
 export const WHITEBOARD_ORIGIN: [number, number, number] = [-2.5, 0, 2.2];
@@ -17,8 +23,38 @@ const BOARD_COLOR = "#f8fafc";
 const STAND_COLOR = "#475569";
 const TRAY_COLOR = "#94a3b8";
 
+/** CSS-pixel size the embedded board UI is authored at. */
+const PANEL_WIDTH_PX = 800;
+const PANEL_HEIGHT_PX = 500;
+/** World width the panel has to cover — the white surface is 2.88 wide. */
+const PANEL_WORLD_WIDTH = 2.8;
+/** World units per authored CSS pixel. */
+export const WHITEBOARD_PANEL_SCALE = PANEL_WORLD_WIDTH / PANEL_WIDTH_PX;
+/**
+ * drei's <Html transform> divides the object's world matrix by
+ * `400 / (distanceFactor ?? 10)` — i.e. by 40 unless `distanceFactor` is given.
+ * Passing 400 makes that divisor exactly 1, so `scale` alone maps CSS pixels to
+ * world units. Leaving it at the default shrinks the panel to 1/40 of the board
+ * (~0.07 world units), which under this scene's orthographic camera came out as
+ * a sub-pixel, unclickable overlay.
+ */
+const HTML_TRANSFORM_UNIT_DISTANCE_FACTOR = 400;
+
+const BOARD_VIEWS: readonly BoardView[] = ["diagram", "assistant"];
+
 export function VoxelWhiteboard() {
 	const elements = useWhiteboardStore((state) => state.elements);
+	const ui = useUiStrings();
+	// Store-backed (not local state) so DOM controls outside the <Canvas> — the
+	// global "ask me" launcher — can flip the board straight to the assistant.
+	const view = useWhiteboardViewStore((state) => state.view);
+	const setView = useWhiteboardViewStore((state) => state.setView);
+
+	const viewLabels: Record<BoardView, string> = {
+		diagram: ui.whiteboardViewDiagram,
+		assistant: ui.whiteboardViewAssistant,
+	};
+
 	return (
 		<group position={WHITEBOARD_ORIGIN} rotation={WHITEBOARD_ROTATION}>
 			{/* --- WHEELED MOBILE STAND --- */}
@@ -139,18 +175,58 @@ export function VoxelWhiteboard() {
 				<Html
 					transform
 					position={[0, 0, 0.05]}
-					scale={0.0035}
+					scale={WHITEBOARD_PANEL_SCALE}
+					distanceFactor={HTML_TRANSFORM_UNIT_DISTANCE_FACTOR}
 					style={{
-						width: "800px",
-						height: "500px",
+						width: `${PANEL_WIDTH_PX}px`,
+						height: `${PANEL_HEIGHT_PX}px`,
+						// The overlay as a whole stays inert so scene gestures pass
+						// straight through the board. The view switcher and the assistant
+						// opt back in individually; the diagram never does.
 						userSelect: "none",
 						pointerEvents: "none",
 					}}
 				>
-					<WhiteboardCanvas
-						elements={elements}
-						className="h-full w-full bg-transparent"
-					/>
+					<div className="relative h-full w-full">
+						<fieldset
+							aria-label={ui.whiteboardViewsLabel}
+							className="absolute top-0 right-0 z-10 inline-flex items-center gap-0.5 rounded-lg border border-border bg-card/90 p-0.5 backdrop-blur-md"
+							style={{ pointerEvents: "auto" }}
+						>
+							{BOARD_VIEWS.map((option) => {
+								const isActive = option === view;
+								return (
+									<button
+										key={option}
+										type="button"
+										onClick={() => setView(option)}
+										aria-pressed={isActive}
+										className={`min-h-7 rounded-md px-2 font-semibold text-[11px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+											isActive
+												? "bg-primary text-primary-foreground"
+												: "text-foreground/60 hover:text-foreground"
+										}`}
+									>
+										{viewLabels[option]}
+									</button>
+								);
+							})}
+						</fieldset>
+
+						{view === "diagram" ? (
+							<WhiteboardCanvas
+								elements={elements}
+								className="h-full w-full bg-transparent"
+							/>
+						) : (
+							<div
+								className="absolute inset-0 pt-9"
+								style={{ pointerEvents: "auto", userSelect: "text" }}
+							>
+								<AssistantPanel />
+							</div>
+						)}
+					</div>
 				</Html>
 			</group>
 		</group>

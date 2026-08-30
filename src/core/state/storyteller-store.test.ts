@@ -118,6 +118,25 @@ describe("useStorytellerStore", () => {
 		expect(useStorytellerStore.getState().currentStepIndex).toBe(1);
 	});
 
+	it("enters free-navigation mode on dismiss() from a never-started story", () => {
+		useStorytellerStore.getState().dismiss();
+		expect(useStorytellerStore.getState().status).toBe("IDLE");
+		// `hasStarted` is what hides the intro card, so the scene is unobstructed.
+		expect(useStorytellerStore.getState().hasStarted).toBe(true);
+		expect(useStorytellerStore.getState().currentStepIndex).toBe(0);
+	});
+
+	it("closes a running story on dismiss() while preserving progress", () => {
+		useStorytellerStore.getState().start(3);
+		useStorytellerStore.getState().dismiss();
+		expect(useStorytellerStore.getState().status).toBe("IDLE");
+		expect(useStorytellerStore.getState().currentStepIndex).toBe(3);
+
+		useStorytellerStore.getState().resume();
+		expect(useStorytellerStore.getState().status).toBe("PLAYING");
+		expect(useStorytellerStore.getState().currentStepIndex).toBe(3);
+	});
+
 	it("rewinds to the pristine state on reset()", () => {
 		useStorytellerStore.getState().start(3);
 		useStorytellerStore.getState().stop();

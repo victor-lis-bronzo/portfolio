@@ -1,3 +1,4 @@
+export type { IAssistantClient } from "./assistant-client";
 export type { ICameraController } from "./camera-controller";
 export type {
 	DialogSayOptions,
