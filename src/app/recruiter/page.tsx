@@ -4,11 +4,14 @@ import { skills } from "@/core/data/skills";
 import { RecruiterView } from "@/features/recruiter/recruiter-view";
 import { SITE_URL } from "@/shared/lib/site-config";
 
-const PAGE_TITLE = `${profile.name} — ${profile.role} | Currículo`;
+// Metadata is generated on the server, which cannot read the client-side locale
+// store, so it is always built from the default locale (English). Documented
+// tradeoff: the i18n toggle is client-only, with no route-based i18n.
+const PAGE_TITLE = `${profile.name} — ${profile.role.en} | Résumé`;
 const PAGE_DESCRIPTION =
-	profile.summary.length > 160
-		? `${profile.summary.slice(0, 157)}...`
-		: profile.summary;
+	profile.summary.en.length > 160
+		? `${profile.summary.en.slice(0, 157)}...`
+		: profile.summary.en;
 const PAGE_URL = `${SITE_URL}/recruiter`;
 
 export function generateMetadata(): Metadata {
@@ -38,7 +41,7 @@ export default function RecruiterPage() {
 		"@context": "https://schema.org",
 		"@type": "Person",
 		name: profile.name,
-		jobTitle: profile.role,
+		jobTitle: profile.role.en,
 		url: PAGE_URL,
 		sameAs: [profile.githubHref, profile.linkedinHref],
 		knowsAbout: skills.map((skill) => skill.name),

@@ -3,10 +3,13 @@ import { describe, expect, it, vi } from "vitest";
 import type { StoryChapter } from "@/core/entities/story-script";
 import { ChapterChips } from "./chapter-chips";
 
+/** These cases assert structure, so both locales carry the same title. */
+const both = (text: string) => ({ en: text, pt: text });
+
 const mockChapters: StoryChapter[] = [
-	{ id: "ch-1", title: "Origens", stepIds: ["s1"] },
-	{ id: "ch-2", title: "Etec", stepIds: ["s2"] },
-	{ id: "ch-3", title: "IoT", stepIds: ["s3"] },
+	{ id: "ch-1", title: both("Origens"), stepIds: ["s1"] },
+	{ id: "ch-2", title: both("Etec"), stepIds: ["s2"] },
+	{ id: "ch-3", title: both("IoT"), stepIds: ["s3"] },
 ];
 
 /**
@@ -47,7 +50,7 @@ function renderChips() {
 	);
 
 	return screen.getByRole("navigation", {
-		name: /Navegação por capítulos da história/i,
+		name: /Story chapter navigation/i,
 	});
 }
 
@@ -63,9 +66,9 @@ describe("ChapterChips", () => {
 			/>,
 		);
 
-		const chip1 = screen.getByRole("button", { name: /Capítulo 1: Origens/i });
-		const chip2 = screen.getByRole("button", { name: /Capítulo 2: Etec/i });
-		const chip3 = screen.getByRole("button", { name: /Capítulo 3: IoT/i });
+		const chip1 = screen.getByRole("button", { name: /Chapter 1: Origens/i });
+		const chip2 = screen.getByRole("button", { name: /Chapter 2: Etec/i });
+		const chip3 = screen.getByRole("button", { name: /Chapter 3: IoT/i });
 
 		expect(chip1).toBeInTheDocument();
 		expect(chip2).toBeInTheDocument();

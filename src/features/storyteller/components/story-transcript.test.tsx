@@ -4,15 +4,30 @@ import type { StoryScript } from "@/core/entities/story-script";
 import { buildStoryTimeline } from "@/core/entities/story-timeline";
 import { StoryTranscript } from "./story-transcript";
 
+/** These cases assert structure, so both locales carry the same text. */
+const both = (text: string) => ({ en: text, pt: text });
+
 const script: StoryScript = {
 	chapters: [
-		{ id: "ch-1", title: "Origens", stepIds: ["s1", "s2"] },
-		{ id: "ch-2", title: "IoT", stepIds: ["s3"] },
+		{ id: "ch-1", title: both("Origens"), stepIds: ["s1", "s2"] },
+		{ id: "ch-2", title: both("IoT"), stepIds: ["s3"] },
 	],
 	steps: [
-		{ id: "s1", waypoint: "OVERVIEW", mascotDialogue: "Bem-vindo ao estúdio." },
-		{ id: "s2", waypoint: "DESK", mascotDialogue: "Aqui começa a lógica." },
-		{ id: "s3", waypoint: "IOT_BENCH", mascotDialogue: "Bancada de hardware." },
+		{
+			id: "s1",
+			waypoint: "OVERVIEW",
+			mascotDialogue: both("Bem-vindo ao estúdio."),
+		},
+		{
+			id: "s2",
+			waypoint: "DESK",
+			mascotDialogue: both("Aqui começa a lógica."),
+		},
+		{
+			id: "s3",
+			waypoint: "IOT_BENCH",
+			mascotDialogue: both("Bancada de hardware."),
+		},
 	],
 };
 
@@ -27,7 +42,7 @@ function renderTranscript(onJumpToStep = vi.fn()) {
 		/>,
 	);
 
-	const toggle = screen.getByRole("button", { name: /Transcrição \(Texto\)/i });
+	const toggle = screen.getByRole("button", { name: /Transcript \(text\)/i });
 	return { toggle, onJumpToStep };
 }
 

@@ -2,26 +2,29 @@ import { describe, expect, it } from "vitest";
 import type { StoryScript } from "./story-script";
 import { buildStoryTimeline } from "./story-timeline";
 
+/** These cases only exercise structure, so both locales carry the same text. */
+const both = (text: string) => ({ en: text, pt: text });
+
 const mockScript: StoryScript = {
 	chapters: [
 		{
 			id: "ch-intro",
-			title: "Introdução",
+			title: both("Introdução"),
 			stepIds: ["step-1", "step-2"],
 		},
 		{
 			id: "ch-middle",
-			title: "Desenvolvimento",
+			title: both("Desenvolvimento"),
 			stepIds: ["step-3", "step-draft"],
 		},
 		{
 			id: "ch-draft-only",
-			title: "Apenas Rascunho",
+			title: both("Apenas Rascunho"),
 			stepIds: ["step-draft-2"],
 		},
 		{
 			id: "ch-ending",
-			title: "Encerramento",
+			title: both("Encerramento"),
 			stepIds: ["step-4"],
 		},
 	],
@@ -29,34 +32,34 @@ const mockScript: StoryScript = {
 		{
 			id: "step-1",
 			waypoint: "OVERVIEW",
-			mascotDialogue: "Olá, bem-vindo!",
+			mascotDialogue: both("Olá, bem-vindo!"),
 		},
 		{
 			id: "step-2",
 			waypoint: "DESK",
-			mascotDialogue: "Aqui é onde estudo e programo.",
+			mascotDialogue: both("Aqui é onde estudo e programo."),
 		},
 		{
 			id: "step-3",
 			waypoint: "WHITEBOARD_FOCUS",
-			mascotDialogue: "Vamos ver um diagrama.",
+			mascotDialogue: both("Vamos ver um diagrama."),
 		},
 		{
 			id: "step-draft",
 			waypoint: "IOT_BENCH",
-			mascotDialogue: "Rascunho de passo.",
+			mascotDialogue: both("Rascunho de passo."),
 			draft: true,
 		},
 		{
 			id: "step-draft-2",
 			waypoint: "PRINTER_3D",
-			mascotDialogue: "Outro rascunho.",
+			mascotDialogue: both("Outro rascunho."),
 			draft: true,
 		},
 		{
 			id: "step-4",
 			waypoint: "OVERVIEW",
-			mascotDialogue: "Até a próxima!",
+			mascotDialogue: both("Até a próxima!"),
 		},
 	],
 };

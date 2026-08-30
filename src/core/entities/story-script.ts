@@ -1,17 +1,18 @@
+import type { Localized } from "@/shared/i18n/types";
 import type { DiagramElement } from "./diagram-element";
 import type { SceneWaypointId } from "./scene-waypoint";
 
 export interface StoryCta {
-	label: string;
+	label: Localized;
 	href: string;
 }
 
 export interface StoryStep {
 	id: string;
 	waypoint: SceneWaypointId;
-	mascotDialogue: string;
+	mascotDialogue: Localized;
 	diagramElements?: DiagramElement[];
-	cta?: StoryCta;
+	ctas?: StoryCta[];
 	draft?: boolean;
 	sceneCue?: string;
 	cameraDwellMs?: number;
@@ -19,8 +20,8 @@ export interface StoryStep {
 
 export interface StoryChapter {
 	id: string;
-	title: string;
-	description?: string;
+	title: Localized;
+	description?: Localized;
 	stepIds: string[];
 	entryWaypoint?: SceneWaypointId;
 }

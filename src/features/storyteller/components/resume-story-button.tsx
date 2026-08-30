@@ -1,11 +1,12 @@
 "use client";
 
 import { useStorytellerStore } from "@/core/state/storyteller-store";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 export interface ResumeStoryButtonProps {
 	/**
-	 * Human readable progress, already formatted by the caller
-	 * (e.g. `"Cap. 2 de 5"`). Surfaced in the accessible name and tooltip.
+	 * Human readable progress, already formatted (and localized) by the caller
+	 * (e.g. `"Ch. 2 of 5"`). Surfaced in the accessible name and tooltip.
 	 */
 	progressLabel?: string;
 	className?: string;
@@ -21,10 +22,11 @@ export function ResumeStoryButton({
 	className = "",
 }: ResumeStoryButtonProps) {
 	const resume = useStorytellerStore((state) => state.resume);
+	const ui = useUiStrings();
 
 	const label = progressLabel
-		? `Retomar a história — ${progressLabel}`
-		: "Retomar a história";
+		? `${ui.resumeStory} — ${progressLabel}`
+		: ui.resumeStory;
 
 	return (
 		<button
@@ -39,10 +41,10 @@ export function ResumeStoryButton({
 				viewBox="0 0 24 24"
 				fill="currentColor"
 			>
-				<title>Retomar</title>
+				<title>{ui.iconResume}</title>
 				<polygon points="5 3 19 12 5 21 5 3" />
 			</svg>
-			<span className="hidden sm:inline">Retomar a história</span>
+			<span className="hidden sm:inline">{ui.resumeStory}</span>
 			{progressLabel && (
 				<span className="hidden text-foreground/60 sm:inline">
 					{progressLabel}

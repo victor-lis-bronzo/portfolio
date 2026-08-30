@@ -9,12 +9,15 @@ import {
 	MS_PER_CHAR,
 } from "./storyteller-pacing";
 
+/** Same phrase in both locales unless a case is specifically about length. */
+const both = (text: string) => ({ en: text, pt: text });
+
 describe("calculateStepDwellMs", () => {
 	it("respects explicit cameraDwellMs if provided", () => {
 		const step: StoryStep = {
 			id: "s1",
 			waypoint: "OVERVIEW",
-			mascotDialogue: "Texto qualquer",
+			mascotDialogue: both("Texto qualquer"),
 			cameraDwellMs: 7000,
 		};
 		expect(calculateStepDwellMs(step)).toBe(7000);
@@ -25,7 +28,7 @@ describe("calculateStepDwellMs", () => {
 		const step: StoryStep = {
 			id: "s1",
 			waypoint: "OVERVIEW",
-			mascotDialogue: text,
+			mascotDialogue: both(text),
 		};
 
 		const expected = BASE_DWELL_MS + text.length * MS_PER_CHAR;
@@ -37,7 +40,7 @@ describe("calculateStepDwellMs", () => {
 		const step: StoryStep = {
 			id: "s1",
 			waypoint: "WHITEBOARD_FOCUS",
-			mascotDialogue: text,
+			mascotDialogue: both(text),
 			diagramElements: [
 				{ id: "box1", type: "box", x: 10, y: 10, label: "Node" },
 			],
@@ -55,7 +58,7 @@ describe("calculateStepDwellMs", () => {
 		const step: StoryStep = {
 			id: "s1",
 			waypoint: "WHITEBOARD_FOCUS",
-			mascotDialogue: text,
+			mascotDialogue: both(text),
 			diagramElements: [
 				{ id: "box1", type: "box", x: 10, y: 10, label: "Node" },
 			],
@@ -67,11 +70,32 @@ describe("calculateStepDwellMs", () => {
 		);
 	});
 
+	it("paces on the phrase of the requested locale, defaulting to English", () => {
+		const en = "Short line.";
+		const pt = "Uma frase consideravelmente mais longa nesta outra língua.";
+		const step: StoryStep = {
+			id: "s1",
+			waypoint: "OVERVIEW",
+			mascotDialogue: { en, pt },
+		};
+
+		expect(calculateStepDwellMs(step, { locale: "en" })).toBe(
+			BASE_DWELL_MS + en.length * MS_PER_CHAR,
+		);
+		expect(calculateStepDwellMs(step, { locale: "pt" })).toBe(
+			BASE_DWELL_MS + pt.length * MS_PER_CHAR,
+		);
+		// No locale given → the site default.
+		expect(calculateStepDwellMs(step)).toBe(
+			calculateStepDwellMs(step, { locale: "en" }),
+		);
+	});
+
 	it("clamps values to min and max boundaries", () => {
 		const shortStep: StoryStep = {
 			id: "s1",
 			waypoint: "OVERVIEW",
-			mascotDialogue: "",
+			mascotDialogue: both(""),
 		};
 		expect(calculateStepDwellMs(shortStep)).toBeGreaterThanOrEqual(
 			MIN_STEP_DWELL_MS,
@@ -81,7 +105,7 @@ describe("calculateStepDwellMs", () => {
 		const hugeStep: StoryStep = {
 			id: "s2",
 			waypoint: "OVERVIEW",
-			mascotDialogue: hugeText,
+			mascotDialogue: both(hugeText),
 		};
 		expect(calculateStepDwellMs(hugeStep)).toBe(MAX_STEP_DWELL_MS);
 	});

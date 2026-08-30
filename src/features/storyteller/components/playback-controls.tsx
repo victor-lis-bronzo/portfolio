@@ -1,6 +1,7 @@
 "use client";
 
 import type { StorytellerStatus } from "@/core/state/storyteller-store";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 export interface PlaybackControlsProps {
 	status: StorytellerStatus;
@@ -29,6 +30,7 @@ export function PlaybackControls({
 	onToggleAutoAdvance,
 	className = "",
 }: PlaybackControlsProps) {
+	const ui = useUiStrings();
 	const isPlaying = status === "PLAYING";
 	const isEnded = status === "ENDED";
 	const canPrev = currentStepIndex > 0;
@@ -37,7 +39,7 @@ export function PlaybackControls({
 	return (
 		<div
 			role="toolbar"
-			aria-label="Controles de reprodução do Storyteller"
+			aria-label={ui.playbackToolbarLabel}
 			className={`flex flex-wrap items-center justify-between gap-x-2 gap-y-2 rounded-2xl border border-border bg-card/90 backdrop-blur-md px-2.5 py-2 text-card-foreground sm:gap-x-3 sm:px-4 sm:py-2.5 ${className}`}
 		>
 			{/* Left side: Step counter & Auto-advance */}
@@ -56,15 +58,9 @@ export function PlaybackControls({
 				<button
 					type="button"
 					onClick={onToggleAutoAdvance}
-					title={
-						autoAdvance
-							? "Avanço automático ativado (clique para desativar)"
-							: "Avanço automático pausado (clique para ativar)"
-					}
+					title={autoAdvance ? ui.autoAdvanceOnTitle : ui.autoAdvanceOffTitle}
 					aria-label={
-						autoAdvance
-							? "Desativar avanço automático"
-							: "Ativar avanço automático"
+						autoAdvance ? ui.autoAdvanceDisable : ui.autoAdvanceEnable
 					}
 					aria-pressed={autoAdvance}
 					className={`flex min-h-[2rem] min-w-[2rem] items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-2.5 ${
@@ -80,7 +76,7 @@ export function PlaybackControls({
 					/>
 					{/* Label collapses to the indicator dot on narrow screens, but stays
 					    in the accessibility tree (plus aria-label/title above). */}
-					<span className="sr-only sm:not-sr-only">Auto</span>
+					<span className="sr-only sm:not-sr-only">{ui.autoAdvanceShort}</span>
 				</button>
 			</div>
 
@@ -91,7 +87,7 @@ export function PlaybackControls({
 					type="button"
 					onClick={onPrev}
 					disabled={!canPrev}
-					aria-label="Passo anterior"
+					aria-label={ui.previousStep}
 					className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary text-foreground/80 transition-colors hover:bg-secondary/80 hover:text-foreground disabled:opacity-30 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					<svg
@@ -103,7 +99,7 @@ export function PlaybackControls({
 						strokeLinecap="round"
 						strokeLinejoin="round"
 					>
-						<title>Anterior</title>
+						<title>{ui.iconPrevious}</title>
 						<path d="m15 18-6-6 6-6" />
 					</svg>
 				</button>
@@ -113,11 +109,7 @@ export function PlaybackControls({
 					type="button"
 					onClick={isPlaying ? onPause : onPlay}
 					aria-label={
-						isEnded
-							? "Reiniciar tour"
-							: isPlaying
-								? "Pausar tour"
-								: "Tocar tour"
+						isEnded ? ui.restartTour : isPlaying ? ui.pauseTour : ui.playTour
 					}
 					className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-colors hover:bg-primary/90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
@@ -131,13 +123,13 @@ export function PlaybackControls({
 							strokeLinecap="round"
 							strokeLinejoin="round"
 						>
-							<title>Reiniciar</title>
+							<title>{ui.iconRestart}</title>
 							<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
 							<path d="M3 3v5h5" />
 						</svg>
 					) : isPlaying ? (
 						<svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-							<title>Pausar</title>
+							<title>{ui.iconPause}</title>
 							<rect x="6" y="4" width="4" height="16" rx="1" />
 							<rect x="14" y="4" width="4" height="16" rx="1" />
 						</svg>
@@ -147,7 +139,7 @@ export function PlaybackControls({
 							viewBox="0 0 24 24"
 							fill="currentColor"
 						>
-							<title>Tocar</title>
+							<title>{ui.iconPlay}</title>
 							<polygon points="5 3 19 12 5 21 5 3" />
 						</svg>
 					)}
@@ -158,7 +150,7 @@ export function PlaybackControls({
 					type="button"
 					onClick={onNext}
 					disabled={!canNext && !isEnded}
-					aria-label="Próximo passo"
+					aria-label={ui.nextStep}
 					className="flex h-8 w-8 items-center justify-center rounded-xl bg-secondary text-foreground/80 transition-colors hover:bg-secondary/80 hover:text-foreground disabled:opacity-30 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					<svg
@@ -170,7 +162,7 @@ export function PlaybackControls({
 						strokeLinecap="round"
 						strokeLinejoin="round"
 					>
-						<title>Próximo</title>
+						<title>{ui.iconNext}</title>
 						<path d="m9 18 6-6-6-6" />
 					</svg>
 				</button>
@@ -180,8 +172,8 @@ export function PlaybackControls({
 			<button
 				type="button"
 				onClick={onReset}
-				aria-label="Encerrar tour e voltar para visão geral"
-				title="Sair do tour (Esc)"
+				aria-label={ui.exitTour}
+				title={ui.exitTourTitle}
 				className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-foreground/60 transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 			>
 				<svg
@@ -193,7 +185,7 @@ export function PlaybackControls({
 					strokeLinecap="round"
 					strokeLinejoin="round"
 				>
-					<title>Fechar</title>
+					<title>{ui.iconClose}</title>
 					<line x1="18" y1="6" x2="6" y2="18" />
 					<line x1="6" y1="6" x2="18" y2="18" />
 				</svg>

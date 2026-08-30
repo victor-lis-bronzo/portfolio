@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { LocaleToggle } from "./locale-toggle";
 import { ModeSwitcher } from "./mode-switcher";
 
 export interface AppChromeProps {
@@ -19,7 +20,10 @@ export function AppChrome({ children }: AppChromeProps) {
 						<span className="min-w-0 truncate font-semibold text-sm sm:text-base">
 							Victor Lis Bronzo
 						</span>
-						<ModeSwitcher />
+						<div className="flex shrink-0 items-center gap-2">
+							<LocaleToggle />
+							<ModeSwitcher />
+						</div>
 					</div>
 				</header>
 				<main className="w-full flex-1">{children}</main>
@@ -47,7 +51,10 @@ export function AppChrome({ children }: AppChromeProps) {
 					<span className="min-w-0 truncate font-semibold text-white text-xs sm:text-base">
 						Victor Lis Bronzo
 					</span>
-					<ModeSwitcher />
+					<div className="flex shrink-0 items-center gap-2">
+						<LocaleToggle />
+						<ModeSwitcher />
+					</div>
 				</div>
 			</header>
 			<main className="h-full w-full">{children}</main>

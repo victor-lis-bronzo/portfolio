@@ -8,7 +8,7 @@ describe("Home", () => {
 		expect(
 			screen.getByRole("heading", {
 				level: 1,
-				name: /Victor Lis Bronzo — Portfólio & Storyteller Interativo 3D/i,
+				name: /Victor Lis Bronzo — Interactive 3D portfolio & storyteller/i,
 			}),
 		).toBeInTheDocument();
 		expect(screen.getByTestId("voxel-studio-loading")).toBeInTheDocument();
@@ -17,7 +17,7 @@ describe("Home", () => {
 	it("renders the storyteller intro card on initial idle state", () => {
 		render(<Home />);
 		expect(
-			screen.getByRole("button", { name: /Iniciar Minha História/i }),
+			screen.getByRole("button", { name: /Start my story/i }),
 		).toBeInTheDocument();
 	});
 });

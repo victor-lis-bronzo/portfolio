@@ -1,3 +1,4 @@
+import type { Locale } from "@/shared/i18n/types";
 import type { StoryStep } from "../entities/story-script";
 
 export const BASE_DWELL_MS = 4500;
@@ -8,6 +9,11 @@ export const MAX_STEP_DWELL_MS = 18000;
 
 export interface PacingOptions {
 	prefersReducedMotion?: boolean;
+	/**
+	 * Reading time is proportional to the phrase actually on screen, and the two
+	 * languages differ in length. Defaults to the site default locale.
+	 */
+	locale?: Locale;
 }
 
 export function calculateStepDwellMs(
@@ -18,7 +24,8 @@ export function calculateStepDwellMs(
 		return step.cameraDwellMs;
 	}
 
-	const charCount = step.mascotDialogue ? step.mascotDialogue.length : 0;
+	const phrase = step.mascotDialogue?.[options.locale ?? "en"];
+	const charCount = phrase ? phrase.length : 0;
 	let dwell = BASE_DWELL_MS + charCount * MS_PER_CHAR;
 
 	const hasDiagram = Boolean(
