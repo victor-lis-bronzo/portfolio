@@ -67,6 +67,6 @@ export const SCENE_WAYPOINTS: SceneWaypoint[] = [
 		position: { x: 0, y: 4.8, z: 4.0 },
 		target: { x: -7.8, y: 1.8, z: 4.0 },
 		zoom: 100,
-		label: "Eventos Tech",
+		label: { en: "Tech Events", pt: "Eventos Tech" },
 	},
 ];
