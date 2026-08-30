@@ -4,8 +4,10 @@ import { TECH_EVENTS } from "../data";
 import { EventBadge } from "./event-badge";
 import { useEventsStore } from "../state/events-store";
 import { AnimatePresence, motion } from "framer-motion";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 export function EventsModal() {
+	const ui = useUiStrings();
 	const isOpen = useEventsStore((state) => state.isOpen);
 	const close = useEventsStore((state) => state.close);
 
@@ -27,10 +29,10 @@ export function EventsModal() {
 						<div className="w-full mb-8 border-b-2 border-slate-700/50 pb-6 flex items-end justify-between sticky top-0 bg-slate-900/95 backdrop-blur-md pt-4 z-10">
 							<div>
 								<h2 className="text-4xl font-black text-slate-100 tracking-tight">
-									Tech Events & Conferências
+									{ui.eventsModalTitle}
 								</h2>
 								<span className="text-slate-400 font-medium mt-2 block">
-									{TECH_EVENTS.length} eventos documentados
+									{ui.eventsModalSubtitle(TECH_EVENTS.length)}
 								</span>
 							</div>
 							<button
@@ -38,7 +40,7 @@ export function EventsModal() {
 								onClick={close}
 								className="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg font-bold"
 							>
-								Fechar Painel
+								{ui.eventsModalClose}
 							</button>
 						</div>
 
