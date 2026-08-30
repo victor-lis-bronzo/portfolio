@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type { MeshStandardMaterial } from "three";
 import { usePrefersReducedMotion } from "@/shared/hooks/use-prefers-reduced-motion";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 // Wall-mounted on the back wall (Quadrant boundary), facing +Z
 export const IFSP_PLAQUE_ORIGIN: [number, number, number] = [-5.5, 2.35, -5.87];
@@ -53,6 +54,10 @@ function PulsingCircuitLed({
 }
 
 export function VoxelIfspPlaque() {
+	// The plaque legend is DOM (drei's `<Html>`), not a canvas texture, so it
+	// re-renders on a locale switch like any other component.
+	const ui = useUiStrings();
+
 	return (
 		<group position={IFSP_PLAQUE_ORIGIN}>
 			{/* --- BACKING BOARD (IFSP institutional green) --- */}
@@ -93,10 +98,8 @@ export function VoxelIfspPlaque() {
 						lineHeight: 1.15,
 					}}
 				>
-					<div style={{ fontSize: "22px" }}>IFSP · Bragança Paulista</div>
-					<div style={{ fontSize: "16px" }}>
-						ADS · Iniciação Científica MQTT
-					</div>
+					<div style={{ fontSize: "22px" }}>{ui.ifspPlaqueTitle}</div>
+					<div style={{ fontSize: "16px" }}>{ui.ifspPlaqueSubtitle}</div>
 				</div>
 			</Html>
 

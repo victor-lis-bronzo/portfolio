@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { StoryTimeline } from "@/core/entities/story-timeline";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
+import { useLocale } from "@/shared/state/locale-store";
 
 export interface StoryTranscriptProps {
 	timeline: StoryTimeline;
@@ -18,6 +20,8 @@ export function StoryTranscript({
 }: StoryTranscriptProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const rootRef = useRef<HTMLDivElement>(null);
+	const locale = useLocale();
+	const ui = useUiStrings();
 
 	useEffect(() => {
 		if (!isOpen) {
@@ -80,14 +84,14 @@ export function StoryTranscript({
 					strokeLinecap="round"
 					strokeLinejoin="round"
 				>
-					<title>Documento</title>
+					<title>{ui.iconDocument}</title>
 					<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
 					<polyline points="14 2 14 8 20 8" />
 					<line x1="16" y1="13" x2="8" y2="13" />
 					<line x1="16" y1="17" x2="8" y2="17" />
 					<line x1="10" y1="9" x2="8" y2="9" />
 				</svg>
-				<span>{isOpen ? "Fechar Transcrição" : "Transcrição (Texto)"}</span>
+				<span>{isOpen ? ui.transcriptClose : ui.transcriptOpen}</span>
 			</button>
 
 			{/* Expandable panel */}
@@ -99,16 +103,14 @@ export function StoryTranscript({
 					<div className="flex shrink-0 items-center justify-between gap-3 border-b border-border pb-3">
 						<div className="min-w-0">
 							<h3 className="text-sm font-semibold text-foreground">
-								Transcrição Completa da Narrativa
+								{ui.transcriptTitle}
 							</h3>
-							<p className="text-xs text-foreground/60">
-								Clique em qualquer momento para navegar
-							</p>
+							<p className="text-xs text-foreground/60">{ui.transcriptHint}</p>
 						</div>
 						<button
 							type="button"
 							onClick={() => setIsOpen(false)}
-							aria-label="Fechar transcrição"
+							aria-label={ui.transcriptCloseAria}
 							className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-foreground/60 transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 						>
 							<svg
@@ -120,7 +122,7 @@ export function StoryTranscript({
 								strokeLinecap="round"
 								strokeLinejoin="round"
 							>
-								<title>Fechar</title>
+								<title>{ui.iconClose}</title>
 								<line x1="18" y1="6" x2="6" y2="18" />
 								<line x1="6" y1="6" x2="18" y2="18" />
 							</svg>
@@ -135,11 +137,11 @@ export function StoryTranscript({
 										<span className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-primary/20 text-[10px] text-foreground">
 											{chapterIdx + 1}
 										</span>
-										{chapter.title}
+										{chapter.title[locale]}
 									</h4>
 									{chapter.description && (
 										<p className="text-xs text-foreground/60 italic">
-											{chapter.description}
+											{chapter.description[locale]}
 										</p>
 									)}
 
@@ -173,16 +175,16 @@ export function StoryTranscript({
 																	: "text-foreground/60"
 															}`}
 														>
-															Passo {stepIndex + 1} • {step.waypoint}
+															{ui.stepWord} {stepIndex + 1} • {step.waypoint}
 														</span>
 														{isCurrent && (
 															<span className="shrink-0 rounded bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground">
-																Atual
+																{ui.transcriptCurrentBadge}
 															</span>
 														)}
 													</div>
 													<p className="text-xs leading-relaxed text-foreground/85 break-words">
-														{step.mascotDialogue}
+														{step.mascotDialogue[locale]}
 													</p>
 												</button>
 											);

@@ -10,18 +10,18 @@ describe("ResumeStoryButton", () => {
 	});
 
 	it("exposes the progress in its accessible name and tooltip", () => {
-		render(<ResumeStoryButton progressLabel="Cap. 2 de 5" />);
+		render(<ResumeStoryButton progressLabel="Ch. 2 of 5" />);
 
 		const button = screen.getByRole("button", {
-			name: "Retomar a história — Cap. 2 de 5",
+			name: "Resume the story — Ch. 2 of 5",
 		});
-		expect(button).toHaveAttribute("title", "Retomar a história — Cap. 2 de 5");
+		expect(button).toHaveAttribute("title", "Resume the story — Ch. 2 of 5");
 	});
 
 	it("falls back to a plain label without progress", () => {
 		render(<ResumeStoryButton />);
 		expect(
-			screen.getByRole("button", { name: "Retomar a história" }),
+			screen.getByRole("button", { name: "Resume the story" }),
 		).toBeInTheDocument();
 	});
 
@@ -29,7 +29,7 @@ describe("ResumeStoryButton", () => {
 		useStorytellerStore.getState().start(3);
 		useStorytellerStore.getState().stop();
 
-		render(<ResumeStoryButton progressLabel="Cap. 2 de 5" />);
+		render(<ResumeStoryButton progressLabel="Ch. 2 of 5" />);
 		fireEvent.click(screen.getByRole("button"));
 
 		expect(useStorytellerStore.getState().status).toBe("PLAYING");

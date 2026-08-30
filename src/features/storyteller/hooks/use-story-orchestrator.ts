@@ -7,6 +7,7 @@ import type {
 } from "@/core/interfaces";
 import { calculateStepDwellMs, useStorytellerStore } from "@/core/state";
 import { usePrefersReducedMotion } from "@/shared/hooks/use-prefers-reduced-motion";
+import { useLocaleStore } from "@/shared/state/locale-store";
 import { useDialogueStore } from "../state/dialogue-store";
 
 export interface StoryOrchestratorParams {
@@ -62,7 +63,7 @@ export function useStoryOrchestrator({
 
 			// 1. Emit dialogue immediately (while camera is still flying)
 			dialogController.say(step.mascotDialogue);
-			useDialogueStore.getState().setCta(step.cta);
+			useDialogueStore.getState().setCtas(step.ctas);
 
 			// 2. Fly camera to waypoint
 			cameraController.focusWaypoint(step.waypoint).then(() => {
@@ -79,7 +80,12 @@ export function useStoryOrchestrator({
 				}
 
 				// 5. Arm Dwell timer for auto-advancing
-				const dwellMs = calculateStepDwellMs(step, { prefersReducedMotion });
+				// Read (not subscribe) — a locale switch must re-render the phrase,
+				// never restart the step or re-fly the camera mid-narration.
+				const dwellMs = calculateStepDwellMs(step, {
+					prefersReducedMotion,
+					locale: useLocaleStore.getState().locale,
+				});
 				const isAutoAdvancing = useStorytellerStore.getState().autoAdvance;
 				const currentStatus = useStorytellerStore.getState().status;
 

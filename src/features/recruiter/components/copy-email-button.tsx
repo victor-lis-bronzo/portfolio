@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/shared/components/ui/button";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 interface CopyEmailButtonProps {
 	email: string;
@@ -9,6 +10,7 @@ interface CopyEmailButtonProps {
 
 export function CopyEmailButton({ email }: CopyEmailButtonProps) {
 	const [copied, setCopied] = useState(false);
+	const ui = useUiStrings();
 
 	async function handleCopy() {
 		try {
@@ -23,10 +25,10 @@ export function CopyEmailButton({ email }: CopyEmailButtonProps) {
 	return (
 		<div className="inline-flex items-center gap-2">
 			<Button type="button" variant="outline" onClick={handleCopy}>
-				Copiar e-mail
+				{ui.copyEmail}
 			</Button>
 			<span role="status" aria-live="polite" className="text-sm">
-				{copied ? "Copiado!" : ""}
+				{copied ? ui.emailCopied : ""}
 			</span>
 		</div>
 	);

@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { StoryChapter } from "@/core/entities/story-script";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
+import { useLocale } from "@/shared/state/locale-store";
 
 export interface ChapterChipsProps {
 	chapters: StoryChapter[];
@@ -70,6 +72,8 @@ export function ChapterChips({
 }: ChapterChipsProps) {
 	const navRef = useRef<HTMLElement>(null);
 	const [edges, setEdges] = useState({ start: false, end: false });
+	const locale = useLocale();
+	const ui = useUiStrings();
 
 	const syncEdges = useCallback(() => {
 		const node = navRef.current;
@@ -161,7 +165,7 @@ export function ChapterChips({
 	return (
 		<nav
 			ref={navRef}
-			aria-label="Navegação por capítulos da história"
+			aria-label={ui.chapterNavLabel}
 			style={maskImage ? { maskImage, WebkitMaskImage: maskImage } : undefined}
 			className={`flex w-full items-center gap-2 overflow-x-auto scrollbar-top scrollbar-themed px-1 pt-2.5 pb-1 lg:w-2/3 ${className}`}
 		>
@@ -174,7 +178,7 @@ export function ChapterChips({
 						type="button"
 						onClick={() => onSelectChapter(chapter.id)}
 						aria-pressed={isActive}
-						aria-label={`Capítulo ${idx + 1}: ${chapter.title}`}
+						aria-label={`${ui.chapterWord} ${idx + 1}: ${chapter.title[locale]}`}
 						className={`group flex min-h-[2rem] shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-3.5 ${
 							isActive
 								? "bg-primary text-primary-foreground"
@@ -191,7 +195,7 @@ export function ChapterChips({
 						>
 							{idx + 1}
 						</span>
-						<span aria-hidden="true">{chapter.title}</span>
+						<span aria-hidden="true">{chapter.title[locale]}</span>
 					</button>
 				);
 			})}

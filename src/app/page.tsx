@@ -9,8 +9,10 @@ import {
 	StorytellerRuntime,
 	useStoryKeyboardShortcuts,
 } from "@/features/storyteller";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 export default function Home() {
+	const ui = useUiStrings();
 	const timeline = useMemo(
 		() => buildStoryTimeline(BIOGRAPHICAL_STORY_SCRIPT),
 		[],
@@ -27,9 +29,7 @@ export default function Home() {
 		// landmark around it.
 		<div className="relative h-full w-full bg-background">
 			{/* Accessible Hidden Main Heading */}
-			<h1 className="sr-only">
-				Victor Lis Bronzo — Portfólio & Storyteller Interativo 3D
-			</h1>
+			<h1 className="sr-only">{ui.immersivePageHeading}</h1>
 
 			{/* 3D Voxel Studio Scene (aria-hidden so screen readers consume the narration & transcript) */}
 			{/* `overflow-hidden` is scoped to the canvas wrapper: the scene must never

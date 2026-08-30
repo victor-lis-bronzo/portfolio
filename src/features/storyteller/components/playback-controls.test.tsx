@@ -29,20 +29,20 @@ describe("PlaybackControls", () => {
 		expect(screen.getByText("3")).toBeInTheDocument();
 		expect(screen.getByText("/ 10")).toBeInTheDocument();
 
-		const nextBtn = screen.getByRole("button", { name: /Próximo passo/i });
+		const nextBtn = screen.getByRole("button", { name: /Next step/i });
 		fireEvent.click(nextBtn);
 		expect(onNext).toHaveBeenCalledTimes(1);
 
-		const prevBtn = screen.getByRole("button", { name: /Passo anterior/i });
+		const prevBtn = screen.getByRole("button", { name: /Previous step/i });
 		fireEvent.click(prevBtn);
 		expect(onPrev).toHaveBeenCalledTimes(1);
 
-		const pauseBtn = screen.getByRole("button", { name: /Pausar tour/i });
+		const pauseBtn = screen.getByRole("button", { name: /Pause the tour/i });
 		fireEvent.click(pauseBtn);
 		expect(onPause).toHaveBeenCalledTimes(1);
 
 		const autoBtn = screen.getByRole("button", {
-			name: /Desativar avanço automático/i,
+			name: /Turn off auto-advance/i,
 		});
 		fireEvent.click(autoBtn);
 		expect(onToggleAutoAdvance).toHaveBeenCalledTimes(1);
@@ -72,13 +72,13 @@ describe("PlaybackControls", () => {
 		);
 
 		const exitBtn = screen.getByRole("button", {
-			name: /Encerrar tour e voltar para visão geral/i,
+			name: /End the tour and return to the overview/i,
 		});
 		expect(exitBtn.className).toContain("h-8");
 		expect(exitBtn.className).toContain("w-8");
 
 		const autoBtn = screen.getByRole("button", {
-			name: /Ativar avanço automático/i,
+			name: /Turn on auto-advance/i,
 		});
 		expect(autoBtn.className).toContain("min-h-[2rem]");
 		expect(autoBtn.className).toContain("min-w-[2rem]");

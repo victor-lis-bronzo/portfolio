@@ -6,167 +6,284 @@ import {
 } from "./diagrams";
 
 export const BIOGRAPHICAL_STORY_SCRIPT: StoryScript = {
-	version: "1.0.0",
+	version: "2.0.0",
 	chapters: [
 		{
 			id: "ch-origins",
-			title: "Origens & Lógica",
-			description: "O início da paixão por sistemas e computação no Minecraft.",
+			title: { en: "Origins & Logic", pt: "Origens & Lógica" },
+			description: {
+				en: "Where the instinct for systems started: redstone circuits in Minecraft.",
+				pt: "Onde o instinto por sistemas começou: circuitos de redstone no Minecraft.",
+			},
 			stepIds: ["step-origins-1", "step-origins-2", "step-origins-3"],
 			entryWaypoint: "OVERVIEW",
 		},
 		{
 			id: "ch-etec",
-			title: "Etec & Dedicação",
-			description: "Formação técnica, método de estudo e liderança.",
+			title: { en: "Etec & Discipline", pt: "Etec & Disciplina" },
+			description: {
+				en: "Technical training, a study method built on purpose, and leading a class.",
+				pt: "Formação técnica, um método de estudo próprio e liderança de turma.",
+			},
 			stepIds: ["step-etec-1", "step-etec-2", "step-etec-3"],
 			entryWaypoint: "DESK",
 		},
 		{
 			id: "ch-ecoplay",
-			title: "Eco-Play & Hardware",
-			description: "Conexão de sensores, IoT, FETEPS e prototipagem 3D.",
+			title: { en: "Eco-Play & Hardware", pt: "Eco-Play & Hardware" },
+			description: {
+				en: "Sensors, IoT, two FETEPS selection rounds, and 3D-printed prototypes.",
+				pt: "Sensores, IoT, duas seleções da FETEPS e protótipos impressos em 3D.",
+			},
 			stepIds: ["step-ecoplay-1", "step-ecoplay-2", "step-ecoplay-3"],
 			entryWaypoint: "IOT_BENCH",
 		},
 		{
 			id: "ch-impact",
-			title: "Impacto & Ciência",
-			description:
-				"Sistemas para a comunidade, Sebrae e publicação científica.",
+			title: { en: "Impact & Research", pt: "Impacto & Pesquisa" },
+			description: {
+				en: "Software people actually used, a Sebrae stage, and a published paper.",
+				pt: "Software que gente de verdade usou, palco no Sebrae e artigo publicado.",
+			},
 			stepIds: ["step-impact-1", "step-impact-2"],
 			entryWaypoint: "DESK",
 		},
 		{
 			id: "ch-starseg",
-			title: "StarSeg & Engenharia",
-			description:
-				"Carreira profissional, arquitetura backend, IoT e tempo real.",
+			title: { en: "StarSeg & Engineering", pt: "StarSeg & Engenharia" },
+			description: {
+				en: "Backend architecture, IoT integration and real-time systems in production.",
+				pt: "Arquitetura backend, integração IoT e sistemas em tempo real em produção.",
+			},
 			stepIds: ["step-starseg-1", "step-starseg-2", "step-starseg-3"],
 			entryWaypoint: "DESK",
 		},
 		{
 			id: "ch-future",
-			title: "IFSP & Oportunidades",
-			description: "Graduação, pesquisa em segurança MQTT e próximos passos.",
+			title: { en: "IFSP & What's Next", pt: "IFSP & Próximos Passos" },
+			description: {
+				en: "A degree, MQTT security research, and the problems I want to take on next.",
+				pt: "Graduação, pesquisa em segurança MQTT e os problemas que quero pegar agora.",
+			},
 			stepIds: ["step-future-1", "step-future-2"],
 			entryWaypoint: "IFSP_BOARD",
 		},
 	],
 	steps: [
-		// --- Capítulo 1: Origens & Lógica ---
+		// --- Chapter 1: Origins & Logic ---
 		{
 			id: "step-origins-1",
 			waypoint: "OVERVIEW",
-			mascotDialogue:
-				"Oi! Eu sou o Victor. Minha curiosidade pela computação começou no Minecraft, construindo circuitos lógicos de redstone!",
+			mascotDialogue: {
+				en: "Hi, I'm Victor. I started out building logic circuits in Minecraft redstone — that's where systems became my thing.",
+				pt: "Oi, eu sou o Victor. Comecei montando circuitos lógicos de redstone no Minecraft — ali entender sistemas virou hábito.",
+			},
 		},
 		{
 			id: "step-origins-2",
 			waypoint: "DESK",
-			mascotDialogue:
-				"Fazia farms automáticas, portas com senhas e separadores de itens. Ali nasceu minha paixão por entender sistemas a fundo.",
+			mascotDialogue: {
+				en: "Automated farms, password-locked doors, item sorters. Toys on the surface — each one a system I had to design and debug.",
+				pt: "Farms automáticas, portas com senha, separadores de itens. Brinquedo por fora, mas cada um era um sistema pra projetar e depurar.",
+			},
 		},
 		{
 			id: "step-origins-3",
 			waypoint: "DESK",
-			mascotDialogue:
-				"No final de 2021, aos 14 anos, comecei a estudar programação por conta própria antes mesmo de entrar no ensino técnico.",
+			mascotDialogue: {
+				en: "At 14, in late 2021, I started teaching myself to code — a year before any course would have required it of me.",
+				pt: "Aos 14 anos, no fim de 2021, comecei a estudar programação sozinho — um ano antes de qualquer curso me cobrar isso.",
+			},
 		},
 
-		// --- Capítulo 2: Etec & Dedicação ---
+		// --- Chapter 2: Etec & Discipline ---
 		{
 			id: "step-etec-1",
 			waypoint: "DESK",
-			mascotDialogue:
-				"Em fev/2022 entrei no curso técnico de Desenvolvimento de Sistemas na Etec. Comprei meu PC com esforço para estudar muito.",
+			mascotDialogue: {
+				en: "Feb 2022: Systems Development at Etec. I paid for my own PC so the study time would have no excuses attached.",
+				pt: "Fev/2022: técnico em Desenvolvimento de Sistemas na Etec. Comprei meu próprio PC pra não sobrar desculpa pra não estudar.",
+			},
 		},
 		{
 			id: "step-etec-2",
 			waypoint: "WHITEBOARD_FOCUS",
-			mascotDialogue:
-				"Criei o hábito de estudar um semestre à frente da grade. Enquanto via lógica na aula, já dominava bancos de dados e APIs.",
+			mascotDialogue: {
+				en: "I ran a semester ahead of the syllabus on purpose. While class covered logic, I was already shipping databases and APIs.",
+				pt: "Estudei de propósito um semestre à frente da grade. Enquanto a aula via lógica, eu já entregava bancos de dados e APIs.",
+			},
 			diagramElements: D1_LEARNING_TRACK,
 		},
 		{
 			id: "step-etec-3",
 			waypoint: "ETEC_STAGE",
-			mascotDialogue:
-				"Fui eleito representante de classe por 3 anos seguidos e tive a honra de ser o juramentista da formatura da turma!",
+			mascotDialogue: {
+				en: "Elected class representative three years running, then chosen to give the graduation oath. Trust earned, not assigned.",
+				pt: "Eleito representante de classe três anos seguidos e escolhido juramentista da formatura. Confiança conquistada.",
+			},
 		},
 
-		// --- Capítulo 3: Eco-Play & Hardware ---
+		// --- Chapter 3: Eco-Play & Hardware ---
 		{
 			id: "step-ecoplay-1",
 			waypoint: "ECOPLAY_ARCADE",
-			mascotDialogue:
-				"Em 2023, numa conversa sobre o Vestibulinho, nasceu o Eco-Play: e se a gente gamificasse a coleta de tampinhas plásticas?",
+			mascotDialogue: {
+				en: "In 2023 I turned a hallway conversation into Eco-Play: recycling bottle caps, scored like a basketball arcade game.",
+				pt: "Em 2023 transformei uma conversa de corredor no Eco-Play: reciclar tampinhas com o placar de um jogo de basquete.",
+			},
+			ctas: [
+				{
+					label: {
+						en: "Read: how Eco-Play works",
+						pt: "Publicação: como o Eco-Play funciona",
+					},
+					href: "https://www.linkedin.com/posts/victor-lis-bronzo_eco-play-activity-7266495833804558336-cO3f-",
+				},
+				{
+					label: {
+						en: "Read: Eco-Play took the top capstone grade",
+						pt: "Publicação: nota máxima no TCC com o Eco-Play",
+					},
+					href: "https://www.linkedin.com/posts/victor-lis-bronzo_nota-m%C3%A1xima-no-tcceco-play-boa-tarde-activity-7268707865601744898--VMD",
+				},
+			],
 		},
 		{
 			id: "step-ecoplay-2",
 			waypoint: "WHITEBOARD_FOCUS",
-			mascotDialogue:
-				"Integramos sensores, microcontroladores e broker MQTT. Enfrentamos 2 seleções da FETEPS com muita persistência e evolução.",
+			mascotDialogue: {
+				en: "We wired sensors and microcontrollers to an MQTT broker, then carried the project through two FETEPS selection rounds.",
+				pt: "Ligamos sensores e microcontroladores a um broker MQTT e levamos o projeto por duas seleções da FETEPS.",
+			},
 			diagramElements: D2_ECOPLAY_IOT_ARCHITECTURE,
+			ctas: [
+				{
+					label: {
+						en: "Read: what FETEPS taught me",
+						pt: "Publicação: o que a FETEPS me ensinou",
+					},
+					href: "https://www.linkedin.com/posts/victor-lis-bronzo_feteps-uma-jornada-de-aprendizado-e-crescimento-activity-7207668250569039872-m_bY",
+				},
+				{
+					label: {
+						en: "Read: the first public demo",
+						pt: "Publicação: a primeira demo pública do TCC",
+					},
+					href: "https://www.linkedin.com/posts/victor-lis-bronzo_pr%C3%A9via-do-tcc-um-sucesso-de-p%C3%BAblico-e-aprendizado-activity-7210204912771624960-7Pdy",
+				},
+				{
+					label: {
+						en: "Read: presenting the capstone at FAAT",
+						pt: "Publicação: apresentação do TCC na FAAT",
+					},
+					href: "https://www.linkedin.com/posts/victor-lis-bronzo_tcc-na-faculdades-atibaia-faat-uma-jornada-activity-7214915997688864769-DylW",
+				},
+				{
+					label: {
+						en: "Read: another capstone milestone",
+						pt: "Publicação: mais uma etapa do TCC",
+					},
+					href: "https://www.linkedin.com/posts/victor-lis-bronzo_mais-uma-etapa-do-meu-tcc-bom-dia-rede-activity-7243605015930515458-R81F",
+				},
+			],
 		},
 		{
 			id: "step-ecoplay-3",
 			waypoint: "PRINTER_3D",
-			mascotDialogue:
-				"Adquiri a impressora 3D para prototipar cases e peças físicas dos projetos de hardware, eletrônica e automação.",
+			mascotDialogue: {
+				en: "I bought a 3D printer so hardware ideas stopped waiting on suppliers: cases and parts go from CAD to bench in hours.",
+				pt: "Comprei uma impressora 3D pra não depender de fornecedor: cases e peças saem do CAD para a bancada em poucas horas.",
+			},
 		},
 
-		// --- Capítulo 4: Impacto & Ciência ---
+		// --- Chapter 4: Impact & Research ---
 		{
 			id: "step-impact-1",
 			waypoint: "DESK",
-			mascotDialogue:
-				"Para o Festival de Primavera 2024 da Etec, desenvolvi em um único final de semana o sistema de gestão com Next.js + Supabase.",
+			mascotDialogue: {
+				en: "Etec's 2024 Spring Festival needed a management system. I scoped, built and shipped it in one weekend, on Next.js and Supabase.",
+				pt: "O Festival de Primavera 2024 da Etec precisava de gestão. Especifiquei, construí e entreguei em um fim de semana, com Next.js e Supabase.",
+			},
+			ctas: [
+				{
+					label: {
+						en: "Read: my first system in real use",
+						pt: "Publicação: minha primeira aplicação real",
+					},
+					href: "https://www.linkedin.com/posts/victor-lis-bronzo_minha-primeira-aplica%C3%A7%C3%A3o-real-bom-dia-tudo-activity-7245416917513981954-ZLM1",
+				},
+			],
 		},
 		{
 			id: "step-impact-2",
 			waypoint: "OVERVIEW",
-			mascotDialogue:
-				"Apresentei no StartUp Day 2025 do Sebrae e publiquei artigo nos anais do congresso acadêmico CONFAAT 2024 da UNIFAAT.",
+			mascotDialogue: {
+				en: "I presented at Sebrae's StartUp Day 2025 and published a paper in the CONFAAT 2024 proceedings at UNIFAAT.",
+				pt: "Apresentei no StartUp Day 2025 do Sebrae e publiquei um artigo nos anais do CONFAAT 2024, na UNIFAAT.",
+			},
+			ctas: [
+				{
+					label: {
+						en: "Read: on stage at StartUp Day",
+						pt: "Publicação: no palco do StartUp Day",
+					},
+					href: "https://www.linkedin.com/posts/victor-lis-bronzo_ol%C3%A1-rede-bom-dia-hoje-vim-compartilhar-activity-7322243130546618368-WdBi",
+				},
+			],
 		},
 
-		// --- Capítulo 5: StarSeg & Engenharia ---
+		// --- Chapter 5: StarSeg & Engineering ---
 		{
 			id: "step-starseg-1",
 			waypoint: "DESK",
-			mascotDialogue:
-				"Em 2025 entrei como Júnior na StarSeg e evoluí para responsabilidades de Pleno, atuando na arquitetura de ponta a ponta.",
+			mascotDialogue: {
+				en: "I joined StarSeg in 2025 as a junior dev and grew into mid-level scope, owning architecture decisions end to end.",
+				pt: "Entrei na StarSeg em 2025 como júnior e cresci para o escopo de pleno, respondendo pela arquitetura de ponta a ponta.",
+			},
 		},
 		{
 			id: "step-starseg-2",
 			waypoint: "WHITEBOARD_FOCUS",
-			mascotDialogue:
-				"Padronizo ecossistemas Node.js, integro Star-Lockers e Star-Gates via MQTT e WebSockets, e migrei sistemas legados para Docker.",
+			mascotDialogue: {
+				en: "I standardize our Node.js stack, integrate Star-Lockers and Star-Gates over MQTT and WebSockets, and moved legacy onto Docker.",
+				pt: "Padronizo nosso ecossistema Node.js, integro Star-Lockers e Star-Gates via MQTT e WebSockets e migrei o legado para Docker.",
+			},
 			diagramElements: D3_STARSEG_ARCHITECTURE,
 		},
 		{
 			id: "step-starseg-3",
 			waypoint: "DESK",
-			mascotDialogue:
-				"Refatorei sistemas críticos em Next.js e criei extensões de produtividade para o time, unindo comunicação ágil e código limpo.",
+			mascotDialogue: {
+				en: "I refactored business-critical Next.js systems and built internal extensions that took repetitive work off the team's day.",
+				pt: "Refatorei sistemas críticos em Next.js e criei extensões internas que tiraram trabalho repetitivo do dia a dia do time.",
+			},
 		},
 
-		// --- Capítulo 6: IFSP & Oportunidades ---
+		// --- Chapter 6: IFSP & What's Next ---
 		{
 			id: "step-future-1",
 			waypoint: "IFSP_BOARD",
-			mascotDialogue:
-				"Hoje curso ADS no IFSP Bragança Paulista e realizo Iniciação Científica em vulnerabilidades e segurança no protocolo MQTT.",
+			mascotDialogue: {
+				en: "I'm studying Systems Analysis at IFSP Bragança Paulista and running undergraduate research on MQTT security flaws.",
+				pt: "Curso Análise e Desenvolvimento de Sistemas no IFSP Bragança Paulista e faço iniciação científica em falhas do MQTT.",
+			},
 		},
 		{
 			id: "step-future-2",
 			waypoint: "OVERVIEW",
-			mascotDialogue:
-				"Estou sempre aberto a bons desafios e projetos estratégicos. Conheça meus projetos detalhados na visão do recrutador!",
-			cta: {
-				label: "Ver Visão do Recrutador",
-				href: "/recruiter",
+			mascotDialogue: {
+				en: "That's the short version. If you want the evidence — projects, stack and results — it's all in the recruiter view.",
+				pt: "Essa é a versão curta. Se quiser as evidências — projetos, stack e resultados — está tudo na visão do recrutador.",
 			},
+			ctas: [
+				{
+					label: {
+						en: "Open the recruiter view",
+						pt: "Abrir a visão do recrutador",
+					},
+					href: "/recruiter",
+				},
+			],
 		},
 	],
 };

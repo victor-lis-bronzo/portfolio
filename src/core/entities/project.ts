@@ -1,10 +1,12 @@
+import type { Localized } from "@/shared/i18n/types";
+
 export interface Project {
 	id: string;
-	title: string;
-	summary: string;
-	impact?: string;
+	title: Localized;
+	summary: Localized;
+	impact?: Localized;
 	stack: string[];
-	role?: string;
+	role?: Localized;
 	href?: string;
 	repoHref?: string;
 	highlighted?: boolean;

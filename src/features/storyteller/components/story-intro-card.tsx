@@ -2,7 +2,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { profile } from "@/core/data/profile";
 import { usePrefersReducedMotion } from "@/shared/hooks/use-prefers-reduced-motion";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 export interface StoryIntroCardProps {
 	onStartTour: () => void;
@@ -14,6 +16,7 @@ export function StoryIntroCard({
 	className = "",
 }: StoryIntroCardProps) {
 	const prefersReducedMotion = usePrefersReducedMotion();
+	const ui = useUiStrings();
 
 	return (
 		<motion.div
@@ -28,34 +31,24 @@ export function StoryIntroCard({
 			<div className="flex items-center gap-2">
 				<span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
 				<span className="text-xs font-semibold tracking-wider uppercase text-foreground/70">
-					Portfólio Interativo 3D
+					{ui.introTag}
 				</span>
 			</div>
 
 			{/* Heading and bio */}
 			<div className="flex flex-col gap-2">
 				<h2 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
-					Victor Lis Bronzo
+					{profile.name}
 				</h2>
-				<p className="text-sm font-medium text-foreground/80">
-					Desenvolvedor Full Stack, IoT & Iniciação Científica
-				</p>
+				<p className="text-sm font-medium text-foreground/80">{ui.introRole}</p>
 				<p className="mt-1 text-xs leading-relaxed text-foreground/60 md:text-sm">
-					Acompanhe uma narrativa guiada através do estúdio tridimensional,
-					conhecendo minhas origens na lógica, projetos de hardware, carreira e
-					pesquisa.
+					{ui.introDescription}
 				</p>
 			</div>
 
 			{/* Trajectory highlights */}
 			<div className="flex flex-wrap gap-1.5">
-				{[
-					"🎮 Redstone & Lógica",
-					"🏫 Etec DS",
-					"🌱 Eco-Play & IoT",
-					"🏢 StarSeg",
-					"🔬 IFSP / IC MQTT",
-				].map((tag) => (
+				{ui.introHighlights.map((tag) => (
 					<span
 						key={tag}
 						className="rounded-lg border border-border bg-secondary px-2.5 py-1 text-[11px] font-medium text-secondary-foreground"
@@ -77,17 +70,17 @@ export function StoryIntroCard({
 						viewBox="0 0 24 24"
 						fill="currentColor"
 					>
-						<title>Iniciar</title>
+						<title>{ui.iconStart}</title>
 						<polygon points="5 3 19 12 5 21 5 3" />
 					</svg>
-					<span>Iniciar Minha História</span>
+					<span>{ui.introStart}</span>
 				</button>
 
 				<Link
 					href="/recruiter"
 					className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-secondary px-4 py-3 text-sm font-semibold text-secondary-foreground transition-colors duration-200 hover:bg-secondary/80 hover:text-foreground active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
-					<span>Visão do Recrutador</span>
+					<span>{ui.introRecruiter}</span>
 					<svg
 						className="h-4 w-4"
 						viewBox="0 0 24 24"
@@ -97,7 +90,7 @@ export function StoryIntroCard({
 						strokeLinecap="round"
 						strokeLinejoin="round"
 					>
-						<title>Seta</title>
+						<title>{ui.iconArrow}</title>
 						<path d="M5 12h14" />
 						<path d="m12 5 7 7-7 7" />
 					</svg>
