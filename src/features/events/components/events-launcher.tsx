@@ -2,11 +2,13 @@
 
 import { useStorytellerStore } from "@/core/state/storyteller-store";
 import { useSceneFocusStore } from "@/features/scene-3d";
+import { useEventsStore } from "../state/events-store";
 
 export function EventsLauncher() {
 	function handleClick() {
 		void useSceneFocusStore.getState().focusWaypoint("EVENTS_BOARD");
 		useStorytellerStore.getState().dismiss();
+		useEventsStore.getState().open();
 	}
 
 	return (
