@@ -9,8 +9,9 @@ import { TECH_EVENTS } from "@/features/events/data";
 import { EventBadge } from "@/features/events/components/event-badge";
 
 // Board matches size constraints mapped in scene planner.
-const EVENTS_BOARD_ORIGIN: [number, number, number] = [6.95, 3.2, -6.5];
-const EVENTS_BOARD_ROTATION: [number, number, number] = [0, -Math.PI / 2, 0];
+// Positioned along the left wall (X = -7.8) facing right (rotation-y = Math.PI/2)
+const EVENTS_BOARD_ORIGIN: [number, number, number] = [-7.8, 1.8, 4.0];
+const EVENTS_BOARD_ROTATION: [number, number, number] = [0, Math.PI / 2, 0];
 const WOOD_FRAME = "#5c3a21";
 const CORK_BOARD = "#2c1e16"; // Dark cork
 const HTML_TRANSFORM_UNIT_DISTANCE_FACTOR = 400;
