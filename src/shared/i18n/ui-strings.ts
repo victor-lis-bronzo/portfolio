@@ -109,6 +109,8 @@ export interface UiStrings {
 	eventsModalSubtitle: (count: number) => string;
 	eventsModalClose: string;
 	eventsBadgeLink: string;
+	eventsLauncherText: string;
+	eventsLauncherLabel: string;
 
 	// --- Decorative SVG titles (kept out of the a11y tree by their parents) ---
 	iconPrevious: string;
@@ -225,6 +227,8 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		eventsModalSubtitle: (count) => `${count} events documented`,
 		eventsModalClose: "Close Panel",
 		eventsBadgeLink: "See more details",
+		eventsLauncherText: "Events",
+		eventsLauncherLabel: "View Events",
 
 		iconPrevious: "Previous",
 		iconNext: "Next",
@@ -338,6 +342,8 @@ export const UI_STRINGS: Record<Locale, UiStrings> = {
 		eventsModalSubtitle: (count) => `${count} eventos documentados`,
 		eventsModalClose: "Fechar Painel",
 		eventsBadgeLink: "Ver mais detalhes",
+		eventsLauncherText: "Eventos",
+		eventsLauncherLabel: "Ver Eventos",
 
 		iconPrevious: "Anterior",
 		iconNext: "Próximo",

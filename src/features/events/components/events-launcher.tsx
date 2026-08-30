@@ -3,8 +3,11 @@
 import { useStorytellerStore } from "@/core/state/storyteller-store";
 import { useSceneFocusStore } from "@/features/scene-3d";
 import { useEventsStore } from "../state/events-store";
+import { useUiStrings } from "@/shared/i18n/use-ui-strings";
 
 export function EventsLauncher() {
+	const ui = useUiStrings();
+
 	function handleClick() {
 		void useSceneFocusStore.getState().focusWaypoint("EVENTS_BOARD");
 		useStorytellerStore.getState().dismiss();
@@ -15,8 +18,8 @@ export function EventsLauncher() {
 		<button
 			type="button"
 			onClick={handleClick}
-			aria-label="Ver Eventos"
-			title="Ver Eventos"
+			aria-label={ui.eventsLauncherLabel}
+			title={ui.eventsLauncherLabel}
 			className="flex min-h-11 items-center gap-2 rounded-l-xl border border-border border-r-0 bg-card/90 px-3 py-2 font-medium text-card-foreground text-xs backdrop-blur-md transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-4 pointer-events-auto"
 		>
 			<svg
@@ -28,7 +31,7 @@ export function EventsLauncher() {
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			>
-				<title>Eventos</title>
+				<title>{ui.eventsLauncherText}</title>
 				<rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
 				<line x1="16" x2="16" y1="2" y2="6" />
 				<line x1="8" x2="8" y1="2" y2="6" />
@@ -40,7 +43,7 @@ export function EventsLauncher() {
 				<path d="M12 18h.01" />
 				<path d="M16 18h.01" />
 			</svg>
-			Eventos
+			{ui.eventsLauncherText}
 		</button>
 	);
 }
