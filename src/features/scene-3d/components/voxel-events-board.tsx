@@ -42,9 +42,6 @@ export function VoxelEventsBoard() {
 		<group 
 			position={EVENTS_BOARD_ORIGIN} 
 			rotation={EVENTS_BOARD_ROTATION}
-			onClick={handleClick}
-			onPointerOver={handlePointerOver}
-			onPointerOut={handlePointerOut}
 		>
 			{/* Wooden Frame */}
 			<mesh position={[0, 0, 0]}>
@@ -67,8 +64,8 @@ export function VoxelEventsBoard() {
 				zIndexRange={[0, 0]}
 				style={{ width: "860px", height: "510px", pointerEvents: "none" }}
 			>
-				<div className="w-full h-full p-8 flex flex-col relative overflow-hidden bg-slate-900/50 rounded-xl border border-slate-700/50">
-					<h2 className="text-4xl text-white font-bold mb-6 text-center drop-shadow-md">
+				<div className="w-full h-full p-8 flex flex-col relative overflow-hidden">
+					<h2 className="text-4xl text-white font-bold mb-6 text-center">
 						Tech Events & Community
 					</h2>
 					
@@ -82,13 +79,24 @@ export function VoxelEventsBoard() {
 					</div>
 
 					{/* Gradient Fade + Button */}
-					<div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent flex items-end justify-center pb-12">
-						<div className="bg-amber-500 text-slate-900 font-black px-8 py-4 rounded-xl text-2xl shadow-xl shadow-amber-500/20 ring-4 ring-amber-500/30">
+					<div className="absolute inset-0 bg-gradient-to-t from-[#2c1e16] via-[#2c1e16]/80 to-transparent flex items-end justify-center pb-12">
+						<div className="bg-primary text-primary-foreground font-semibold px-8 py-4 rounded-xl text-xl shadow-lg">
 							Ver todos os {TECH_EVENTS.length} eventos
 						</div>
 					</div>
 				</div>
 			</Html>
+
+			{/* Invisible Hitbox for perfect raycasting over the entire board */}
+			<mesh 
+				position={[0, 0, 0.1]} 
+				onClick={handleClick}
+				onPointerOver={handlePointerOver}
+				onPointerOut={handlePointerOut}
+			>
+				<planeGeometry args={[3.2, 2.0]} />
+				<meshBasicMaterial visible={false} />
+			</mesh>
 		</group>
 	);
 }
