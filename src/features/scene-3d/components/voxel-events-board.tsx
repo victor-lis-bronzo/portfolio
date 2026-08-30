@@ -15,6 +15,8 @@ export const EVENTS_BOARD_ROTATION: [number, number, number] = [
 const WOOD_FRAME = "#5c3a21";
 const CORK_BOARD = "#2c1e16"; // Dark cork
 
+const HTML_TRANSFORM_UNIT_DISTANCE_FACTOR = 400;
+
 export function VoxelEventsBoard() {
 	return (
 		<group position={EVENTS_BOARD_ORIGIN} rotation={EVENTS_BOARD_ROTATION}>
@@ -35,6 +37,8 @@ export function VoxelEventsBoard() {
 				transform
 				position={[0, 0, 0.07]}
 				scale={0.0035}
+				distanceFactor={HTML_TRANSFORM_UNIT_DISTANCE_FACTOR}
+				zIndexRange={[0, 0]}
 				style={{
 					width: "860px",
 					height: "510px",

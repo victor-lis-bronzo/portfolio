@@ -34,35 +34,26 @@ export function AskMeLauncher() {
 	}
 
 	return (
-		// Right edge, vertically centred: the only large region of the shell that
-		// no other surface claims. The header (LocaleToggle/ModeSwitcher, z-40)
-		// owns the top strip, and the storyteller overlay owns the whole bottom
-		// row — dialogue box and playback controls centred, the resume affordance
-		// left, the transcript toggle right. `z-40` puts it above that overlay
-		// (z-30). The wrapper carries `px-safe` so the button clears a notch in
-		// landscape without fighting its own horizontal padding.
-		<div className="-translate-y-1/2 fixed top-1/2 right-0 z-40 px-safe">
-			<button
-				type="button"
-				onClick={handleClick}
-				aria-label={ui.askMeLauncherAriaLabel}
-				title={ui.askMeLauncherAriaLabel}
-				className="flex min-h-11 items-center gap-2 rounded-l-xl border border-border border-r-0 bg-card/90 px-3 py-2 font-medium text-card-foreground text-xs backdrop-blur-md transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-4"
+		<button
+			type="button"
+			onClick={handleClick}
+			aria-label={ui.askMeLauncherAriaLabel}
+			title={ui.askMeLauncherAriaLabel}
+			className="flex min-h-11 items-center gap-2 rounded-l-xl border border-border border-r-0 bg-card/90 px-3 py-2 font-medium text-card-foreground text-xs backdrop-blur-md transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-4 pointer-events-auto"
+		>
+			<svg
+				className="h-4 w-4 shrink-0 text-primary"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			>
-				<svg
-					className="h-4 w-4 shrink-0 text-primary"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth="2"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-				>
-					<title>{ui.iconChat}</title>
-					<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />
-				</svg>
-				{ui.askMeLauncherLabel}
-			</button>
-		</div>
+				<title>{ui.iconChat}</title>
+				<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />
+			</svg>
+			{ui.askMeLauncherLabel}
+		</button>
 	);
 }

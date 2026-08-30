@@ -78,6 +78,7 @@ export function VoxelIfspPlaque() {
 				transform
 				position={[0, 0, 0.05]}
 				scale={0.12}
+				zIndexRange={[0, 0]}
 				style={{
 					width: "480px",
 					userSelect: "none",
