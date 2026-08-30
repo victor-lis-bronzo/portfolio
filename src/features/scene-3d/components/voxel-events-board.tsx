@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEventsStore } from "@/features/events/state/events-store";
 import { useStorytellerStore } from "@/core/state/storyteller-store";
 import { useSceneFocusStore } from "@/features/scene-3d";
-import { useCursorStore } from "@/features/scene-3d/state/cursor-store";
+import { useCursor } from "@react-three/drei";
 
 // Board matches size constraints mapped in scene planner.
 const EVENTS_BOARD_ORIGIN: [number, number, number] = [6.95, 3.2, -6.5];
@@ -15,6 +15,8 @@ const CORK_BOARD = "#2c1e16"; // Dark cork
 export function VoxelEventsBoard() {
 	const openModal = useEventsStore((state) => state.open);
 	const [hovered, setHovered] = useState(false);
+	
+	useCursor(hovered);
 
 	const handleClick = () => {
 		void useSceneFocusStore.getState().focusWaypoint("EVENTS_BOARD");
@@ -25,13 +27,11 @@ export function VoxelEventsBoard() {
 	const handlePointerOver = (e: any) => {
 		e.stopPropagation();
 		setHovered(true);
-		useCursorStore.getState().setHovering(true);
 	};
 
 	const handlePointerOut = (e: any) => {
 		e.stopPropagation();
 		setHovered(false);
-		useCursorStore.getState().setHovering(false);
 	};
 
 	return (
