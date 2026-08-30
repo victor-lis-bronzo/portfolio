@@ -42,6 +42,9 @@ export function VoxelEventsBoard() {
 		<group 
 			position={EVENTS_BOARD_ORIGIN} 
 			rotation={EVENTS_BOARD_ROTATION}
+			onClick={handleClick}
+			onPointerOver={handlePointerOver}
+			onPointerOut={handlePointerOut}
 		>
 			{/* Wooden Frame */}
 			<mesh position={[0, 0, 0]}>
@@ -62,15 +65,16 @@ export function VoxelEventsBoard() {
 				scale={0.0035}
 				distanceFactor={HTML_TRANSFORM_UNIT_DISTANCE_FACTOR}
 				zIndexRange={[0, 0]}
+				wrapperClass="pointer-events-none"
 				style={{ width: "860px", height: "510px", pointerEvents: "none" }}
 			>
-				<div className="w-full h-full p-8 flex flex-col relative overflow-hidden">
+				<div className="w-full h-full p-8 flex flex-col overflow-hidden pointer-events-none">
 					<h2 className="text-4xl text-white font-bold mb-6 text-center">
 						Tech Events & Community
 					</h2>
 					
 					{/* Render only first 3 events */}
-					<div className="grid grid-cols-3 gap-6 opacity-80">
+					<div className="grid grid-cols-3 gap-6 opacity-90">
 						{TECH_EVENTS.slice(0, 3).map((event) => (
 							<div key={event.id} className="scale-90 transform origin-top">
 								<EventBadge event={event} />
@@ -78,25 +82,14 @@ export function VoxelEventsBoard() {
 						))}
 					</div>
 
-					{/* Gradient Fade + Button */}
-					<div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-[#2c1e16] via-[#2c1e16]/90 to-transparent flex items-end justify-center pb-12">
+					{/* Button without shadow/fade */}
+					<div className="flex-grow flex items-end justify-center pb-2">
 						<div className="bg-primary text-primary-foreground font-semibold px-8 py-4 rounded-xl text-xl shadow-lg">
 							Ver todos os {TECH_EVENTS.length} eventos
 						</div>
 					</div>
 				</div>
 			</Html>
-
-			{/* Invisible Hitbox for perfect raycasting over the entire board */}
-			<mesh 
-				position={[0, 0, 0.1]} 
-				onClick={handleClick}
-				onPointerOver={handlePointerOver}
-				onPointerOut={handlePointerOut}
-			>
-				<planeGeometry args={[3.2, 2.0]} />
-				<meshBasicMaterial transparent opacity={0} />
-			</mesh>
 		</group>
 	);
 }
