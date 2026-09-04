@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
 
-## Getting Started
+Portfólio pessoal em Next.js com dois modos de apresentação: uma experiência 3D imersiva (React Three Fiber, com um assistente narrador "storyteller") e uma visão estática para recrutadores, otimizada para SEO/ATS.
 
-First, run the development server:
+## Arquitetura
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Aplicação Next.js única (App Router) organizada em Clean Architecture, com separação estrita entre domínio, features e apresentação:
+
+- **`src/core/`** — domínio puro, sem dependência de React/Next.js/WebGL: entidades (`Project`, `Skill`, `Article`, `StoryScript`, `StoryTimeline`), dados estáticos do perfil, interfaces (`ICameraController`, `IWhiteboardDriver`, `IDialogController`) e stores Zustand puros.
+- **`src/features/`** — capacidades verticais isoladas: `recruiter` (view para recrutadores), `scene-3d` (cena 3D voxel com React Three Fiber), `whiteboard` (canvas desenhado com Rough.js), `storyteller` (orquestração do mascote narrador), `events` e `whiteboard-assistant` (chat com IA).
+- **`src/shared/`** — componentes de UI (shadcn), hooks e utilitários reutilizáveis.
+- **`src/app/`** — rotas do Next.js (`/`, `/recruiter`, `sitemap.ts`, `robots.ts`, `api/chat/route.ts`).
+
+Mais detalhes de decisões arquiteturais em `docs/architecture.md` e `docs/decisions.md`.
+
+## Pré-requisitos
+
+- Node.js (compatível com Next.js 16 / React 19)
+- pnpm 11.18.0
+
+## Variáveis de ambiente
+
+Definidas em `.env.example`:
+
+```
+GROQ_API_KEY          # obrigatória apenas para o assistente do whiteboard (/api/chat)
+GROQ_MODEL            # opcional, sobrescreve o modelo padrão (openai/gpt-oss-20b)
+NEXT_PUBLIC_SITE_URL  # opcional, origem canônica do site (padrão: https://victorlisbronzo.me)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Instalação e execução
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+pnpm dev      # inicia o servidor de desenvolvimento (Turbopack)
+pnpm build    # build de produção
+pnpm start    # inicia o servidor de produção
+pnpm lint     # lint com Biome
+pnpm format   # formata o código com Biome
+```
 
-## Learn More
+## Testes
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm test        # roda os testes com Vitest
+pnpm test:watch  # roda os testes em modo watch
+```
